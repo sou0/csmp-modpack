@@ -1,0 +1,51 @@
+AMBIENTE DE TESTE - ambiente para testar o pack a cada mudanca
+
+A fonte da verdade e SEMPRE a pasta Pack-Direto. Aqui voce nunca edita mods/config:
+edite no Pack-Direto e use os atalhos abaixo (eles copiam as mudancas para ca).
+
+ATALHOS (de dois cliques)
+  1-ATUALIZAR-TUDO.bat     copia mods/config/datapack/resourcepacks do pack para o servidor e o cliente
+  2-TESTAR-SERVIDOR.bat    TESTE AUTOMATICO: sobe um servidor com mundo novo, confere se carrega,
+                           testa o Medidor de Caos por comandos, desliga e gera relatorio
+                           (veredito PASSOU / FALHOU). Nao precisa abrir o jogo. ~2 min.
+  3-SERVIDOR-ABERTO.bat    servidor de teste com mundo persistente ("world") para voce jogar
+                           (conecte em  localhost  ; para ser OP digite no console:  op SeuNome)
+  4-ABRIR-CLIENTE.bat      sincroniza e abre o jogo (Prism Launcher, instancia "CSMP Teste")
+
+QUANDO PRECISA FECHAR E ABRIR DE NOVO?
+  Mudou um mod (.jar) ........ reiniciar (servidor e/ou cliente). Nao existe troca a quente de mods.
+  Mudou config de um mod ..... em geral reiniciar (alguns mods recarregam sozinhos).
+  Mudou o datapack (Caos) .... NAO precisa: no servidor digite  /reload
+  Mudou o resourcepack ....... NAO precisa: no jogo aperte  F3 + T
+  Dica: antes de abrir o jogo, rode o 2-TESTAR-SERVIDOR; ele pega a maioria dos erros de
+        mods/dependencias em ~2 min, bem mais rapido que abrir o cliente.
+
+PRIMEIRA VEZ NO CLIENTE (Prism Launcher)
+  1) Abra o 4-ABRIR-CLIENTE.bat. O Prism pede um assistente inicial (idioma/Java): pode
+     seguir; o Java 21 desta pasta ja esta configurado na instancia.
+  2) Adicione uma conta no Prism (Contas > Adicionar). O Prism baixa sozinho o Minecraft 1.21.1
+     e o NeoForge 21.1.267 na primeira vez que a instancia abre (demora e usa internet).
+  3) O cliente exige uma conta Minecraft Java original (Microsoft). Sem ela, use so o servidor
+     de teste (atalhos 2 e 3), que nao precisa de conta para rodar.
+
+USAR O TLAUNCHER (ou outro launcher) NO LUGAR DO PRISM
+  O TLauncher usa a pasta da propria versao como pasta de jogo:  cliente\tlauncher\versions\CSMP
+  (versao "CSMP" criada no TLauncher, NeoForge 21.1.266; a 267 que o instalador pos la nao e usada).
+  5-ATUALIZAR-TLAUNCHER.bat copia o pack do Pack-Direto para  versions\CSMP  (mods, config, resourcepacks).
+  No TLauncher: Configuracoes > Minecraft > "Diretorio do jogo" = essa pasta (anote o valor
+  antigo para voltar depois), depois escolha a versao  neoforge-21.1.267  na lista e jogue.
+  Cuidado: nao use a pasta .minecraft para este pack, ela tem os mods das suas outras versoes.
+
+SERVIDOR: mods so de cliente
+  O servidor NAO carrega mods que so existem no cliente (Sodium, Iris, animacoes, HUD...).
+  A lista fica em  scripts\servidor-excluir.txt  (um padrao por linha). O pack em si nao e afetado.
+  Se um teste acusar outro mod de cliente derrubando o servidor, adicione o nome na lista.
+
+RELATORIOS
+  Cada teste salva um relatorio e o log completo em  relatorios\ .
+
+PASTAS
+  _ferramentas\   Java 21 e instaladores (nao mexa)
+  servidor\       servidor NeoForge 21.1.267 (online-mode=false, EULA aceito por voce em chat)
+  cliente\prism\  Prism Launcher portatil com a instancia "CSMP Teste" (RAM 2-6 GB)
+  scripts\        os scripts usados pelos atalhos

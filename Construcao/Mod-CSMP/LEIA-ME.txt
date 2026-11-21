@@ -1,0 +1,17 @@
+Mod-CSMP  -  mod proprio do CSMP (NeoForge 1.21.1)
+
+O QUE TEM DENTRO DO MOD (modid: csmp)
+- Medidor de Caos: datapack em src\main\resources\data\csmp_caos + barra em assets\minecraft\...\boss_bar
+- Clima por nivel de caos (usa o /weather, que o Create: Skys escuta)
+- Nuvens do Create: Skys acompanham o caos (so cliente)
+- Mob: Monstro Corrupto (br.csmp.core.mob) + ovo de spawn "Ovo de Monstro Corrupto"
+  (aba de ovos do criativo; ou /give @s csmp:monstro_corrupto_spawn_egg; ou /summon csmp:monstro_corrupto)
+
+COMO COMPILAR
+  feche o jogo e o servidor (usa 2-3 GB de RAM) e rode:  .\compilar.ps1
+  O jar vai para ..\Pack-Direto\mods e o teste do servidor roda com  ..\Ambiente-de-Teste\2-TESTAR-SERVIDOR.bat
+
+PENDENTE
+- Textura do Monstro Corrupto: hoje e um quadrado roxo provisorio (assets\csmp\textures\entity\monstro_corrupto.png).
+  O modelo exportado usa textura 16x16; para pintar de verdade, exporte a textura do Blockbench com o mesmo UV.
+- O modelo original tem so UM braco e UMA perna (lado direito). Se o outro lado faltou no Blockbench, precisamos completar.

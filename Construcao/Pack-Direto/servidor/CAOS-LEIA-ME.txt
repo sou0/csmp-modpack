@@ -1,0 +1,49 @@
+MEDIDOR DE CAOS (CSMP)
+
+O QUE FAZ
+- Barra no topo da tela, visivel para todos os jogadores do servidor.
+- Sobe quando um jogador mata outro jogador (padrao: +10 por kill).
+- Desce sozinha com o tempo (padrao: -1 a cada 5 segundos).
+- Vai de 0 a 100. Muda de cor e de nome conforme o nivel:
+    0-24  CALMO (verde) | 25-49 TENSO (amarelo)
+    50-74 CAOTICO (vermelho) | 75-100 APOCALIPSE (roxo)
+- Funciona com conta original e sem conta original (nao depende de login).
+
+INSTALACAO
+Nao precisa instalar nada a parte: o datapack (logica do caos e do clima) e o visual da barra
+agora vem DENTRO do mod proprio  csmp-core-*.jar  (pasta mods). Basta o mod estar no servidor
+e no cliente. Nao use mais pastas de datapack/resourcepack soltas para o caos.
+O codigo-fonte do mod esta na pasta  Mod-CSMP  (compilar.ps1 gera o jar).
+
+COMANDOS DE ADMIN (precisam ser OP)
+  /function csmp_caos:admin/definir {valor:50}      define o caos em 50
+  /function csmp_caos:admin/adicionar {valor:10}    soma 10
+  /function csmp_caos:admin/remover {valor:10}      tira 10
+  /function csmp_caos:admin/zerar                   volta a 0
+  /function csmp_caos:admin/config_ganho {valor:10}     quanto sobe por kill
+  /function csmp_caos:admin/config_queda {valor:1}      quanto desce por vez
+  /function csmp_caos:admin/config_segundos {valor:5}   a cada quantos segundos desce
+  /scoreboard players get #caos csmp_caos           ver o valor atual
+
+OBSERVACOES
+- Feito para Minecraft 1.21.1 (datapack 48 / resourcepack 34).
+- Conta como kill apenas jogador matando jogador (morte por queda, lava etc. nao conta).
+- O valor fica salvo no mundo: ao reiniciar o servidor, o caos continua de onde parou.
+- Conferido por teste automatico de servidor (incluindo reiniciar o mundo); falta conferir o visual dentro do jogo.
+
+
+CLIMA POR NIVEL (usa o mod Create: Skys)
+----------------------------------------
+A tempestade so comeca a partir de 50% de caos. O Create: Skys cria tempestades
+locais perto dos jogadores quando o clima muda (ele "escuta" o /weather).
+
+  0-49%     clima NORMAL do Minecraft (ciclo natural ligado, sem raios)
+  50-74%    tempestade com trovoes + raios raros e distantes (~1 a cada 100 s, a 25-45 blocos)
+  75-100%   APOCALIPSE: tempestade renovada a cada 1 min + raios proximos
+            (~1 a cada 25 s, a 10-25 blocos); a partir de 90% o dobro de raios
+
+- Abaixo de 50% o ceu fica nublado pelo visual do Skys (config\createskys-client.toml, coverage = 0.7).
+  Obs.: esse valor e do cliente e fixo; o datapack nao consegue variar as nuvens por nivel.
+- Ligar/desligar (OP):  /function csmp_caos:admin/config_clima {valor:0}   (0 = sempre clima normal, 1 = pelo caos)
+- Intensidade das tempestades: config\createskys-server.toml (frequency, size, speed, shipStrikeChance).
+  Neste pack: frequency = 2.0 e shipStrikeChance = 0.2 (naves abaixo das nuvens levam raio mais vezes).

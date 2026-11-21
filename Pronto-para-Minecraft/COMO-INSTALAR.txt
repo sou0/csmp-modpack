@@ -1,0 +1,30 @@
+CSMP - Pack Direto (versao 0.1)
+Pasta pronta para usar no Minecraft.
+
+REQUISITOS
+- Minecraft Java 1.21.1
+- NeoForge 21.1.266 ou mais novo (21.1.x)
+- RAM: 4 GB no minimo recomendado (o pack e pesado, quanto mais melhor)
+- Funciona com conta original e sem conta original (o servidor e online-mode=false)
+
+COMO INSTALAR
+1. Instale o NeoForge para Minecraft 1.21.1 no seu launcher e abra o jogo uma vez.
+2. Abra a pasta do jogo (a pasta onde ficam saves, options.txt etc.; normalmente .minecraft,
+   ou a pasta da instancia/versao do seu launcher).
+3. Copie para dentro dela as pastas "mods", "config" e "resourcepacks" desta pasta
+   (aceite substituir se perguntar).
+   Dica: se a pasta mods ja tiver outros mods, limpe-a antes para nao misturar versoes.
+4. Abra o jogo com o perfil do NeoForge e clique em "Entrar no CSMP".
+
+CONTEUDO
+- mods/           153 mods (.jar), incluindo o csmp-core (mod proprio: Medidor de Caos, clima, mobs)
+- config/         configuracoes do pack (inclui o menu inicial personalizado)
+- resourcepacks/  resourcepacks incluidos neste pack
+
+NAO INCLUIDOS (baixar a parte, se quiser o visual completo)
+- Resourcepack: Fresh Animations
+- Resourcepack: Fresh Animations - Player Extension
+- Shader: Spooklementary
+
+Esta pasta e GERADA automaticamente a partir de Construcao\Pack-Direto. Nao edite aqui:
+edite la e rode Construcao\GERAR-PASTA-PRONTA.bat.
