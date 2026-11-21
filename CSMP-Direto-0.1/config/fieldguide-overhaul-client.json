@@ -1,0 +1,14 @@
+{
+  "immersiveEmi": true,
+  "automaticInventoryOverlay": true,
+  "reducedPaperMotion": false,
+  "automaticFieldGuideScale": true,
+  "fieldGuideScalePercent": 100,
+  "deskHelpSeenPlayers": [
+    "889e8c1d-65bc-4055-80e7-6b82f05c2a78"
+  ],
+  "preparationItem": "",
+  "preparationRecipeId": "",
+  "preparationRecipePage": 0,
+  "bookmarks": []
+}

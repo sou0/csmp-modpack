@@ -1,0 +1,233 @@
+[Limits]
+	#Maximum number of shadows a player may hold in storage at rank 1 of the skill.
+	baseArmySize = 16
+	#Additional shadows granted per rank of the skill (rank 1..10).
+	armySizePerRank = 12
+	#Hard cap on army size regardless of rank. 0 = no hard cap.
+	maximumArmySize = 160
+	#Maximum number of shadows that may be summoned at once at rank 1.
+	baseSummonedLimit = 4
+	#Additional summons granted per rank of the skill.
+	summonedLimitPerRank = 2
+	#Hard cap on simultaneously summoned shadows. 0 = no hard cap.
+	maximumSummonedLimit = 24
+	#Maximum number of shadows that may be attached to a single target by 'Mark of Dominion'.
+	maxShadowsPerTarget = 6
+	#Maximum targeting distance in blocks for 'Mark of Dominion'.
+	markRange = 16.0
+	#How long a 'Mark of Dominion' order stays live, in seconds. While it is live your own blows land harder on that target as well - see markedDamageMultiplier in skills_config.
+	markDurationSeconds = 15
+	#Whether your and your shadows' blows on a target under your live Mark of Dominion pass its Tensura resistances (a resistance bypass of 1).
+	markPiercesResistances = true
+	#Radius in blocks of the formation Monarch's Domain raises its shadows in.
+	domainFormationRadius = 10.0
+
+[Extraction]
+	#ARISE! is an even chance against a monster with this share of your EP (0.25 = a quarter). Weaker ones rise more easily, stronger ones less.
+	evenChanceAtEpShare = 0.25
+	#How sharply the chance falls as the monster's EP nears and passes yours. Higher = steeper.
+	strengthSteepness = 1.5
+	#Each army rank above the first raises the chance by this share (0.05 = +5% per rank).
+	armyRankBonus = 0.05
+	#The least chance ARISE! ever has, however strong the monster (0.0 - 1.0).
+	minimumExtractionChance = 0.01
+	#Chance multiplier when the target is an undead mob.
+	undeadExtractionMultiplier = 2.5
+	#Chance multiplier when the killing blow came from the caster's own summoned shadow.
+	shadowKillMultiplier = 2.0
+	#Whether extracting a shadow requires the killer to land the final blow personally.
+	requireKillerBlow = true
+	#Highest soldier rank a freshly extracted shadow may start at (1 = always E-Rank).
+	maximumInitialShadowRank = 3
+	#Whether a shadow is lost permanently when its summon is destroyed in combat. false (the default) sends the soldier back to Shadow Storage to regenerate instead of deleting it - see Regeneration.regenerationSeconds. true restores the old behaviour where the entry is removed from the army outright.
+	shadowDiesWhenKilled = false
+	#Percentage of a shadow's remaining durability lost when its summon is destroyed (0.5 = 50%). Only consulted while shadowDiesWhenKilled is true.
+	shadowDeathDurabilityLoss = 0.5
+	#Extraction chance multiplier applied to targets marked by 'Dread Decree' (Shadow Sovereign).
+	decreeExtractionMultiplier = 2.0
+	#How many seconds a 'Dread Decree' mark lasts on a target.
+	decreeMarkSeconds = 30
+	#true = a killed mob dies and its shadow rises where it fell; the player must trigger ARISE! on it (right click or the 'ARISE!' skill mode). false = the old behaviour where the raise is rolled silently at the moment of the kill.
+	immediateExtraction = true
+	#Seconds after the kill during which that shadow can still be raised.
+	extractionWindowSeconds = 45
+	#Seconds a shadow nobody raised takes to sink back into the ground once its window closed.
+	corpseLingerSeconds = 10
+	#How many failed ARISE! a shadow takes before it fades for good. 0 = it never fades from failing.
+	maxExtractionAttempts = 3
+	#Seconds between two extraction attempts on the same shadow. 0 = no delay at all (extraction is never gated behind an arbitrary cooldown).
+	attemptCooldownSeconds = 0
+	#Maximum targeting distance in blocks for an extraction attempt.
+	extractionRange = 5.0
+	#Whether an extraction attempt needs a clear line of sight to the shadow.
+	extractionRequiresLineOfSight = false
+	#Entity type ids (namespace:path) that never leave a shadow.
+	corpseBlacklist = []
+	#If not empty, ONLY these entity type ids leave a shadow. Takes precedence over the blacklist.
+	corpseWhitelist = []
+	#Whether arena bosses / the Ender Dragon / the Wither leave a shadow.
+	allowBossCorpses = true
+	#Whether a shadow gives off dark vapour while it waits.
+	corpseAmbientParticles = true
+	#Ticks between two puffs of vapour off a waiting shadow.
+	corpseParticleIntervalTicks = 20
+	#Whether a *successful* extraction plays the ARISE! shout. It is never played on a failed attempt, and never repeatedly: exactly one shout per shadow raised.
+	ariseSoundEnabled = true
+	#Volume of the ARISE! shout (0.0 - 1.0). 1.0 is a normal, clearly audible player-level sound effect; raise it only if you want it to carry further.
+	ariseSoundVolume = 0.9
+	#Pitch of the ARISE! shout. 1.0 is as written; anything below that drops it lower and heavier, anything above makes it sharper and less ominous.
+	ariseSoundPitch = 1.0
+
+[Summoning]
+	#Magicule cost to summon a single shadow.
+	summonMagiculeCost = 45.0
+	#Aura cost to summon a single shadow.
+	summonAuraCost = 15.0
+	#Cooldown in seconds between summon waves.
+	summonCooldownSeconds = 3
+	#Radius in blocks around the caster where shadows are placed.
+	summonRadius = 4.0
+	#Seconds a summoned shadow may exist before it is automatically recalled.
+	summonedLifetimeSeconds = 300
+	#Cooldown in seconds of 'Army Recall' (de-summon every shadow at once).
+	recallCooldownSeconds = 10
+	#Whether summoned shadows follow the caster when no target is available.
+	shadowsFollowCaster = true
+	#Radius in blocks within which shadows are teleported to the caster when too far away.
+	leashRadius = 24.0
+	#Multiplier applied to a shadow's damage while summoned.
+	summonedDamageMultiplier = 1.15
+	#Multiplier applied to a shadow's maximum health while summoned.
+	summonedHealthMultiplier = 1.4
+	#Minimum soldier level announced as an Elite when summoned: the name plate becomes visible and the body carries a stronger shadow aura. 0 = never.
+	eliteRankThreshold = 7
+	#Minimum soldier level announced as a Commander when summoned.
+	commanderRankThreshold = 10
+	#Minimum soldier level announced as the Monarch's Guard when summoned.
+	sovereignRankThreshold = 12
+	#Whether a shadow's body shows the dark shadow aura while summoned.
+	shadowAuraEnabled = true
+	#Base follow range added to a summoned shadow, scaled by its rank.
+	followRangeBonus = 12.0
+	#Flat armour added to a summoned shadow, multiplied by its rank power curve.
+	rankArmorBase = 1.5
+	#Attack knockback added to a shadow at Monarch's Guard rank.
+	guardKnockback = 1.5
+	#EP a shadow starts with when Tensura has no existence entry for its mob type (native EP 0). Gives rank-up EP growth something to grow from.
+	summonedEpFallback = 100.0
+	#Ticks a shadow spends rising out of the shadow spread on the ground. 0 = skip the emergence and place the body instantly.
+	emergenceTicks = 20
+	#Blocks below the surface the shadow starts buried at, so tall bodies are fully hidden until they break the ground.
+	emergenceDepth = 2.0
+	#Radius in blocks of a Commander's Presence aura (buffs other own shadows).
+	commanderAuraRadius = 12.0
+	#Attack damage multiplier granted to shadows standing inside a Commander's Presence.
+	commanderAuraDamageBonus = 0.15
+	#Armor granted to shadows standing inside a Commander's Presence.
+	commanderAuraArmor = 6.0
+
+[Ranks]
+	#Experience needed to climb from level 1 (E-Rank) to level 2.
+	xpBase = 60.0
+	#Multiplier applied to the experience requirement for every further level (1.42 = each level costs 42% more than the last).
+	xpGrowth = 1.42
+	#Experience granted to a soldier for every enemy it personally kills.
+	xpPerKill = 12.0
+	#Flat experience bonus when the enemy a soldier killed counted as a boss.
+	xpBossKill = 250.0
+	#Experience granted every army upkeep (5 s) while the soldier is summoned and fighting alongside its owner. Rewards keeping a squad in the field.
+	xpPerDeploymentUptick = 1.5
+	#Minimum kills required to climb from level N to level N+1, multiplied by the level being left behind (level 1 -> 2 therefore needs soldierKillsBase kills).
+	killsBase = 8
+	#Highest soldier level reachable. 12 = Monarch's Guard.
+	maximumLevel = 12
+	#Multiplier applied to a soldier's stored EP on every rank-up. The new EP is the old EP multiplied by (1 + this), so 0.30 means EP x 1.30 and compounds across promotions: 10000 -> 13000 -> 16900 -> 21970 -> 28561. Applied exactly once per promotion, stored on the soldier, and never re-applied on load or on resummon.
+	epPerRank = 0.3
+	#Flat stat multiplier added per soldier level (health, damage and armour).
+	statBonusPerRank = 0.15
+	#Extra flat stat multiplier granted at Elite and above.
+	eliteStatBonus = 0.5
+	#Extra flat stat multiplier granted at Knight and above.
+	knightStatBonus = 0.4
+	#Extra flat stat multiplier granted at Commander and above.
+	commanderStatBonus = 0.9
+	#Extra flat stat multiplier granted at Marshal and above.
+	marshalStatBonus = 1.2
+	#Extra flat stat multiplier granted at Monarch's Guard.
+	monarchGuardStatBonus = 1.6
+	#Movement speed multiplier added per soldier level.
+	speedBonusPerRank = 0.012
+	#Fraction of the band bonuses above that is also added to movement speed.
+	speedBandScale = 0.1
+	#Whether climbing past the common ranks consumes a material each time.
+	consumeRankUpMaterials = true
+	#Item ids consumed to reach each soldier level (index = level - 1, so index 0 is the requirement to reach level 1 and is never used). Empty string = no material. An empty list disables material requirements entirely.
+	rankUpMaterialIds = ["", "", "", "", "", "", "tensura_celerity:umbral_shard", "tensura_celerity:shadow_steel_ingot", "tensura_celerity:shadow_soul", "tensura_celerity:shadow_soul", "tensura_celerity:monarch_sigil", "tensura_celerity:monarch_crest"]
+	#How many of the item at the same index are consumed.
+	rankUpMaterialCounts = [0, 0, 0, 0, 0, 0, 4, 8, 4, 8, 4, 2]
+	#Whether the player is told when a soldier is waiting for its rank-up material.
+	announceRankUpHints = true
+	#Seconds between two 'ready to rank up' reminders for the same soldier.
+	rankUpHintIntervalSeconds = 60
+	#Whether a rank-up broadcasts a message to the owner.
+	announceRankUp = true
+
+[Progression]
+	#Shadow Army experience gained per kill by the summoning player.
+	armyXPEntityKill = 4.0
+	#Shadow Army experience gained when one of the player's shadows lands a killing blow.
+	armyXPOwnShadowKill = 8.0
+	#Multiplier on Army experience for a kill on a target marked by Dread Decree. Turns the decree from a pure damage tool into a way to feed the army.
+	decreeArmyXpMultiplier = 2.0
+	#Shadow Army experience needed to advance from rank N to rank N+1 (multiplied by the current rank).
+	armyXPPerRank = 100.0
+	#Skill mastery points granted per Shadow Army rank gained.
+	masteryPerArmyRank = 12.0
+	#Whether the shadow exchange target must be within line of sight.
+	shadowExchangeRequiresLineOfSight = true
+	#Cooldown in seconds of Shadow Exchange.
+	shadowExchangeCooldown = 12
+	#Maximum distance in blocks for a Shadow Exchange.
+	shadowExchangeRange = 48.0
+	#true = pressing Shadow Exchange while a Shadow Exchange anchor stands rides the shadow road back to that anchor, with no distance limit at all. false = the press always swaps places with the nearest shadow in range, and travelling to an anchor is done only from the RETURN button in the Shadow Exchange window.
+	shadowExchangeUsesAnchor = true
+	#Whether a Shadow Exchange anchor may be travelled to across dimensions. false = the destination must be the dimension the player is already in; the coordinates themselves are never distance-limited either way.
+	shadowExchangeCrossDimension = true
+
+[Regeneration]
+	#Seconds a destroyed summon spends regenerating in Shadow Storage before it can be summoned again. 0 = ready on the next summon. The timer survives server restarts. Only used while Extraction.shadowDiesWhenKilled is false.
+	regenerationSeconds = 60
+	#Whether the owner is told how long a soldier will take to recover.
+	announceRegeneration = true
+	#Whether the owner is told when a soldier has finished regenerating.
+	announceRegenerationComplete = true
+
+[Upkeep]
+	#Whether summoned shadows drain magicules from their owner over time.
+	enabled = true
+	#How often the upkeep is charged, in whole seconds. 1 = once per second. Larger values charge less often but the same amount in total.
+	tickIntervalSeconds = 1
+	#Flat magicules charged per interval regardless of how strong the soldier is.
+	baseMagiculePerSecond = 0.5
+	#Magicules charged per interval for each point of the soldier's current EP. 0.0005 means a 10,000 EP soldier costs 5 magicules a second on top of the flat share, and a 100 EP soldier costs 0.05.
+	magiculePerEpPerSecond = 5.0E-4
+	#Seconds the owner may be unable to pay before the soldier is returned to Shadow Storage. Protects against a single missed tick of regen recalling a squad.
+	failureGraceSeconds = 10
+	#true = a soldier whose upkeep cannot be paid retreats into Shadow Storage with all of its progression intact. false = the soldier stays in the field and simply stops being paid for (never a kill, under any setting).
+	autoRetreatOnFailure = true
+	#Whether the owner is told when a soldier had to be recalled for upkeep.
+	announceAutoRetreat = true
+
+[Anchors]
+	#How many anchors a player may have standing at the same time. 0 = no limit.
+	maxAnchors = 3
+	#Seconds between two anchors being raised.
+	createCooldownSeconds = 10
+	#Magicules charged per second for each standing anchor, on top of the normal upkeep derived from its EP. Anchors are covered by Upkeep.enabled as well.
+	magiculePerSecond = 2.0
+	#Seconds an anchor stands before it returns to Shadow Storage on its own. 0 = it stands until the owner recalls it or shuts it down.
+	lifetimeSeconds = 0
+	#Whether an anchor emits the shadow spread and dark particles at its base.
+	ambientParticles = true
+	#Ticks between two ambient particle bursts from a standing anchor.
+	particleIntervalTicks = 40

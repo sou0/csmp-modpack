@@ -1,0 +1,49 @@
+[Antares]
+	#Antares's EP (magicule and aura, half each). Past every boss of Tensura and its addons: Not Enough Bosses' Veldora 88 million, the Nightmares True Dragons 60 million.
+	energyPoints = 1.5E8
+	#The chance (0..1) that Antares, felled, drops the Scroll of the Monarch of Destruction.
+	ultimateDropChance = 0.05
+	#Seconds between Antares's uses of Destruction, once he is below half his health.
+	destructionEverySeconds = 18
+	#Radius in blocks of Antares's Dragon's Fear.
+	fearRadius = 40.0
+
+[MonarchOfDestruction]
+	#Maximum magicule learning the skill takes for good, as Tensura charges every skill (the Shadow Sovereign takes 40,000).
+	mpAcquirement = 100000.0
+	#Breath of Destruction: magicule, cooldown (s), damage of each of its eight pulses before EP growth, share of the wielder's attack added, share of the target's most health added, length (blocks).
+	breathCost = 20000.0
+	breathCooldown = 14
+	breathDamage = 90.0
+	breathAttackShare = 1.0
+	breathHealthShare = 0.02
+	breathLength = 28.0
+	#Dragon's Fear: aura, cooldown (s), radius (blocks), how long it holds (s), and the roar's damage before EP growth.
+	fearCost = 10000.0
+	fearCooldown = 25
+	fearRadius = 32.0
+	fearSeconds = 8
+	fearDamage = 40.0
+	#Destruction: magicule, cooldown (s), damage before EP growth, share of the wielder's attack added, share of the target's most health added, radius and reach (blocks).
+	destructionCost = 60000.0
+	destructionCooldown = 45
+	destructionDamage = 260.0
+	destructionAttackShare = 4.0
+	destructionHealthShare = 0.2
+	destructionRadius = 8.0
+	destructionReach = 48.0
+	#The Dragon King's Body, switched on - the half-dragon form: its powers' damage multiplier, attack and health multipliers, armour, toughness, speed multiplier, knockback resistance, size, flight speed, mending (share of health a second) and upkeep (magicule a second).
+	formPowerMultiplier = 1.5
+	formAttack = 0.75
+	formHealth = 0.5
+	formArmour = 20.0
+	formToughness = 12.0
+	formSpeed = 0.3
+	formKnockbackResistance = 0.8
+	formScale = 0.15
+	formFlySpeed = 0.09
+	bodyRegeneration = 0.01
+	formUpkeep = 1500.0
+	#Flat attack and health the form adds before its multipliers, so it is strong on any body (on 1 attack and 20 health the multipliers alone gave 1.75 and 30).
+	formAttackFlat = 20.0
+	formHealthFlat = 80.0

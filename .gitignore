@@ -1,0 +1,18 @@
+# Ferramentas e arquivos gerados (se recriam com os scripts)
+/CSMP-Teste/_ferramentas/
+/CSMP-Teste/servidor/
+/CSMP-Teste/cliente/
+/CSMP-Teste/relatorios/
+/CSMP-Mods/.gradle/
+/CSMP-Mods/build/
+/CSMP-Mods/build-log.txt
+
+# Pastas antigas / backups locais
+/csmp dev cap2 test 0.1/
+/mods/
+/_mods-removidos/
+/installer.log
+
+# Diversos
+*.log
+.claude/

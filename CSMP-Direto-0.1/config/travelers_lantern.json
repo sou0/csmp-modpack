@@ -1,0 +1,10 @@
+{
+  "light": true,
+  "clientLight": true,
+  "smoothLight": true,
+  "lightUpdatesPerSecond": 60,
+  "softInDaylight": false,
+  "clientBelt": false,
+  "leftSide": true,
+  "clinks": true
+}

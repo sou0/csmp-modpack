@@ -1,0 +1,106 @@
+{
+  "crosshair": {
+    "enabled": true,
+    "animate": true,
+    "closeOnBlock": true,
+    "closeOnEntity": true,
+    "style": 1,
+    "visibility": 0,
+    "opening": 3.0,
+    "closedGap": 1.0,
+    "speed": 0.16,
+    "scale": 1.0,
+    "offsetX": 0.0,
+    "offsetY": 0.0,
+    "lengthX": 3.0,
+    "lengthY": 3.0,
+    "thickness": 1.0,
+    "dotSize": 1.0,
+    "opacity": 1.0,
+    "radius": 3.0,
+    "dot": false,
+    "outline": false,
+    "invertNative": true,
+    "hideWithMap": true,
+    "hideWithScreen": true,
+    "showThird": true,
+    "offhand": true,
+    "itemsOverrideEntity": false,
+    "hideDebugAxes": false,
+    "centered": true,
+    "color": "FFFFFF",
+    "outlineColor": "15151B",
+    "outlineWidth": 1.0,
+    "outlineOpacity": 0.7,
+    "movementOpening": 0.0,
+    "attackOpening": 0.0,
+    "outer": false,
+    "outerLength": 2.0,
+    "outerGap": 8.0,
+    "outerThickness": 1.0,
+    "outerOpacity": 0.35,
+    "onBlock": true,
+    "onEntity": true,
+    "onInteractable": true,
+    "highlightInteractable": false,
+    "highlightTool": false,
+    "interactColor": "F4D58D",
+    "correctColor": "ACEDB0",
+    "incorrectColor": "EAA5A5",
+    "interactableBlocks": "",
+    "blockStyle": -1,
+    "entityStyle": -1,
+    "interactStyle": -1,
+    "rules": [
+      {
+        "policy": 1,
+        "style": -1,
+        "ids": ""
+      },
+      {
+        "policy": 1,
+        "style": -1,
+        "ids": ""
+      },
+      {
+        "policy": 1,
+        "style": -1,
+        "ids": ""
+      },
+      {
+        "policy": 1,
+        "style": -1,
+        "ids": ""
+      },
+      {
+        "policy": 1,
+        "style": -1,
+        "ids": ""
+      },
+      {
+        "policy": 1,
+        "style": -1,
+        "ids": ""
+      },
+      {
+        "policy": 1,
+        "style": -1,
+        "ids": ""
+      },
+      {
+        "policy": 1,
+        "style": -1,
+        "ids": ""
+      },
+      {
+        "policy": 1,
+        "style": -1,
+        "ids": ""
+      }
+    ]
+  },
+  "savedCrosshairs": [],
+  "savedCrosshairNames": [],
+  "crosshairName": "Minha mira",
+  "migratedFromCamera": true
+}

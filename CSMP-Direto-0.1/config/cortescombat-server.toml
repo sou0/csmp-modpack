@@ -1,0 +1,60 @@
+#Ticks between one point of natural healing. Vanilla uses 80 (4 seconds);
+#this mod uses 40 (2 seconds). Lower is faster healing.
+# Default: 40
+# Range: 1 ~ 400
+healInterval = 40
+#Food points spent for every point of health healed. This is the price
+#that closes the cycle: healing spends food and food returns on its own.
+#Cannot be zero, or healing stops costing anything and food becomes decor.
+# Default: 1
+# Range: 1 ~ 20
+healFoodCost = 1
+#The food floor. At or above this many food points natural healing runs;
+#below it, nothing heals. Vanilla requires 18; this mod proposes 6.
+# Default: 6
+# Range: 0 ~ 20
+minFoodToHeal = 6
+#Ticks for the food clock to return one food point. It also paces
+#starvation. Vanilla has no food regeneration at all and starves every
+#80 ticks. This mod uses 80 (4 seconds). The most important number to
+#tune in the mod: fast makes food decoration, slow makes fighting a
+#dead end.
+# Default: 80
+# Range: 1 ~ 1200
+foodRegenInterval = 80
+#Ticks to drink a liquid: stews, honey, milk and potions. Vanilla drinks
+#for 32 ticks; this mod proposes 20 so drinking is usable mid-fight.
+# Default: 20
+# Range: 1 ~ 64
+drinkTicks = 20
+#Master toggle for the survival rework: exhaustion removed, food regenerates,
+#healing spends food. Off reverts to vanilla hunger and exhaustion.
+survivalRework = true
+#Master toggle for the mod's particles: hit indicators, blood drops, the flies
+#around the mob cloud and the slash trails. Sound and the rest of the feedback
+#are unaffected.
+particles = true
+#Master toggle for the whole combat rework: cone reach, charge, guard,
+#specials, hard cooldown. Off reverts to vanilla combat entirely. The FX
+#toggles (particles, damage flash, viewmodel, camera shake) stay independent.
+combatRework = true
+#Maximum damage of one warhammer hit, in points of damage.
+#0 means no cap, which is the default: the warhammer was never capped.
+#The cap applies to the raw damage of the hit, before armour, so a capped
+#hit is reduced further by whatever armour it does not ignore.
+# Default: 0.0
+# Range: 0.0 ~ 1000.0
+warhammerDamageCap = 0.0
+#Percentage of the target's armour that the warhammer's fully charged
+#hit ignores. 100 is the default and means the armour does not take part
+#at all; 50 means half of the armour still counts; 0 makes the charged
+#hit an ordinary hit against the armour.
+#Only the fully charged hit is affected: a tap never ignored armour.
+# Default: 100.0
+# Range: 0.0 ~ 100.0
+warhammerArmourPenetration = 100.0
+#Gameplay trace lines: [guardia] per blocked hit, [curar] per heal,
+#[pala] per orb, [carga] per cancelled charge, [frenzy] per stack milestone.
+#Off by default; these were playtest instrumentation that logged on the
+#combat path every time it ran. Turn on to diagnose, off to play.
+debug = false

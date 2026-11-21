@@ -1,0 +1,3 @@
+# Ronova: one request to api.modrinth.com (or curseforge.com) at game start to see if a newer version
+# exists for your loader and Minecraft version. Set to false to turn it off.
+enabled=true

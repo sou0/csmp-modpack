@@ -1,0 +1,467 @@
+[General]
+	#Base health multiplier applied to every boss of this addon.
+	healthMultiplier = 1.0
+	#Additional health multiplier per participating player (1.0 = +100% per extra player).
+	healthPerPlayerMultiplier = 1.0
+	#Base damage multiplier applied to every boss of this addon.
+	damageMultiplier = 1.0
+	#Seconds a boss cannot be summoned again after it has been defeated.
+	respawnCooldownSeconds = 600
+	#Whether a boss only drops its loot when the killing blow came from a player. When false, a boss whose last point of health was taken by a summoned ally or a stray mob still pays out.
+	singleLootDrop = false
+	#Radius in blocks in which players are counted as participants for scaling.
+	participationRadius = 64.0
+	#Whether a boss fight is announced to all players in range.
+	announceBossFight = true
+	#Radius in blocks a boss's presence is announced over.
+	announceRadius = 96.0
+	#Whether summoning a boss consumes one totem. Turn off on servers that want bosses to be repeatable fights at no material cost.
+	consumeTotemOnUse = true
+	#Radius in blocks within which a second boss of the same type cannot be summoned. Stops the fight being trivialised by stacking copies of the same boss.
+	summonPreventRadius = 48.0
+
+[ShadowMonarch]
+	#Display name shown on the boss bar. Leave empty to use the localised entity name (entity.tensura_celerity.shadow_monarch), which is what multi-language servers want.
+	displayName = ""
+	#Base maximum health.
+	maxHealth = 8000.0
+	#Total existence energy, i.e. maximum EP. This is NOT 15 thousand: it is fifteen million, split evenly between the magicule and aura attributes Tensura actually reads.
+	maxEP = 1.5E7
+	#Base attack damage. Very high on purpose - this is an endgame boss - but still a real number rather than an instakill, so a well geared player can survive a swing.
+	attackDamage = 240.0
+	#Base armour; Tensura adds more with the Monarch's EP.
+	armour = 48.0
+	#Armour toughness, 0 to 20: what keeps armour working against heavy blows.
+	armourToughness = 20.0
+	#Share of every blow the Monarch actually takes (1.0 = nothing kept off). Holds against blows that ignore armour, such as Tensura's Dead End Rainbow.
+	plating = 0.8
+	#Base movement speed.
+	movementSpeed = 0.36
+	#Fraction of maximum health at which the Monarch enters phase two (0.5 = half health).
+	phaseTwoThreshold = 0.5
+	#Damage multiplier applied while in phase two (1.25 = +25%).
+	phaseTwoDamageMultiplier = 1.25
+	#Speed multiplier applied while in phase two (1.2 = +20%).
+	phaseTwoSpeedMultiplier = 1.2
+	#Armour multiplier applied while in phase two (1.5 = +50% defence).
+	phaseTwoArmourMultiplier = 1.5
+	#Follow range bonus added in phase two, in blocks. The Monarch stops letting a player break line of sight and walk away.
+	phaseTwoFollowRange = 32.0
+	#How much faster the Monarch swings in phase two, as a multiple of its phase one swing rate (1.6 shortens vanilla's 20 tick swing cycle to 13). This really does end the melee goal's cycle early - it is not a tooltip number.
+	phaseTwoAttackSpeedMultiplier = 1.6
+	#Maximum EP reached in phase two, as a multiple of the phase one pool (2.0 = 15,000,000 -> 30,000,000). Applied exactly once, when phase two begins.
+	phaseTwoEpMultiplier = 2.0
+	#Phase two ability clock, as a fraction of the phase one interval (0.75 = abilities, slams, steps and skill presses all come off cooldown 25% sooner).
+	phaseTwoAbilityIntervalMultiplier = 0.75
+	#Seconds between Monarch abilities. Low, because the boss must stay on the offensive even while something else is cooling down.
+	abilityIntervalSeconds = 6
+	#Damage of a shadow bolt.
+	boltDamage = 130.0
+	#Number of shadow bolts fired per barrage.
+	boltVolley = 4
+	#Seconds of Darkness a shadow bolt applies.
+	boltDarknessSeconds = 3
+	#Damage of the phase two ground slam.
+	slamDamage = 200.0
+	#Radius in blocks of the phase two ground slam.
+	slamRadius = 10.0
+	#Seconds between phase two ground slams.
+	slamIntervalSeconds = 7
+	#Seconds between teleport steps.
+	teleportIntervalSeconds = 5
+	#Teleport range in blocks.
+	teleportRange = 30.0
+	#Seconds between presses of the Shadow Monarch Unique Skill during the fight. Each press picks a mode the skill really has.
+	skillIntervalSeconds = 12
+	#Chance, per boss death, that the Shadow Monarch skill scroll drops. 0.15 = exactly 15%. One roll per death for one item, so the effective chance can never drift above this.
+	scrollDropChance = 0.15
+	#Seconds the summoning totem is on cooldown.
+	summonItemCooldown = 3600
+	#The boss's own Shadow Soldier roster, one rank key per soldier. Keys come from the existing rank ladder (e_rank .. monarch_guard); repeat a key to field two of that rank. This is deliberately a high-level mix rather than a wall of monarch_guard.
+	armyRanks = ["s_rank", "s_rank", "elite", "elite", "knight", "knight", "elite_knight", "commander", "marshal", "monarch_guard"]
+	#Entity types the roster's bodies wear, cycled in order. Any PathfinderMob id works; these read as a shadow host and are all vanilla, so nothing here can break if an addon is absent.
+	armyBodies = ["minecraft:wither_skeleton", "minecraft:vindicator", "minecraft:evoker", "minecraft:zombie", "minecraft:stray", "minecraft:blaze"]
+	#Existence energy each boss soldier starts with at rank one; it grows along the normal rank ladder, so a monarch_guard is worth far more than an elite. Boss soldiers use the same rank/EP/XP record as player shadows - this only seeds where they begin.
+	soldierBaseEp = 100000.0
+	#Soldiers raised by a single press of the summon mode or a single re-raise wave.
+	armyWaveSize = 3
+	#Seconds between automatic re-raises of fallen soldiers.
+	armyRaiseIntervalSeconds = 45
+	#Seconds the summon skill mode spends on cooldown for the boss.
+	armySummonCooldownSeconds = 30
+	#Radius in blocks around the boss a raised soldier appears in.
+	armySpawnRadius = 7.0
+	#The roster rebuilt the moment phase two begins: the same rank ladder, but weighted to the top. Empty falls back to armyRanks. The phase one roster is dissolved and replaced, so the second wave is a genuinely different army rather than more of the same.
+	phaseTwoArmyRanks = ["elite_knight", "elite_knight", "elite_knight", "commander", "commander", "commander", "marshal", "marshal", "monarch_guard", "monarch_guard"]
+	#Soldiers raised in one go when phase two begins.
+	phaseTwoArmyWaveSize = 6
+	#EP multiplier given to each phase two soldier when its record is built (1.5 = +50% of the EP its rank already earned). Applied once, while the record is created, so re-raising a body can never stack it.
+	phaseTwoSoldierEpMultiplier = 1.5
+	#Loot lines, each formatted as item;min;max;chance. The skill scroll is NOT here - it is rolled separately by scrollDropChance.
+	drops = ["tensura_celerity:void_heart;1;2;1.0", "tensura_celerity:eclipse_shard;1;2;1.0", "tensura_celerity:temporal_gear;1;2;1.0", "tensura_celerity:monarch_sigil;2;4;1.0", "tensura_celerity:monarch_crest;1;1;0.40", "tensura_celerity:shadow_soul;4;7;1.0", "tensura_celerity:shadow_steel_ingot;8;14;1.0", "minecraft:experience_bottle;8;20;1.0"]
+
+[Thralls]
+	#Display name of a boss-summoned thrall. Leave empty to use the localised entity name (entity.tensura_celerity.shadow_thrall).
+	displayName = ""
+	#Maximum health of a thrall.
+	maxHealth = 60.0
+	#Attack damage of a thrall.
+	attackDamage = 8.0
+	#Movement speed of a thrall.
+	movementSpeed = 0.3
+	#Seconds a thrall exists before it dissolves, if nothing kills it first.
+	lifespanSeconds = 90
+	#Maximum thralls any single boss may keep alive at once.
+	maxAlive = 12
+	#Loot lines for a thrall, each formatted as item;min;max;chance. Kept cheap: thralls are a drain on the fight, not a reward.
+	drops = ["tensura_celerity:void_stone;1;2;0.35"]
+
+#Cha Hae-In, the Dancer (about 50% of the Shadow Monarch). Fast, precise, fragile.
+[Dancer]
+	#Display name; empty uses the localised name.
+	displayName = ""
+	#Maximum health before participant scaling.
+	maxHealth = 3200.0
+	#EP: half magicule, half aura.
+	maxEP = 6000000.0
+	#Melee damage before the global multiplier; striking abilities scale from it.
+	attackDamage = 130.0
+	#Armour points; Tensura adds more with the boss's EP.
+	armour = 20.0
+	#Armour toughness, 0 to 20.
+	armourToughness = 4.0
+	#Share of each blow taken (1.0 = all); holds against armour-piercing blows.
+	plating = 1.0
+	#Movement speed.
+	movementSpeed = 0.42
+	#Health fraction at which the second phase begins.
+	phaseTwoThreshold = 0.4
+	#Damage of an ability with a flat player-sized figure, as a share of attack damage.
+	abilityDamageShare = 0.55
+	#Ticks between one action and choosing the next; lower is more relentless.
+	decisionTicks = 16
+	#Share of max health lost in an ability's windup that staggers it.
+	staggerThreshold = 0.035
+	#Chance per death that the Unique Skill scroll drops.
+	scrollDropChance = 0.15
+	#Chance per death that the signature weapon drops (its own roll).
+	weaponDropChance = 0.4
+	#Seconds the summoning item is on cooldown for its user.
+	summonItemCooldown = 1800
+	#Loot lines, item;min;max;chance. The scroll and the weapon roll separately.
+	drops = ["tensura_celerity:shadow_soul;2;4;1.0", "tensura_celerity:shadow_steel_ingot;3;6;1.0", "tensura_celerity:umbral_shard;2;5;1.0", "minecraft:experience_bottle;4;10;1.0"]
+
+#Thomas Andre, the Goliath (about 75%). Slow, enormous, punishes a mistimed approach.
+[Goliath]
+	#Display name; empty uses the localised name.
+	displayName = ""
+	#Maximum health before participant scaling.
+	maxHealth = 6400.0
+	#EP: half magicule, half aura.
+	maxEP = 1.1E7
+	#Melee damage before the global multiplier; striking abilities scale from it.
+	attackDamage = 200.0
+	#Armour points; Tensura adds more with the boss's EP.
+	armour = 40.0
+	#Armour toughness, 0 to 20.
+	armourToughness = 18.0
+	#Share of each blow taken (1.0 = all); holds against armour-piercing blows.
+	plating = 0.75
+	#Movement speed.
+	movementSpeed = 0.3
+	#Health fraction at which the second phase begins.
+	phaseTwoThreshold = 0.5
+	#Damage of an ability with a flat player-sized figure, as a share of attack damage.
+	abilityDamageShare = 0.7
+	#Ticks between one action and choosing the next; lower is more relentless.
+	decisionTicks = 28
+	#Share of max health lost in an ability's windup that staggers it.
+	staggerThreshold = 0.035
+	#Chance per death that the Unique Skill scroll drops.
+	scrollDropChance = 0.15
+	#Chance per death that the signature weapon drops (its own roll).
+	weaponDropChance = 0.4
+	#Seconds the summoning item is on cooldown for its user.
+	summonItemCooldown = 1800
+	#Loot lines, item;min;max;chance. The scroll and the weapon roll separately.
+	drops = ["tensura_celerity:shadow_soul;2;4;1.0", "tensura_celerity:shadow_steel_ingot;3;6;1.0", "tensura_celerity:umbral_shard;2;5;1.0", "minecraft:experience_bottle;4;10;1.0"]
+
+#Baek Yoon-ho, the Beast (about 55%). Pressure and evasion; transforms when hurt.
+[Beast]
+	#Display name; empty uses the localised name.
+	displayName = ""
+	#Maximum health before participant scaling.
+	maxHealth = 3800.0
+	#EP: half magicule, half aura.
+	maxEP = 7000000.0
+	#Melee damage before the global multiplier; striking abilities scale from it.
+	attackDamage = 150.0
+	#Armour points; Tensura adds more with the boss's EP.
+	armour = 22.0
+	#Armour toughness, 0 to 20.
+	armourToughness = 8.0
+	#Share of each blow taken (1.0 = all); holds against armour-piercing blows.
+	plating = 0.9
+	#Movement speed.
+	movementSpeed = 0.4
+	#Health fraction at which the second phase begins.
+	phaseTwoThreshold = 0.6
+	#Damage of an ability with a flat player-sized figure, as a share of attack damage.
+	abilityDamageShare = 0.55
+	#Ticks between one action and choosing the next; lower is more relentless.
+	decisionTicks = 14
+	#Share of max health lost in an ability's windup that staggers it.
+	staggerThreshold = 0.035
+	#Chance per death that the Unique Skill scroll drops.
+	scrollDropChance = 0.15
+	#Chance per death that the signature weapon drops (its own roll).
+	weaponDropChance = 0.4
+	#Seconds the summoning item is on cooldown for its user.
+	summonItemCooldown = 1800
+	#Loot lines, item;min;max;chance. The scroll and the weapon roll separately.
+	drops = ["tensura_celerity:shadow_soul;2;4;1.0", "tensura_celerity:shadow_steel_ingot;3;6;1.0", "tensura_celerity:umbral_shard;2;5;1.0", "minecraft:experience_bottle;4;10;1.0"]
+
+#Choi Jong-in, the Magician (about 60%). Fire at range and ground that burns.
+[Magician]
+	#Display name; empty uses the localised name.
+	displayName = ""
+	#Maximum health before participant scaling.
+	maxHealth = 3400.0
+	#EP: half magicule, half aura.
+	maxEP = 8500000.0
+	#Melee damage before the global multiplier; striking abilities scale from it.
+	attackDamage = 110.0
+	#Armour points; Tensura adds more with the boss's EP.
+	armour = 16.0
+	#Armour toughness, 0 to 20.
+	armourToughness = 2.0
+	#Share of each blow taken (1.0 = all); holds against armour-piercing blows.
+	plating = 1.0
+	#Movement speed.
+	movementSpeed = 0.32
+	#Health fraction at which the second phase begins.
+	phaseTwoThreshold = 0.5
+	#Damage of an ability with a flat player-sized figure, as a share of attack damage.
+	abilityDamageShare = 0.85
+	#Ticks between one action and choosing the next; lower is more relentless.
+	decisionTicks = 22
+	#Share of max health lost in an ability's windup that staggers it.
+	staggerThreshold = 0.035
+	#Chance per death that the Unique Skill scroll drops.
+	scrollDropChance = 0.15
+	#Chance per death that the signature weapon drops (its own roll).
+	weaponDropChance = 0.4
+	#Seconds the summoning item is on cooldown for its user.
+	summonItemCooldown = 1800
+	#Loot lines, item;min;max;chance. The scroll and the weapon roll separately.
+	drops = ["tensura_celerity:shadow_soul;2;4;1.0", "tensura_celerity:shadow_steel_ingot;3;6;1.0", "tensura_celerity:umbral_shard;2;5;1.0", "minecraft:experience_bottle;4;10;1.0"]
+
+#Go Gunhee, the Ruler (about 80%). Control: pushes, holds, crushes.
+[Ruler]
+	#Display name; empty uses the localised name.
+	displayName = ""
+	#Maximum health before participant scaling.
+	maxHealth = 6000.0
+	#EP: half magicule, half aura.
+	maxEP = 1.2E7
+	#Melee damage before the global multiplier; striking abilities scale from it.
+	attackDamage = 190.0
+	#Armour points; Tensura adds more with the boss's EP.
+	armour = 36.0
+	#Armour toughness, 0 to 20.
+	armourToughness = 10.0
+	#Share of each blow taken (1.0 = all); holds against armour-piercing blows.
+	plating = 0.85
+	#Movement speed.
+	movementSpeed = 0.33
+	#Health fraction at which the second phase begins.
+	phaseTwoThreshold = 0.5
+	#Damage of an ability with a flat player-sized figure, as a share of attack damage.
+	abilityDamageShare = 0.65
+	#Ticks between one action and choosing the next; lower is more relentless.
+	decisionTicks = 24
+	#Share of max health lost in an ability's windup that staggers it.
+	staggerThreshold = 0.035
+	#Chance per death that the Unique Skill scroll drops.
+	scrollDropChance = 0.15
+	#Chance per death that the signature weapon drops (its own roll).
+	weaponDropChance = 0.4
+	#Seconds the summoning item is on cooldown for its user.
+	summonItemCooldown = 1800
+	#Loot lines, item;min;max;chance. The scroll and the weapon roll separately.
+	drops = ["tensura_celerity:shadow_soul;2;4;1.0", "tensura_celerity:shadow_steel_ingot;3;6;1.0", "tensura_celerity:umbral_shard;2;5;1.0", "minecraft:experience_bottle;4;10;1.0"]
+
+#Lim Tae-Gyu, the Sagittarius (about 50%). A sniper who has to be reached.
+[Sagittarius]
+	#Display name; empty uses the localised name.
+	displayName = ""
+	#Maximum health before participant scaling.
+	maxHealth = 3000.0
+	#EP: half magicule, half aura.
+	maxEP = 6000000.0
+	#Melee damage before the global multiplier; striking abilities scale from it.
+	attackDamage = 100.0
+	#Armour points; Tensura adds more with the boss's EP.
+	armour = 14.0
+	#Armour toughness, 0 to 20.
+	armourToughness = 2.0
+	#Share of each blow taken (1.0 = all); holds against armour-piercing blows.
+	plating = 1.0
+	#Movement speed.
+	movementSpeed = 0.36
+	#Health fraction at which the second phase begins.
+	phaseTwoThreshold = 0.45
+	#Damage of an ability with a flat player-sized figure, as a share of attack damage.
+	abilityDamageShare = 0.9
+	#Ticks between one action and choosing the next; lower is more relentless.
+	decisionTicks = 20
+	#Share of max health lost in an ability's windup that staggers it.
+	staggerThreshold = 0.035
+	#Chance per death that the Unique Skill scroll drops.
+	scrollDropChance = 0.15
+	#Chance per death that the signature weapon drops (its own roll).
+	weaponDropChance = 0.4
+	#Seconds the summoning item is on cooldown for its user.
+	summonItemCooldown = 1800
+	#Loot lines, item;min;max;chance. The scroll and the weapon roll separately.
+	drops = ["tensura_celerity:shadow_soul;2;4;1.0", "tensura_celerity:shadow_steel_ingot;3;6;1.0", "tensura_celerity:umbral_shard;2;5;1.0", "minecraft:experience_bottle;4;10;1.0"]
+
+#Min Byung-Gyu, the Saint (about 55%). Outlasts a slow fight; his healing has windows.
+[Saint]
+	#Display name; empty uses the localised name.
+	displayName = ""
+	#Maximum health before participant scaling.
+	maxHealth = 4200.0
+	#EP: half magicule, half aura.
+	maxEP = 7000000.0
+	#Melee damage before the global multiplier; striking abilities scale from it.
+	attackDamage = 110.0
+	#Armour points; Tensura adds more with the boss's EP.
+	armour = 24.0
+	#Armour toughness, 0 to 20.
+	armourToughness = 6.0
+	#Share of each blow taken (1.0 = all); holds against armour-piercing blows.
+	plating = 1.0
+	#Movement speed.
+	movementSpeed = 0.31
+	#Health fraction at which the second phase begins.
+	phaseTwoThreshold = 0.5
+	#Damage of an ability with a flat player-sized figure, as a share of attack damage.
+	abilityDamageShare = 0.5
+	#Ticks between one action and choosing the next; lower is more relentless.
+	decisionTicks = 24
+	#Share of max health lost in an ability's windup that staggers it.
+	staggerThreshold = 0.035
+	#Chance per death that the Unique Skill scroll drops.
+	scrollDropChance = 0.15
+	#Chance per death that the signature weapon drops (its own roll).
+	weaponDropChance = 0.4
+	#Seconds the summoning item is on cooldown for its user.
+	summonItemCooldown = 1800
+	#Loot lines, item;min;max;chance. The scroll and the weapon roll separately.
+	drops = ["tensura_celerity:shadow_soul;2;4;1.0", "tensura_celerity:shadow_steel_ingot;3;6;1.0", "tensura_celerity:umbral_shard;2;5;1.0", "minecraft:experience_bottle;4;10;1.0"]
+
+#Yoo Jinho, the Guardian (about 45%). Hard to hurt, slow to hurt you.
+[Guardian]
+	#Display name; empty uses the localised name.
+	displayName = ""
+	#Maximum health before participant scaling.
+	maxHealth = 5200.0
+	#EP: half magicule, half aura.
+	maxEP = 5500000.0
+	#Melee damage before the global multiplier; striking abilities scale from it.
+	attackDamage = 90.0
+	#Armour points; Tensura adds more with the boss's EP.
+	armour = 44.0
+	#Armour toughness, 0 to 20.
+	armourToughness = 20.0
+	#Share of each blow taken (1.0 = all); holds against armour-piercing blows.
+	plating = 0.65
+	#Movement speed.
+	movementSpeed = 0.29
+	#Health fraction at which the second phase begins.
+	phaseTwoThreshold = 0.4
+	#Damage of an ability with a flat player-sized figure, as a share of attack damage.
+	abilityDamageShare = 0.45
+	#Ticks between one action and choosing the next; lower is more relentless.
+	decisionTicks = 26
+	#Share of max health lost in an ability's windup that staggers it.
+	staggerThreshold = 0.035
+	#Chance per death that the Unique Skill scroll drops.
+	scrollDropChance = 0.15
+	#Chance per death that the signature weapon drops (its own roll).
+	weaponDropChance = 0.4
+	#Seconds the summoning item is on cooldown for its user.
+	summonItemCooldown = 1800
+	#Loot lines, item;min;max;chance. The scroll and the weapon roll separately.
+	drops = ["tensura_celerity:shadow_soul;2;4;1.0", "tensura_celerity:shadow_steel_ingot;3;6;1.0", "tensura_celerity:umbral_shard;2;5;1.0", "minecraft:experience_bottle;4;10;1.0"]
+
+#Igris, the Knight (about 70%). Disciplined swordsmanship with an answer for a careless blow.
+[Knight]
+	#Display name; empty uses the localised name.
+	displayName = ""
+	#Maximum health before participant scaling.
+	maxHealth = 5400.0
+	#EP: half magicule, half aura.
+	maxEP = 1.0E7
+	#Melee damage before the global multiplier; striking abilities scale from it.
+	attackDamage = 185.0
+	#Armour points; Tensura adds more with the boss's EP.
+	armour = 38.0
+	#Armour toughness, 0 to 20.
+	armourToughness = 16.0
+	#Share of each blow taken (1.0 = all); holds against armour-piercing blows.
+	plating = 0.7
+	#Movement speed.
+	movementSpeed = 0.35
+	#Health fraction at which the second phase begins.
+	phaseTwoThreshold = 0.45
+	#Damage of an ability with a flat player-sized figure, as a share of attack damage.
+	abilityDamageShare = 0.7
+	#Ticks between one action and choosing the next; lower is more relentless.
+	decisionTicks = 18
+	#Share of max health lost in an ability's windup that staggers it.
+	staggerThreshold = 0.035
+	#Chance per death that the Unique Skill scroll drops.
+	scrollDropChance = 0.15
+	#Chance per death that the signature weapon drops (its own roll).
+	weaponDropChance = 0.4
+	#Seconds the summoning item is on cooldown for its user.
+	summonItemCooldown = 1800
+	#Loot lines, item;min;max;chance. The scroll and the weapon roll separately.
+	drops = ["tensura_celerity:shadow_soul;2;4;1.0", "tensura_celerity:shadow_steel_ingot;3;6;1.0", "tensura_celerity:umbral_shard;2;5;1.0", "minecraft:experience_bottle;4;10;1.0"]
+
+#Beru, the Glutton (about 85%). The fastest and the nearest to the Monarch himself.
+[Glutton]
+	#Display name; empty uses the localised name.
+	displayName = ""
+	#Maximum health before participant scaling.
+	maxHealth = 6600.0
+	#EP: half magicule, half aura.
+	maxEP = 1.25E7
+	#Melee damage before the global multiplier; striking abilities scale from it.
+	attackDamage = 210.0
+	#Armour points; Tensura adds more with the boss's EP.
+	armour = 34.0
+	#Armour toughness, 0 to 20.
+	armourToughness = 12.0
+	#Share of each blow taken (1.0 = all); holds against armour-piercing blows.
+	plating = 0.8
+	#Movement speed.
+	movementSpeed = 0.38
+	#Health fraction at which the second phase begins.
+	phaseTwoThreshold = 0.5
+	#Damage of an ability with a flat player-sized figure, as a share of attack damage.
+	abilityDamageShare = 0.7
+	#Ticks between one action and choosing the next; lower is more relentless.
+	decisionTicks = 14
+	#Share of max health lost in an ability's windup that staggers it.
+	staggerThreshold = 0.035
+	#Chance per death that the Unique Skill scroll drops.
+	scrollDropChance = 0.15
+	#Chance per death that the signature weapon drops (its own roll).
+	weaponDropChance = 0.4
+	#Seconds the summoning item is on cooldown for its user.
+	summonItemCooldown = 1800
+	#Loot lines, item;min;max;chance. The scroll and the weapon roll separately.
+	drops = ["tensura_celerity:shadow_soul;2;4;1.0", "tensura_celerity:shadow_steel_ingot;3;6;1.0", "tensura_celerity:umbral_shard;2;5;1.0", "minecraft:experience_bottle;4;10;1.0"]

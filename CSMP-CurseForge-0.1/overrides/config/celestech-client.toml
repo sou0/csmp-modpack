@@ -1,0 +1,110 @@
+#Efectos del cohete minero y de su plataforma de lanzamiento
+[cohete]
+	#Intensidad del temblor de la cámara cerca de un despegue o un aterrizaje, en %. 0 lo apaga del todo (accesibilidad).
+	# Default: 60
+	# Range: 0 ~ 100
+	intensidadTemblor = 60
+
+#Accesibilidad de las interfaces
+[accesibilidad]
+	#Reduce el movimiento de las interfaces: sin transiciones animadas (los cambios son instantáneos), sin giro automático del cuerpo de la Silla de cirugía y sin motas.
+	reducirMovimiento = false
+
+#Reportar bugs desde la Holotableta (la app «Reportar un bug»)
+[reportes]
+	#Muestra la app de reportes en la tableta. Un reporte solo se manda cuando el jugador lo escribe, lo ve en la vista previa y pulsa Enviar; llega a un canal privado del equipo de CelesTech en Discord. false la quita.
+	activos = true
+
+#Suavizado de bordes (quita el borde de sierra de los modelos sin necesitar shaders; con un pack de shaders activo se apaga solo, ya lleva el suyo)
+[suavizado]
+	#Enciende el suavizado de bordes. Se puede alternar en partida con la tecla de Controles > CelesTech.
+	activo = true
+	#Cuánto se suaviza lo fino (cables, barras, aristas de un píxel), en %. Más alto, más suave y algo más borroso.
+	# Default: 75
+	# Range: 0 ~ 100
+	intensidad = 75
+	#Afilado leve solo alrededor de los bordes suavizados, en %. 0 lo apaga.
+	# Default: 30
+	# Range: 0 ~ 100
+	nitidez = 30
+	#Salto de profundidad, en % de la distancia, que cuenta como borde de un modelo. Más bajo suaviza también escalones lejanos (y algo de lo plano visto de lado); más alto, solo siluetas claras.
+	# Default: 1.0
+	# Range: 0.2 ~ 5.0
+	umbralProfundidad = 1.0
+
+#Avisos del visor neuronal: cada tipo se puede apagar por separado (también desde la pestaña Ajustes de su interfaz)
+[avisos]
+	cohete_vuelta = true
+	meteorito = true
+	maquina_llena = true
+	trabajo_terminado = true
+	hito = true
+
+#Disposición del HUD del visor neuronal (se cambia desde la pestaña Pantalla de su interfaz): x e y son el desplazamiento respecto a su sitio, en milésimas de pantalla; escala, en %
+[hud]
+
+	[hud.objetivo]
+		# Default: 0
+		# Range: -1000 ~ 1000
+		x = 0
+		# Default: 0
+		# Range: -1000 ~ 1000
+		y = 0
+		# Default: 100
+		# Range: 50 ~ 200
+		escala = 100
+
+	[hud.energia]
+		# Default: 0
+		# Range: -1000 ~ 1000
+		x = 0
+		# Default: 0
+		# Range: -1000 ~ 1000
+		y = 0
+		# Default: 100
+		# Range: 50 ~ 200
+		escala = 100
+
+	[hud.herramienta]
+		# Default: 0
+		# Range: -1000 ~ 1000
+		x = 0
+		# Default: 0
+		# Range: -1000 ~ 1000
+		y = 0
+		# Default: 100
+		# Range: 50 ~ 200
+		escala = 100
+
+	[hud.prospeccion]
+		# Default: 0
+		# Range: -1000 ~ 1000
+		x = 0
+		# Default: 0
+		# Range: -1000 ~ 1000
+		y = 0
+		# Default: 100
+		# Range: 50 ~ 200
+		escala = 100
+
+	[hud.radar]
+		# Default: 0
+		# Range: -1000 ~ 1000
+		x = 0
+		# Default: 0
+		# Range: -1000 ~ 1000
+		y = 0
+		# Default: 100
+		# Range: 50 ~ 200
+		escala = 100
+
+	[hud.avisos]
+		# Default: 0
+		# Range: -1000 ~ 1000
+		x = 0
+		# Default: 0
+		# Range: -1000 ~ 1000
+		y = 0
+		# Default: 100
+		# Range: 50 ~ 200
+		escala = 100

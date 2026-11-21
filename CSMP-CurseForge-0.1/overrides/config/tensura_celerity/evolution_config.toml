@@ -1,0 +1,15 @@
+[SkillEvolution]
+	#Mastery required on a Unique Skill before it can be evolved into its Ultimate form.
+	uniqueMasteryRequired = 500
+	#Whether the Unique Skill must be mastered (`getMaxMastery`) instead of only reaching `uniqueMasteryRequired`.
+	requireFullMastery = false
+	#Magicule cost paid when an Ultimate Skill is unlocked through evolution.
+	unlockMagiculeCost = 25000.0
+	#Aura cost paid when an Ultimate Skill is unlocked through evolution.
+	unlockAuraCost = 12500.0
+	#Cooldown in seconds applied to the Unique Skill right after it evolves.
+	cooldownAfterEvolutionSeconds = 300
+	#Whether the Unique Skill is forgotten once its Ultimate form is learned.
+	forgetUniqueAfterEvolution = false
+	#Minimum player EP required before an Ultimate Skill may be unlocked.
+	minimumEPToEvolve = 250000.0

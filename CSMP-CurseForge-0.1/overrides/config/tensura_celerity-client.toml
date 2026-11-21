@@ -1,0 +1,47 @@
+#How the great moments of Tensura: Celerity are felt on this client.
+[feel]
+	#A boss's name across the screen as it comes and as it falls, and the System's own announcements (an Ultimate Skill, Level Up at every tenth level, the Job Change, Dungeon Cleared, the Penalty Quest).
+	titleCards = true
+	#Colour at the screen's edges: a dragon's dread, the flash of Destruction, the heat of the dragon's form, a shadow rising, the System's light.
+	screenWashes = true
+	#The camera shaking under a dragon's breath, a roar, a blast, a quake, a boss's second phase.
+	cameraShake = true
+
+#How much of the mod's visual effects this client draws. Cosmetic only: nothing here changes what an ability does, and a server never reads it.
+[visuals]
+	#Detail of the effects: weapon trails' length, the Domain's ground pattern, ambient emitters. LOW keeps only what tells you what is happening.
+	#Allowed Values: LOW, MEDIUM, HIGH, ULTRA
+	vfxQuality = "HIGH"
+	#How strongly the shadow army glows: its energy, its eyes' light, the pools of shadow under it.
+	# Default: 1.0
+	# Range: 0.0 ~ 2.0
+	auraIntensity = 1.0
+	#How strongly bosses are presented: their weapon trails and the light they give off.
+	# Default: 1.0
+	# Range: 0.0 ~ 2.0
+	bossIntensity = 1.0
+	#How many of the mod's decorative particles are drawn (1 = all). Warning signs - rings, sigils, reticles - are always drawn.
+	# Default: 1.0
+	# Range: 0.0 ~ 2.0
+	particleDensity = 1.0
+	#At most this many decorative particles are started by this client in one tick.
+	# Default: 160
+	# Range: 16 ~ 512
+	maxParticlesPerTick = 160
+	#Blocks from the camera at which decorative effects have faded out entirely.
+	# Default: 48
+	# Range: 16 ~ 128
+	effectDistance = 48
+	#The extra passes of light over a shadow's body (its energy and the shell of it around the body). Off, a shadow keeps its darkened body, eyes and glow.
+	emissiveDetail = true
+	#The longer flourishes: Monarch's Domain spreading out as it opens and drawing back as it closes.
+	cinematicEffects = true
+	#While a shader pack (Iris) is in use, bright emissive light - glow masks, eyes, a glowing blade - is multiplied by this. Shader packs brighten what glows (Complementary up to about three times for violet), so 1.0 tends to look blown out.
+	# Default: 0.6
+	# Range: 0.2 ~ 1.5
+	shaderEmissiveScale = 0.6
+
+#The shadow colour window's memory on this client. The colour itself is kept with your army on the server; this is only the list of colours you applied recently.
+[shadowColour]
+	#The last colours applied, newest first, as hex (RRGGBB) separated by commas.
+	history = ""

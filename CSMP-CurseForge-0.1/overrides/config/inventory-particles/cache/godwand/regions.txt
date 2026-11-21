@@ -1,0 +1,5 @@
+godwand:god_wand	inventory_particles:god_wand/glint/glint0_0	0	0	8	8
+godwand:god_wand	inventory_particles:god_wand/glint/glint0_1	8	0	8	8
+godwand:god_wand	inventory_particles:god_wand/glint/glint0_2	16	0	8	8
+godwand:god_wand	inventory_particles:god_wand/glint/glint0_3	24	0	8	8
+godwand:god_wand	inventory_particles:god_wand/glint/glint0_4	32	0	8	8

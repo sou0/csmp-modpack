@@ -1,0 +1,23 @@
+	[environmental_effects.radiation]
+		#Multiplier on how long new radiation sources last (0 = none linger)
+		# Default: 1
+		# Range: 0 ~ 100
+		radiation_duration_factor = 1
+		#Enable radiation effects on players and entities
+		enable_radiation_effects = true
+
+	[environmental_effects.transformation]
+		#Enable block contamination and transformation effects
+		enable_block_contamination = true
+		#How quickly contamination spreads to adjacent blocks
+		# Default: 0.1
+		# Range: 0.0 ~ 1.0
+		contamination_spread_rate = 0.1
+
+	[environmental_effects.particles]
+		#Enable radioactive particle effects
+		enable_radioactive_particles = true
+		#One contaminated block in this many gives off a particle (higher = fewer)
+		# Default: 10
+		# Range: 1 ~ 100
+		radioactive_particle_density = 10

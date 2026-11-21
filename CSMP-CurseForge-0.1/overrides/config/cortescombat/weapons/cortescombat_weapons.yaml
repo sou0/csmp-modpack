@@ -1,0 +1,420 @@
+# Exportado por /cc export weapons
+# Cortes Combat - armas propias en formato weapon pack
+# Edita lo que quieras y recarga con /cc reload
+
+version: 1
+
+weapons:
+  - match: { id: cortescombat:stone_ropera }
+    archetype: rapier
+    stats:
+      charge:
+        can_charge: false
+      knockback: { horizontal: 0.16, vertical: 0.03 }
+    reach: { distance: 3.6 }
+    cone: { horizontal: 13, vertical: 16 }
+    special: lunge
+    display:
+      name: "Ropera"
+      tab: cortescombat
+
+  - match: { id: cortescombat:copper_ropera }
+    archetype: rapier
+    stats:
+      charge:
+        can_charge: false
+      knockback: { horizontal: 0.16, vertical: 0.03 }
+    reach: { distance: 3.6 }
+    cone: { horizontal: 13, vertical: 16 }
+    special: lunge
+    display:
+      name: "Ropera"
+      tab: cortescombat
+
+  - match: { id: cortescombat:iron_ropera }
+    archetype: rapier
+    stats:
+      charge:
+        can_charge: false
+      knockback: { horizontal: 0.16, vertical: 0.03 }
+    reach: { distance: 3.6 }
+    cone: { horizontal: 13, vertical: 16 }
+    special: lunge
+    display:
+      name: "Ropera"
+      tab: cortescombat
+
+  - match: { id: cortescombat:golden_ropera }
+    archetype: rapier
+    stats:
+      charge:
+        can_charge: false
+      knockback: { horizontal: 0.16, vertical: 0.03 }
+    reach: { distance: 3.6 }
+    cone: { horizontal: 13, vertical: 16 }
+    special: lunge
+    display:
+      name: "Ropera"
+      tab: cortescombat
+
+  - match: { id: cortescombat:diamond_ropera }
+    archetype: rapier
+    stats:
+      charge:
+        can_charge: false
+      knockback: { horizontal: 0.16, vertical: 0.03 }
+    reach: { distance: 3.6 }
+    cone: { horizontal: 13, vertical: 16 }
+    special: lunge
+    display:
+      name: "Ropera"
+      tab: cortescombat
+
+  - match: { id: cortescombat:netherite_ropera }
+    archetype: rapier
+    stats:
+      charge:
+        can_charge: false
+      knockback: { horizontal: 0.16, vertical: 0.03 }
+    reach: { distance: 3.6 }
+    cone: { horizontal: 13, vertical: 16 }
+    special: lunge
+    display:
+      name: "Ropera"
+      tab: cortescombat
+
+  - match: { id: cortescombat:stone_alabarda }
+    archetype: polearm
+    stats:
+      charge:
+        can_charge: true
+        bonus: 0.6
+        full_charge_ticks: 36
+      knockback: { horizontal: 0.45, vertical: 0.14 }
+    reach: { distance: 5 }
+    cone: { horizontal: 60, vertical: 35 }
+    special: multi_hit
+    display:
+      name: "Alabarda"
+      tab: cortescombat
+
+  - match: { id: cortescombat:copper_alabarda }
+    archetype: polearm
+    stats:
+      charge:
+        can_charge: true
+        bonus: 0.6
+        full_charge_ticks: 36
+      knockback: { horizontal: 0.45, vertical: 0.14 }
+    reach: { distance: 5 }
+    cone: { horizontal: 60, vertical: 35 }
+    special: multi_hit
+    display:
+      name: "Alabarda"
+      tab: cortescombat
+
+  - match: { id: cortescombat:iron_alabarda }
+    archetype: polearm
+    stats:
+      charge:
+        can_charge: true
+        bonus: 0.6
+        full_charge_ticks: 36
+      knockback: { horizontal: 0.45, vertical: 0.14 }
+    reach: { distance: 5 }
+    cone: { horizontal: 60, vertical: 35 }
+    special: multi_hit
+    display:
+      name: "Alabarda"
+      tab: cortescombat
+
+  - match: { id: cortescombat:golden_alabarda }
+    archetype: polearm
+    stats:
+      charge:
+        can_charge: true
+        bonus: 0.6
+        full_charge_ticks: 36
+      knockback: { horizontal: 0.45, vertical: 0.14 }
+    reach: { distance: 5 }
+    cone: { horizontal: 60, vertical: 35 }
+    special: multi_hit
+    display:
+      name: "Alabarda"
+      tab: cortescombat
+
+  - match: { id: cortescombat:diamond_alabarda }
+    archetype: polearm
+    stats:
+      charge:
+        can_charge: true
+        bonus: 0.6
+        full_charge_ticks: 36
+      knockback: { horizontal: 0.45, vertical: 0.14 }
+    reach: { distance: 5 }
+    cone: { horizontal: 60, vertical: 35 }
+    special: multi_hit
+    display:
+      name: "Alabarda"
+      tab: cortescombat
+
+  - match: { id: cortescombat:netherite_alabarda }
+    archetype: polearm
+    stats:
+      charge:
+        can_charge: true
+        bonus: 0.6
+        full_charge_ticks: 36
+      knockback: { horizontal: 0.45, vertical: 0.14 }
+    reach: { distance: 5 }
+    cone: { horizontal: 60, vertical: 35 }
+    special: multi_hit
+    display:
+      name: "Alabarda"
+      tab: cortescombat
+
+  - match: { id: cortescombat:copper_martillo }
+    archetype: hammer
+    stats:
+      charge:
+        can_charge: true
+        bonus: 0.6
+        full_charge_ticks: 32
+      knockback: { horizontal: 0.55, vertical: 0.3 }
+    reach: { distance: 3.4 }
+    cone: { horizontal: 36, vertical: 36 }
+    display:
+      name: "Martillo de Guerra"
+      tab: cortescombat
+
+  - match: { id: cortescombat:iron_martillo }
+    archetype: hammer
+    stats:
+      charge:
+        can_charge: true
+        bonus: 0.6
+        full_charge_ticks: 32
+      knockback: { horizontal: 0.55, vertical: 0.3 }
+    reach: { distance: 3.4 }
+    cone: { horizontal: 36, vertical: 36 }
+    display:
+      name: "Martillo de Guerra"
+      tab: cortescombat
+
+  - match: { id: cortescombat:golden_martillo }
+    archetype: hammer
+    stats:
+      charge:
+        can_charge: true
+        bonus: 0.6
+        full_charge_ticks: 32
+      knockback: { horizontal: 0.55, vertical: 0.3 }
+    reach: { distance: 3.4 }
+    cone: { horizontal: 36, vertical: 36 }
+    display:
+      name: "Martillo de Guerra"
+      tab: cortescombat
+
+  - match: { id: cortescombat:diamond_martillo }
+    archetype: hammer
+    stats:
+      charge:
+        can_charge: true
+        bonus: 0.6
+        full_charge_ticks: 32
+      knockback: { horizontal: 0.55, vertical: 0.3 }
+    reach: { distance: 3.4 }
+    cone: { horizontal: 36, vertical: 36 }
+    display:
+      name: "Martillo de Guerra"
+      tab: cortescombat
+
+  - match: { id: cortescombat:netherite_martillo }
+    archetype: hammer
+    stats:
+      charge:
+        can_charge: true
+        bonus: 0.6
+        full_charge_ticks: 32
+      knockback: { horizontal: 0.55, vertical: 0.3 }
+    reach: { distance: 3.4 }
+    cone: { horizontal: 36, vertical: 36 }
+    display:
+      name: "Martillo de Guerra"
+      tab: cortescombat
+
+  - match: { id: cortescombat:wooden_daga }
+    archetype: dagger
+    stats:
+      charge:
+        can_charge: false
+      knockback: { horizontal: 0.14, vertical: 0.03 }
+    reach: { distance: 2.9 }
+    cone: { horizontal: 49, vertical: 31 }
+    display:
+      name: "Daga"
+      tab: cortescombat
+
+  - match: { id: cortescombat:stone_daga }
+    archetype: dagger
+    stats:
+      charge:
+        can_charge: false
+      knockback: { horizontal: 0.14, vertical: 0.03 }
+    reach: { distance: 2.9 }
+    cone: { horizontal: 49, vertical: 31 }
+    display:
+      name: "Daga"
+      tab: cortescombat
+
+  - match: { id: cortescombat:copper_daga }
+    archetype: dagger
+    stats:
+      charge:
+        can_charge: false
+      knockback: { horizontal: 0.14, vertical: 0.03 }
+    reach: { distance: 2.9 }
+    cone: { horizontal: 49, vertical: 31 }
+    display:
+      name: "Daga"
+      tab: cortescombat
+
+  - match: { id: cortescombat:iron_daga }
+    archetype: dagger
+    stats:
+      charge:
+        can_charge: false
+      knockback: { horizontal: 0.14, vertical: 0.03 }
+    reach: { distance: 2.9 }
+    cone: { horizontal: 49, vertical: 31 }
+    display:
+      name: "Daga"
+      tab: cortescombat
+
+  - match: { id: cortescombat:golden_daga }
+    archetype: dagger
+    stats:
+      charge:
+        can_charge: false
+      knockback: { horizontal: 0.14, vertical: 0.03 }
+    reach: { distance: 2.9 }
+    cone: { horizontal: 49, vertical: 31 }
+    display:
+      name: "Daga"
+      tab: cortescombat
+
+  - match: { id: cortescombat:diamond_daga }
+    archetype: dagger
+    stats:
+      charge:
+        can_charge: false
+      knockback: { horizontal: 0.14, vertical: 0.03 }
+    reach: { distance: 2.9 }
+    cone: { horizontal: 49, vertical: 31 }
+    display:
+      name: "Daga"
+      tab: cortescombat
+
+  - match: { id: cortescombat:netherite_daga }
+    archetype: dagger
+    stats:
+      charge:
+        can_charge: false
+      knockback: { horizontal: 0.14, vertical: 0.03 }
+    reach: { distance: 2.9 }
+    cone: { horizontal: 49, vertical: 31 }
+    display:
+      name: "Daga"
+      tab: cortescombat
+
+  - match: { id: cortescombat:stone_shotel }
+    archetype: sabre
+    stats:
+      charge:
+        can_charge: true
+        bonus: 1
+        full_charge_ticks: 20
+      knockback: { horizontal: 0.38, vertical: 0.06 }
+    reach: { distance: 2.25 }
+    cone: { horizontal: 75, vertical: 25 }
+    special: parry
+    display:
+      name: "Shotel"
+      tab: cortescombat
+
+  - match: { id: cortescombat:copper_shotel }
+    archetype: sabre
+    stats:
+      charge:
+        can_charge: true
+        bonus: 1
+        full_charge_ticks: 20
+      knockback: { horizontal: 0.38, vertical: 0.06 }
+    reach: { distance: 2.25 }
+    cone: { horizontal: 75, vertical: 25 }
+    special: parry
+    display:
+      name: "Shotel"
+      tab: cortescombat
+
+  - match: { id: cortescombat:iron_shotel }
+    archetype: sabre
+    stats:
+      charge:
+        can_charge: true
+        bonus: 1
+        full_charge_ticks: 20
+      knockback: { horizontal: 0.38, vertical: 0.06 }
+    reach: { distance: 2.25 }
+    cone: { horizontal: 75, vertical: 25 }
+    special: parry
+    display:
+      name: "Shotel"
+      tab: cortescombat
+
+  - match: { id: cortescombat:golden_shotel }
+    archetype: sabre
+    stats:
+      charge:
+        can_charge: true
+        bonus: 1
+        full_charge_ticks: 20
+      knockback: { horizontal: 0.38, vertical: 0.06 }
+    reach: { distance: 2.25 }
+    cone: { horizontal: 75, vertical: 25 }
+    special: parry
+    display:
+      name: "Shotel"
+      tab: cortescombat
+
+  - match: { id: cortescombat:diamond_shotel }
+    archetype: sabre
+    stats:
+      charge:
+        can_charge: true
+        bonus: 1
+        full_charge_ticks: 20
+      knockback: { horizontal: 0.38, vertical: 0.06 }
+    reach: { distance: 2.25 }
+    cone: { horizontal: 75, vertical: 25 }
+    special: parry
+    display:
+      name: "Shotel"
+      tab: cortescombat
+
+  - match: { id: cortescombat:netherite_shotel }
+    archetype: sabre
+    stats:
+      charge:
+        can_charge: true
+        bonus: 1
+        full_charge_ticks: 20
+      knockback: { horizontal: 0.38, vertical: 0.06 }
+    reach: { distance: 2.25 }
+    cone: { horizontal: 75, vertical: 25 }
+    special: parry
+    display:
+      name: "Shotel"
+      tab: cortescombat
+
+# Para aplicar: /cc reload

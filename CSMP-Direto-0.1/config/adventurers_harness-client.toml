@@ -1,0 +1,56 @@
+[visuals]
+	#Draw your own harness arms in first person.
+	firstPersonArms = true
+	#How solid your own arms look in first person (1.0 is fully solid).
+	# Default: 0.4
+	# Range: 0.05 ~ 1.0
+	firstPersonOpacity = 0.4
+	#Draw Mining's job boxes and Building's shapes and preview in the world.
+	worldMarks = true
+	#The beating diamond around the crosshair while Mining or Building is on.
+	crosshairReticle = true
+	#The leg arcs around the crosshair in Climbing Mode.
+	legArcs = true
+	#The small fuel gauge beside the hotbar while a harness is worn.
+	fuelGauge = true
+
+#Volumes of the harness's sounds, as a multiple of normal (0 is silent).
+[sounds]
+	#Every harness sound.
+	# Default: 1.0
+	# Range: 0.0 ~ 2.0
+	master = 1.0
+	#Arm motors moving and Climbing Mode steps.
+	# Default: 1.0
+	# Range: 0.0 ~ 2.0
+	servos = 1.0
+	#The drill while Mining.
+	# Default: 1.0
+	# Range: 0.0 ~ 2.0
+	drill = 1.0
+	#Heads clamping onto blocks and foes.
+	# Default: 1.0
+	# Range: 0.0 ~ 2.0
+	clamps = 1.0
+	#Grapple launches, the cable winch, creak and reel.
+	# Default: 1.0
+	# Range: 0.0 ~ 2.0
+	cable = 1.0
+	#The slingshot's tightening and release.
+	# Default: 1.0
+	# Range: 0.0 ~ 2.0
+	slingshot = 1.0
+	#The harness powering down when out of fuel.
+	# Default: 1.0
+	# Range: 0.0 ~ 2.0
+	powerDown = 1.0
+
+[controls]
+	#Holding the Grapple key this long (in ticks, 20 a second) swings; a shorter tap zips.
+	# Default: 5
+	# Range: 2 ~ 40
+	grappleHoldTicks = 5
+	#Holding Attack this long (in ticks) in Mining Mode starts a box selection; a shorter click digs one block.
+	# Default: 5
+	# Range: 2 ~ 40
+	miningHoldTicks = 5

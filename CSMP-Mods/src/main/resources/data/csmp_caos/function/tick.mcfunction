@@ -1,0 +1,1 @@
+execute as @a[scores={csmp_kills=1..}] run function csmp_caos:ao_matar

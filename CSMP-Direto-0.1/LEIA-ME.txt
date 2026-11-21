@@ -1,0 +1,23 @@
+CSMP - Pack direto (versao 0.1)
+
+REQUISITOS
+- Minecraft: 1.21.1
+- NeoForge: 21.1.267
+- RAM: o manifesto do pack recomenda 4 GB (o pack e pesado, mais ajuda)
+
+COMO INSTALAR
+1. Instale o NeoForge 21.1.267 para Minecraft 1.21.1 no seu launcher.
+2. Abra a pasta da instancia (a pasta onde ficam saves, options.txt etc.).
+3. Copie para dentro dela as pastas "mods", "config" e "resourcepacks" deste pack
+   (aceite substituir se perguntar).
+4. Abra o jogo com o perfil do NeoForge.
+
+CONTEUDO
+- mods/           151 mods (.jar) ativos
+- config/         configuracoes do pack
+- resourcepacks/  resourcepacks incluidos neste pack
+
+NAO INCLUIDOS (baixar a parte, se quiser o visual completo)
+- Resourcepack: Fresh Animations
+- Resourcepack: Fresh Animations - Player Extension
+- Shader: Spooklementary

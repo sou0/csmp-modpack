@@ -1,0 +1,4 @@
+#Holding right-click on a knob or slider lets you drag the mouse to set it.
+#false: the part on the console moves as you drag.
+#true: a small window with a copy of the part opens while you hold, and closes when you let go.
+analogPopup = false

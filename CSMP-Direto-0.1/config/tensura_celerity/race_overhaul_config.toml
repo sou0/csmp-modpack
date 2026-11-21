@@ -1,0 +1,55 @@
+[General]
+	#Where somebody still wearing one of Celerity's retired races (Umbrakin, Aetherkin, Drakonid and the rest of their lines) is moved to: "player" or "hunter". They keep their EP either way. A Player has no EP ceiling; a Hunter's ceiling is never set below the EP they arrive with.
+	legacyFallbackRace = "player"
+	#Tell a player in chat when their retired race is replaced.
+	announceMigration = true
+
+#What every Hunter has, whatever their rank. A Hunter's aura and magicule come from their rank (hunter_config.toml), not from here.
+[Hunter]
+	#Bonus Size.
+	size = 0.0
+	#Bonus Max Health.
+	maxHealth = 0.0
+	#Bonus Max Spiritual Health.
+	maxSpiritualHealth = 0.0
+	#Bonus Attack Damage.
+	attack = 0.0
+	#Bonus Attack Speed.
+	attackSpeed = 0.0
+	#Bonus Knockback Resistance.
+	knockbackResistance = 0.0
+	#Bonus Movement Speed.
+	movementSpeed = 0.0
+	#Bonus Swimming Speed Multiplier.
+	swimSpeed = 0.0
+
+#What a Player starts with. Deliberately less than an E-rank Hunter: a Player grows through the System, not from where they started.
+[Player]
+	#Minimal aura.
+	minAura = 240.0
+	#Maximum aura.
+	maxAura = 320.0
+	#Minimal magicule.
+	minMagicule = 140.0
+	#Maximum magicule.
+	maxMagicule = 200.0
+	#Bonus Size.
+	size = 0.0
+	#Bonus Max Health.
+	maxHealth = 0.0
+	#Bonus Max Spiritual Health.
+	maxSpiritualHealth = 0.0
+	#Bonus Attack Damage.
+	attack = 0.0
+	#Bonus Attack Speed.
+	attackSpeed = 0.0
+	#Bonus Knockback Resistance.
+	knockbackResistance = 0.0
+	#Bonus Movement Speed.
+	movementSpeed = 0.0
+	#Bonus Swimming Speed Multiplier.
+	swimSpeed = 0.0
+
+[PlayerGrowth]
+	#Share of the EP a kill normally gives that a Player keeps (1.0 = all of it). A Player's growth runs through levels and stats, so less of it comes from raw EP; 0.6 keeps three fifths.
+	killEpShare = 0.6

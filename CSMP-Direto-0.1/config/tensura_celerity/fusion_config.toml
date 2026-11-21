@@ -1,0 +1,61 @@
+[Unique]
+	#Base EP (magicule + aura, without bonuses) to earn Subordinate Fusion, with a supported subordinate near.
+	acquisitionMinEp = 20000.0
+	#Blocks searched for subordinates to list, and the farthest a partner may be.
+	searchRadius = 24.0
+	fuseRange = 12.0
+	#Magicule to merge; and each second, flat plus a share of the EP borrowed.
+	activationMagicule = 1000.0
+	upkeepFlat = 15.0
+	upkeepShareOfBorrowedEp = 0.001
+	#Seconds held after a merge, and before a new merge after separating.
+	lockoutSeconds = 3
+	remergeCooldownSeconds = 20
+	#Scales on every species' attack, health and EP shares, and caps on the attack and health added.
+	attackScale = 0.6
+	healthScale = 0.6
+	epScale = 0.5
+	maxAttackBonus = 20.0
+	maxHealthBonus = 80.0
+	#Lend the partner's own skills (never Unique or Ultimate), at most this many.
+	lendSkills = true
+	maxLentSkills = 3
+	#Mastery: points for each merge, and seconds fused for each point (an ability used is one more).
+	masteryPerMerge = 2
+	masterySecondsPerPoint = 60
+
+[Ultimate]
+	#To evolve: base maximum magicule (the player's own, without bonuses), Kamish's Teeth held, consumed or not.
+	requiredBaseMaxMagicule = 5000000.0
+	requiredKamishTeeth = 2
+	consumeKamishTeeth = true
+	#The most partners at once (2 to 20: all twenty kinds for the Twentyfold Sovereign), and the farthest one may be.
+	maxAbsolutePartners = 20
+	fuseRange = 16.0
+	#Magicule for Absolute Fusion; and each second, flat plus a share of the EP borrowed.
+	activationMagicule = 20000.0
+	upkeepFlat = 40.0
+	upkeepShareOfBorrowedEp = 0.0015
+	#Seconds held after a merge, and before a new merge after separating.
+	lockoutSeconds = 5
+	remergeCooldownSeconds = 30
+	#Scales on every partner's shares before stacking, and caps on the attack and health added.
+	attackScale = 1.0
+	healthScale = 1.0
+	epScale = 0.75
+	maxAttackBonus = 120.0
+	maxHealthBonus = 600.0
+	#Lend the partners' own skills (never Unique or Ultimate), at most this many in all.
+	lendSkills = true
+	maxLentSkills = 12
+	#Mastery (Tensura's Ultimate maximum): points per partner merged, per attack, per combined attack, per Apex Cataclysm, per minute fused.
+	masteryPerPartner = 10
+	masteryPerAbility = 3
+	masteryPerCombo = 8
+	masteryPerApex = 25
+	masteryPerMinute = 10
+	#Mastered: every partner's full stats and skills, without the scales, weights or caps above.
+	fullInheritanceWhenMastered = true
+	#Subordinate Union: the most companions out at once (1 to 3), and whether the Twentyfold Sovereign needs the skill mastered.
+	maxUnionCompanions = 3
+	twentyfoldRequiresMastery = false

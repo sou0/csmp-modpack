@@ -1,0 +1,7 @@
+{
+  "showNameplates": true,
+  "showInteractionHint": true,
+  "nameplateDistance": 32,
+  "nameplateMode": "number",
+  "language": "auto"
+}

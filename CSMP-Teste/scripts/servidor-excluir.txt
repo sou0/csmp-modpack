@@ -1,0 +1,43 @@
+# Mods que NAO devem ir para o servidor de teste (mods so de cliente).
+# Um padrao por linha, ex.: iris*   |   sodium*
+# Se o teste do servidor acusar outro mod de cliente, adicione aqui.
+# (O pack direto continua com todos os mods; isto so afeta o servidor de teste.)
+#
+# ATENCAO: mod com canal de rede que o cliente exige TEM que ficar no servidor, senao o
+# jogador cai com "Channel ... is missing on the server side". Por isso estes ficam no
+# servidor: create_controlling, rustling_leaves, touch_n_motion, cinecreate,
+# cinematic_belongings, Cinematic Interaction, enhancedequipmentdisplay.
+
+sodium*
+iris*
+ImmediatelyFast*
+entity_model_features*
+entity_texture_features*
+emf_compat*
+notenoughanimations*
+smooth_f5*
+MouseTweaks*
+Controlling*
+autohud*
+ImmersiveUI*
+immersiveoverlays*
+CameraOverhaul*
+Searchables*
+particular*
+InventoryParticles*
+InventoryInteractions*
+aeronautics_windsound*
+talking-heads*
+talking-huds*
+fwa*
+veil_bonk*
+punchy*
+item_descriptions*
+Essential*
+starlit*
+fancymenu*
+drippyloadingscreen*
+konkrete*
+melody*
+Paxi*
+YungsApi*

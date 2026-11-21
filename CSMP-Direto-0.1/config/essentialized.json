@@ -1,0 +1,20 @@
+{
+  "blockPurchases": true,
+  "blockCoins": true,
+  "blockCoinDialog": true,
+  "dropPackets": true,
+  "hideCosmetics": true,
+  "disableEmotes": true,
+  "hideNotices": true,
+  "hideWardrobeWarning": true,
+  "hideWardrobeButton": true,
+  "hidePicturesButton": true,
+  "hideAccountButton": true,
+  "hidePlayerPreview": true,
+  "hideSocialButton": false,
+  "hideMessageFlag": false,
+  "hideSettingsButton": false,
+  "hideHostButton": false,
+  "hideBetaFlag": false,
+  "hideUpdateFlag": false
+}

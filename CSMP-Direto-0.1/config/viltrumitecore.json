@@ -1,0 +1,15 @@
+{
+  "damageReductionPercent": 97.0,
+  "damageIgnoreThreshold": 0.5,
+  "shouldAskRace": true,
+  "isViltrumiteByDefault": true,
+  "punchBlockDropChance": 40.0,
+  "dashBlockDropChance": 40.0,
+  "spaceLimitY": 1500.0,
+  "meteorSpawnChancePercent": 0.02,
+  "meteorMinDistance": 500.0,
+  "worldEventChancePercent": 0.004,
+  "worldEventCooldownMinutes": 40,
+  "bloodEnabled": true,
+  "shouldHumansBleed": true
+}

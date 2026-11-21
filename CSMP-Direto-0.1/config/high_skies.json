@@ -1,0 +1,36 @@
+{
+  "mbPerBlock": 1000,
+  "fillPerTick": 100,
+  "ventPerTick": 100,
+  "leakPerTick": 100,
+  "extractPerTick": 25,
+  "maxCellBlocks": 2097152,
+  "maxCellSpan": 256,
+  "scanBudgetPerTick": 4096,
+  "rescanTicks": 40,
+  "liftPerFilledBlock": 3.0,
+  "ventExcessHydrogen": true,
+  "hydrogenFireExplosion": true,
+  "ignitionMinimumFill": 0.05,
+  "ignitionExplosionBasePower": 1.0,
+  "ignitionExplosionVolumeFactor": 0.32,
+  "ignitionExplosionMaximumPower": 10.0,
+  "gases": {
+    "hydrogen": {
+      "fluids": [
+        "#high_skies:hydrogen"
+      ],
+      "liftPerFilledBlock": 3.0,
+      "ignitesOnEnvelopeFire": true,
+      "fireExplosionPowerMultiplier": 1.0
+    },
+    "helium": {
+      "fluids": [
+        "gtceu:helium"
+      ],
+      "liftPerFilledBlock": 2.8,
+      "ignitesOnEnvelopeFire": false,
+      "fireExplosionPowerMultiplier": 1.0
+    }
+  }
+}

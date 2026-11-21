@@ -1,0 +1,13 @@
+[visuals]
+	#Impact camera movement; 0 disables it.
+	# Default: 0.65
+	# Range: 0.0 ~ 1.5
+	cameraShake = 0.65
+	#Maximum physical wood splinters visible at once; 0 disables them.
+	# Default: 96
+	# Range: 0 ~ 256
+	chipLimit = 96
+	#Show the stump removal hint.
+	showHints = true
+	#Show remaining cutting progress below the crosshair.
+	showProgress = true

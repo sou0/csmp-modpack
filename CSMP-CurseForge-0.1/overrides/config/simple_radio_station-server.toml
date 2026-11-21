@@ -1,0 +1,123 @@
+[range]
+	#Range in blocks of a lone Walkie-Talkie, and the base range of a Station.
+	# Default: 600
+	# Range: 1 ~ 100000
+	base_range = 600
+	#Range bonus added to base_range by the antenna level, Lv.1 to Lv.5 (exactly 5 values).
+	antenna_bonus = [300, 600, 1200, 2400, 3000]
+
+#Noise zone width (W) in blocks for each catalyst. Station audio gets noisier
+#over the last W blocks of its range. 0 = clean audio.
+[noise_zone]
+	# Default: 300
+	# Range: 0 ~ 100000
+	none = 300
+	# Default: 260
+	# Range: 0 ~ 100000
+	gold_block = 260
+	# Default: 230
+	# Range: 0 ~ 100000
+	amethyst_block = 230
+	# Default: 150
+	# Range: 0 ~ 100000
+	gilded_blackstone = 150
+	# Default: 0
+	# Range: 0 ~ 100000
+	black_amethyst_block = 0
+
+#How noise (0 to 1) degrades Station-relayed audio.
+[noise_effect]
+	#"dropout": the voice stutters and cuts out (packet loss), plus light degradation.
+	#"static": no dropouts, only light degradation and the (very quiet) static below.
+	noise_mode = "dropout"
+	#Chance per 20 ms frame of starting a dropout when noise is 1 (scales linearly with noise).
+	# Default: 0.6
+	# Range: 0.0 ~ 1.0
+	max_dropout_chance = 0.6
+	#Static hiss level relative to the voice peak at noise 1. Capped at 0.03 (3%). 0 = no hiss.
+	# Default: 0.0
+	# Range: 0.0 ~ 0.03
+	noise_static_gain = 0.0
+
+#Quality percentage shown on the Intensifier screen. Display only, does not affect audio.
+[catalyst_display_percent]
+	# Default: 30.0
+	# Range: 0.0 ~ 100.0
+	gold_block = 30.0
+	# Default: 60.0
+	# Range: 0.0 ~ 100.0
+	amethyst_block = 60.0
+	# Default: 85.0
+	# Range: 0.0 ~ 100.0
+	gilded_blackstone = 85.0
+	# Default: 99.9
+	# Range: 0.0 ~ 100.0
+	black_amethyst_block = 99.9
+
+[misc]
+	#Players within this radius (3D) of a Walkie-Talkie carrier also hear its received audio.
+	# Default: 5
+	# Range: 0 ~ 64
+	walkie_speaker_radius = 5
+	#A Microphone captures every player whose eyes are inside a grid-aligned box around it.
+	#Blocks to each side in X and Z (1 = 3x3 blocks).
+	# Default: 1
+	# Range: 0 ~ 16
+	microphone_capture_xz = 1
+	#Blocks of the capture box above the Microphone's layer.
+	# Default: 1
+	# Range: 0 ~ 16
+	microphone_capture_up = 1
+	#Blocks of the capture box below the Microphone's layer.
+	# Default: 0
+	# Range: 0 ~ 16
+	microphone_capture_down = 0
+	#Maximum length in blocks of a Gold Wire connection.
+	# Default: 16
+	# Range: 1 ~ 64
+	wire_max_distance = 16
+	#How often (ticks) the cache of powered Walkie-Talkies per player is refreshed.
+	# Default: 20
+	# Range: 1 ~ 1200
+	inventory_scan_interval_ticks = 20
+
+#Disc Recorder: records .mp3 files onto vinyl discs that play in vanilla jukeboxes
+#through Simple Voice Chat.
+[disc]
+	#Allow recording new discs. Discs already recorded keep playing.
+	disc_enabled = true
+	#Largest .mp3 file accepted, in MB.
+	# Default: 15
+	# Range: 1 ~ 100
+	disc_max_file_mb = 15
+	#Longest song accepted, in seconds (measured by decoding the file, not from its header).
+	# Default: 300
+	# Range: 1 ~ 3600
+	disc_max_duration_seconds = 300
+	#Size of each upload packet. Must stay below the client-to-server packet limit (32767 bytes).
+	# Default: 30000
+	# Range: 1024 ~ 32000
+	disc_upload_chunk_bytes = 30000
+	#Distance in blocks at which a recorded disc in a jukebox can be heard.
+	# Default: 64
+	# Range: 1 ~ 512
+	disc_play_range = 64
+	#Maximum recorded discs playing at the same time on the server. Extra discs go in silent.
+	# Default: 5
+	# Range: 0 ~ 1000
+	disc_max_simultaneous_playbacks = 5
+	#Maximum total size of the stored disc audio files of a world, in MB.
+	# Default: 1024
+	# Range: 1 ~ 1000000
+	disc_storage_max_total_mb = 1024
+	#Permission level needed to record a disc (0 = everyone, 2 = operators).
+	# Default: 0
+	# Range: 0 ~ 4
+	disc_recorder_permission_level = 0
+
+#Infernal Intensifier (Nether only) and Final Intensifier (The End only): bridge between dimensions.
+[dimensions]
+	#Infernal and Final Intensifiers pick up the same frequency and band in the other dimensions (any distance) and repeat it in their own. false = they only work as normal Stations.
+	dimension_bridge_enabled = true
+	#What an Infernal or Final Intensifier picks up in its own dimension is also sent to the active Stations on the same frequency and band in the other dimensions, which relay it.
+	dimension_bridge_two_way = true

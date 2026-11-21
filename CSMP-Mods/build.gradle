@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'net.neoforged.moddev' version '2.0.148'
+}
+
+version = '0.1.0'
+group = 'br.csmp'
+
+base { archivesName = 'csmp-core' }
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    version = '21.1.266'
+
+    runs {
+        client { client() }
+        server { server() }
+    }
+
+    mods {
+        csmp { sourceSet sourceSets.main }
+    }
+}
+
+dependencies {
+    // Create: Skys so para compilar (nao e empacotado no nosso jar)
+    compileOnly files('../CSMP-Direto-0.1/mods/createskys-0.1.0.jar')
+}
+
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }

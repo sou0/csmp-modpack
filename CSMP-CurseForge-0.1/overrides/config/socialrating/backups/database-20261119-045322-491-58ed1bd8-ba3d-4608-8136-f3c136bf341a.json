@@ -1,0 +1,38 @@
+{
+  "schema": 2,
+  "names": {
+    "889e8c1d-65bc-4055-80e7-6b82f05c2a78": "Eliseua",
+    "75920065-e8ec-43f4-894f-7e227079eccf": "GabrielNSouza"
+  },
+  "reviews": [
+    {
+      "id": "d5932afc-81c2-469a-bd56-6e4f340294cb",
+      "author": "889e8c1d-65bc-4055-80e7-6b82f05c2a78",
+      "target": "75920065-e8ec-43f4-894f-7e227079eccf",
+      "author_name": "Eliseua",
+      "target_name": "GabrielNSouza",
+      "ingenuity": 5,
+      "skill": 5,
+      "friendliness": 3,
+      "comment": "",
+      "updated_at": "2026-11-19T03:51:13.273660400Z",
+      "revision": 1,
+      "report_status": ""
+    },
+    {
+      "id": "73f38c12-6cc3-45bf-9308-672e2be50a53",
+      "author": "75920065-e8ec-43f4-894f-7e227079eccf",
+      "target": "889e8c1d-65bc-4055-80e7-6b82f05c2a78",
+      "author_name": "GabrielNSouza",
+      "target_name": "Eliseua",
+      "skill": 5,
+      "friendliness": 5,
+      "comment": "CRIADOR DO CREATOR MOD",
+      "updated_at": "2026-11-19T03:57:12.983770700Z",
+      "revision": 1,
+      "report_status": ""
+    }
+  ],
+  "reports": [],
+  "removed": []
+}

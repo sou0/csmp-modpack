@@ -1,0 +1,40 @@
+[Armour]
+	#Defence points of the Shadow helmet / chestplate / leggings / boots.
+	shadowHelmet = 10
+	shadowChestplate = 15
+	shadowLeggings = 13
+	shadowBoots = 10
+	#Armour toughness of the Shadow armour material (8.0 = Tensura's Adamantite).
+	shadowToughness = 8.0
+	#Knockback resistance of the Shadow armour material (0.8 = Tensura's Adamantite).
+	shadowKnockbackResistance = 0.8
+	#Enchantment value of the Shadow armour material (45 = Tensura's Adamantite).
+	shadowEnchantmentValue = 45
+	#Durability multiplier of the Shadow armour pieces (65 = Tensura's Adamantite).
+	shadowDurabilityFactor = 65
+
+[Consumables]
+	#Fraction of maximum Aura restored by a Shadow Elixir (0.6 = 60%).
+	shadowElixirAuraRatio = 0.6
+	#Duration in seconds of the Strength granted by a Shadow Elixir.
+	shadowElixirSeconds = 60
+	#Amplifier of the Strength granted by a Shadow Elixir (0 = Strength I, 1 = Strength II).
+	shadowElixirStrengthLevel = 1
+	#Fraction of maximum Magicule restored by a Celerity Elixir (0.6 = 60%).
+	celerityElixirMagiculeRatio = 0.6
+	#Duration in seconds of the Speed and Haste granted by a Celerity Elixir.
+	celerityElixirSeconds = 60
+	#Amplifier of the Speed granted by a Celerity Elixir (0 = Speed I, 1 = Speed II).
+	celerityElixirSpeedLevel = 1
+	#Aura cost of a Soul Anchor recall.
+	soulAnchorAuraCost = 400.0
+	#Cooldown of a Soul Anchor recall in seconds.
+	soulAnchorCooldownSeconds = 30
+
+[ShadowRegen]
+	#Whether Shadow gear is kept from being destroyed (see guardReserve). This does not switch EP Mending: that is Tensura's own mechanic and runs on Shadow gear exactly as it does on Tensura's Magisteel gear.
+	enabled = true
+	#Anti-break reserve, in durability points that must remain. While a piece has fewer than this many points left it is lifted back to this line, which is the guarantee that vanilla never destroys it. It is deliberately small and bounded so it cannot stand in for repair: everything above the reserve comes back only through EP Mending, out of the piece's own EP reservoir.
+	guardReserve = 64
+	#How far around each player, in blocks, to look for dropped shadow gear so it is protected too. A dropped piece is not being worn, so it is not mending; it only ever receives the anti-break lift.
+	scanDroppedRange = 48

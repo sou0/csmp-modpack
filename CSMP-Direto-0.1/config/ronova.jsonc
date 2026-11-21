@@ -1,0 +1,415 @@
+// Ronova: Ruler of Death — server settings.
+// The server (or the host of a single-player / LAN world) uses these and sends them to players.
+// Change them here, in game with /ronova config <setting> <value>, or in Mods → Ronova → Config.
+// Remove a line to return it to its default. After editing this file: /ronova config reload.
+{
+	// === General ===
+	// Main rules of the mod.
+	"general": {
+		// Abilities: Off — Ronova keeps her look, but loses all abilities, passive protection and flight.
+		// [true / false]  default: true
+		"abilities": true,
+		// Flight: Ronova can fly in survival and adventure.
+		// [true / false]  default: true
+		"flight": true,
+		// Several Ronovas: On — /ronova grant adds another Ronova; every Ronova has all abilities. Off — there
+		// is only one: /ronova grant passes the power to the new one, and if several exist when this is turned
+		// off, the earliest keeps it.
+		// [true / false]  default: false
+		"multiple": false,
+		// Ronova's look: The most of her look the server allows: full — her skin, dress, pins and wings; wings
+		// — the player's own skin with her wings; own skin — nothing of her look. Each Ronova and each player
+		// can show less for themselves. Abilities stay either way.
+		// [full / wings / none]  default: full
+		"look": "full",
+		// Death of nature: What the beam (path and blast), the orb, the Death Wave and Mortification do to
+		// plants, unless the ability has its own setting. Off — nothing; visual only — plants yellow and
+		// wither, then turn green again, no blocks change; regrows — plants really die (leaves fall, grass
+		// dries, sod turns to bare earth) and grow back after a while; forever — they stay dead. Under the
+		// Death Wave plants die only on «Death» (LMB).
+		// [off / visual / regrow / forever]  default: regrow
+		"nature_death": "regrow",
+		// Nature regrows after: For «Regrows»: seconds from the hit until dead plants grow back, from the edges
+		// to the centre (180 = 3 minutes). A new hit on dead ground starts the count again.
+		// [1 … 86400 s]  default: 180
+		"nature_regrow_seconds": 180,
+		// Spawner seal: Seconds a spawner hit by an attack stays sealed: it spawns nothing and the mob inside
+		// its cage goes dark (60 = 1 minute, 0 = attacks don't seal spawners). Works on trial spawners too. A
+		// new hit extends the seal.
+		// [0 … 86400 s]  default: 60
+		"spawner_seal_seconds": 60,
+		// Kills through totems: A Totem of Undying does not save from Ronova's abilities: she seizes it and the
+		// victim dies a few seconds later. Off — the totem saves as usual.
+		// [true / false]  default: true
+		"totem_bypass": true,
+		// Ronova's theme: Music when the rift's eye opens and in the background of her Realm and the Afterlife.
+		// The track itself comes from a resource pack (not included in the mod).
+		// [true / false]  default: true
+		"music": true,
+		// Hits players: Ronova's abilities hurt other players.
+		// [true / false]  default: true
+		"hit_players": true,
+		// Hits animals and villagers: Ronova's abilities hurt animals, villagers, pets, golems and other mobs
+		// that are not monsters.
+		// [true / false]  default: true
+		"hit_animals": true,
+		// Hits monsters: Ronova's abilities hurt monsters.
+		// [true / false]  default: true
+		"hit_monsters": true
+	},
+
+	// === Abilities ===
+	// Turn single abilities on or off. A turned-off ability does nothing and says so.
+	"abilities": {
+		// --- Crimson Beam: Quick and full beam with a blast. ---
+		"beam": {
+			// Enabled: Off — the ability does nothing and says so.
+			// [true / false]  default: true
+			"enabled": true,
+			// Damage: Damage of the attack in health points (2 = one heart, before armor); -1 — instant death,
+			// as by default. The beam and its blast.
+			// [-1 … 1000 hp]  default: -1
+			"damage": -1,
+			// Range: How far the beam reaches, in blocks.
+			// [16 … 1000 blocks]  default: 500
+			"range": 500,
+			// Beam width: Half-width of the killing zone around the full beam, in blocks (the quick beam is a
+			// little over half of it).
+			// [0.2 … 16 blocks]  default: 1.4
+			"width": 1.4,
+			// Blast radius: Radius of the explosion at the end of the full beam, in blocks.
+			// [0 … 64 blocks]  default: 10
+			"blast_radius": 10,
+			// Death of nature: Overrides the general «Death of nature» for this ability. Default — use the
+			// general setting.
+			// [default / off / visual / regrow / forever]  default: default
+			"nature_death": "default"
+		},
+
+		// --- Crimson Orb: Orbs that burst on contact. ---
+		"orb": {
+			// Enabled: Off — the ability does nothing and says so.
+			// [true / false]  default: true
+			"enabled": true,
+			// Damage: Damage of the attack in health points (2 = one heart, before armor); -1 — instant death,
+			// as by default. The burst of an orb.
+			// [-1 … 1000 hp]  default: -1
+			"damage": -1,
+			// Range: Blocks an orb flies before it bursts in the air.
+			// [16 … 1000 blocks]  default: 500
+			"range": 500,
+			// Blast radius: Radius of the orb explosion, in blocks.
+			// [0 … 32 blocks]  default: 3.5
+			"blast_radius": 3.5,
+			// Death of nature: Overrides the general «Death of nature» for this ability. Default — use the
+			// general setting.
+			// [default / off / visual / regrow / forever]  default: default
+			"nature_death": "default"
+		},
+
+		// --- Crimson Shield: The shield she raises by hand. ---
+		"shield": {
+			// Enabled: Off — the ability does nothing and says so.
+			// [true / false]  default: true
+			"enabled": true,
+			// Durability: How much damage the raised shield takes before it breaks.
+			// [1 … 100000]  default: 250
+			"durability": 250,
+			// Recovery per second: Durability restored each second while the shield is down.
+			// [0 … 100000]  default: 50
+			"regen_per_second": 50,
+			// Broken shield: Seconds before a broken shield can be raised again.
+			// [0 … 3600 s]  default: 30
+			"broken_cooldown": 30,
+			// Release range: Left-click with the shield raised hurls it forward as a wave: everyone in a cone
+			// in front, up to this many blocks away, is thrown back.
+			// [1 … 64 blocks]  default: 10
+			"burst_range": 10,
+			// Release cone angle: Half-angle of the release cone in degrees: how wide the wave spreads in
+			// front.
+			// [5 … 90 deg]  default: 40
+			"burst_angle": 40,
+			// Release force: How hard the release wave throws back.
+			// [0 … 10]  default: 1.8
+			"burst_power": 1.8,
+			// Cooldown after release: Seconds before the shield can be raised again after it was released.
+			// [0 … 3600 s]  default: 8
+			"burst_cooldown": 8
+		},
+
+		// --- Authority of Death: The rift behind her back. ---
+		"death_authority": {
+			// Enabled: Off — the ability does nothing and says so.
+			// [true / false]  default: true
+			"enabled": true,
+			// Radius: When the rift opens, projectiles not shot by Ronova and End crystals within this radius
+			// burn to ash, in blocks. The opening itself kills no one.
+			// [2 … 200 blocks]  default: 20
+			"radius": 20,
+			// Panic radius: Villagers this close run home and hide while the rift is open, like during a raid,
+			// in blocks. 0 — nobody hides.
+			// [0 … 1000 blocks]  default: 300
+			"panic_radius": 300,
+			// Sky over the rift: While the rift is open, crimson clouds over it close in on a dark eye.
+			// [true / false]  default: true
+			"sky_vortex": true
+		},
+
+		// --- Death Wave: The charged wave from the rift that freezes and kills. ---
+		"death_wave": {
+			// Enabled: Off — the ability does nothing and says so.
+			// [true / false]  default: true
+			"enabled": true,
+			// Damage: Damage of the attack in health points (2 = one heart, before armor); -1 — instant death,
+			// as by default. Everyone frozen by the wave, on «Death» (LMB).
+			// [-1 … 1000 hp]  default: -1
+			"damage": -1,
+			// Cooldown: Seconds after a wave is released.
+			// [0 … 600 s]  default: 2
+			"cooldown": 2,
+			// Max radius: Radius of a fully charged wave (6 s of charging), in blocks.
+			// [6 … 2000 blocks]  default: 500
+			"max_radius": 500,
+			// Dead land: Minutes no mobs spawn on their own within the wave's radius after it is released. 0 —
+			// off. −1 — forever.
+			// [-1 … 600 min]  default: 5
+			"dead_land_minutes": 5,
+			// Death of nature: Overrides the general «Death of nature» for this ability. Default — use the
+			// general setting.
+			// [default / off / visual / regrow / forever]  default: default
+			"nature_death": "default"
+		},
+
+		// --- Crow Step: Scatter into crows and reform where she looks. ---
+		"rift_jump": {
+			// Enabled: Off — the ability does nothing and says so.
+			// [true / false]  default: true
+			"enabled": true,
+			// Cooldown: Seconds between jumps.
+			// [0 … 600 s]  default: 0.5
+			"cooldown": 0.5,
+			// Range: How far she can jump, in blocks.
+			// [4 … 512 blocks]  default: 128
+			"range": 128
+		},
+
+		// --- Ronova's Realm: Entering and leaving her own dimension. ---
+		"realm": {
+			// Enabled: Off — the ability does nothing and says so.
+			// [true / false]  default: true
+			"enabled": true
+		},
+
+		// --- Peeking: Looking into a world through an eye from the Realm. ---
+		"realm_peek": {
+			// Enabled: Off — the ability does nothing and says so.
+			// [true / false]  default: true
+			"enabled": true
+		},
+
+		// --- Aim Assist: Lock-on for the beam, the orb and the Feathers from the Eyes. ---
+		"aim_assist": {
+			// Enabled: Off — the ability does nothing and says so.
+			// [true / false]  default: true
+			"enabled": true,
+			// Range: How far a target can be locked, in blocks (it is let go 40 blocks farther).
+			// [16 … 1000 blocks]  default: 500
+			"range": 500
+		},
+
+		// --- The Unsleeping Eyes: Summoning and dismissing the feathers with eyes: while they are out, LMB
+		// shoots the Feathers from the Eyes and RMB strikes with the Crow Circle. ---
+		"eye_feathers": {
+			// Enabled: Off — the ability does nothing and says so.
+			// [true / false]  default: true
+			"enabled": true
+		},
+
+		// --- Feathers from the Eyes: Homing feathers shot from the eyes (LMB). ---
+		"eye_spear": {
+			// Enabled: Off — the ability does nothing and says so.
+			// [true / false]  default: true
+			"enabled": true,
+			// Damage: Damage of the attack in health points (2 = one heart, before armor); -1 — instant death,
+			// as by default. Each feather that hits.
+			// [-1 … 1000 hp]  default: -1
+			"damage": -1,
+			// Cooldown: Seconds between volleys.
+			// [0 … 600 s]  default: 1.2
+			"cooldown": 1.2,
+			// Range: How far ahead of her the feathers look for targets, in blocks.
+			// [8 … 512 blocks]  default: 128
+			"range": 128,
+			// Feathers per volley: Most feathers in one volley when there are many targets (at least 6; a
+			// locked target always gets 6).
+			// [6 … 64]  default: 32
+			"max_volley": 32
+		},
+
+		// --- Rain of Feathers: A stream of feathers onto where she looks. ---
+		"feather_rain": {
+			// Enabled: Off — the ability does nothing and says so.
+			// [true / false]  default: true
+			"enabled": true,
+			// Damage: Damage of the attack in health points (2 = one heart, before armor); -1 — instant death,
+			// as by default. Each falling feather.
+			// [-1 … 1000 hp]  default: -1
+			"damage": -1,
+			// Range: How far the rain can be aimed, in blocks.
+			// [8 … 512 blocks]  default: 128
+			"range": 128,
+			// Spread: Radius of the circle the feathers fall into, in blocks.
+			// [0 … 32 blocks]  default: 4.5
+			"spread": 4.5,
+			// Feathers per second: Feathers falling per second while held.
+			// [1 … 60 /s]  default: 14
+			"rate": 14,
+			// Hit radius: Radius around each landing feather that hits, in blocks.
+			// [0.2 … 16 blocks]  default: 1.4
+			"hit_radius": 1.4
+		},
+
+		// --- Crow Circle: A strike around Ronova (RMB with the Eyes). ---
+		"crow_circle": {
+			// Enabled: Off — the ability does nothing and says so.
+			// [true / false]  default: true
+			"enabled": true,
+			// Damage: Damage of the attack in health points (2 = one heart, before armor); -1 — instant death,
+			// as by default. The strike around her.
+			// [-1 … 1000 hp]  default: -1
+			"damage": -1,
+			// Cooldown: Seconds between strikes.
+			// [0 … 600 s]  default: 4
+			"cooldown": 4,
+			// Radius: Radius of the strike, in blocks.
+			// [2 … 32 blocks]  default: 8
+			"radius": 8
+		},
+
+		// --- Mortification: The crimson sphere that traps everyone inside; when it shatters, players go to the
+		// Afterlife and mobs die (see below). ---
+		"mortification": {
+			// Enabled: Off — the ability does nothing and says so.
+			// [true / false]  default: true
+			"enabled": true,
+			// Damage: Damage of the attack in health points (2 = one heart, before armor); -1 — instant death,
+			// as by default. Mobs inside the sphere when it shatters, and players if «Players inside» is
+			// «kill».
+			// [-1 … 1000 hp]  default: -1
+			"damage": -1,
+			// Cooldown: Seconds between spheres.
+			// [0 … 3600 s]  default: 60
+			"cooldown": 60,
+			// Players inside: What happens to players inside when the sphere shatters: afterlife — they go to
+			// the Afterlife alive; kill — they take the sphere's damage (death by default); spare — they are
+			// let go.
+			// [afterlife / kill / spare]  default: afterlife
+			"players": "afterlife",
+			// Death of nature: Overrides the general «Death of nature» for this ability. Default — use the
+			// general setting.
+			// [default / off / visual / regrow / forever]  default: default
+			"nature_death": "default"
+		},
+
+		// --- Doppelganger: Wearing the face, skin and name of any soul now in the Afterlife. ---
+		"doppelganger": {
+			// Enabled: Off — the ability does nothing and says so.
+			// [true / false]  default: true
+			"enabled": true
+		}
+	},
+
+	// === Passive powers ===
+	"passive": {
+		// --- Passive shield: Blocks weak hits by itself; a strong hit breaks it. ---
+		"auto_shield": {
+			// Enabled: Ronova has the passive shield.
+			// [true / false]  default: true
+			"enabled": true,
+			// Threshold: Hits weaker than this are blocked by the passive shield; this strong or stronger break
+			// it and pass.
+			// [1 … 1000 hp]  default: 8
+			"threshold": 8,
+			// Cooldown: Seconds until a broken passive shield works again.
+			// [0 … 3600 s]  default: 8
+			"cooldown": 8
+		},
+
+		// --- Escape to the Realm: A deadly hit pulls Ronova into her Realm instead of killing her. ---
+		"escape": {
+			// Enabled: A deadly hit pulls Ronova into her Realm instead of killing her; in the Realm she cannot
+			// die.
+			// [true / false]  default: true
+			"enabled": true,
+			// Cooldown: Seconds after an escape when a deadly hit outside the Realm really kills.
+			// [0 … 3600 s]  default: 60
+			"cooldown": 60
+		}
+	},
+
+	// === Afterlife ===
+	"afterlife": {
+		// Bond of Life per hit: Health points of Bond of Life each hit of Ronova puts on a soul in the
+		// Afterlife (at most once every half second).
+		// [0 … 100 hp]  default: 1
+		"debt_per_hit": 1,
+		// Totem clears Bond: Health points of Bond of Life a Totem of Undying clears when a soul holds it in
+		// the Afterlife (once per visit).
+		// [0 … 100 hp]  default: 10
+		"totem_pays_debt": 10,
+		// Void hand: catch on fall: On which fall in a row to the very bottom of the Afterlife (without
+		// touching the ground) a hand rises from the void, seizes the soul and puts Bond of Life on it. 0 —
+		// never.
+		// [0 … 100]  default: 3
+		"fall_catch": 3,
+		// Bond of Life from the void hand: Health points of Bond of Life the void hand puts on a soul. −1 — the
+		// same as a hit of Ronova.
+		// [-1 … 100 hp]  default: -1
+		"fall_debt": -1,
+		// Bond of Life for escaping: Health points of Bond of Life put on a soul that leaves the Afterlife any
+		// way but its gates (ender pearl, portal, teleport) — the void drags it back and binds it. −1 — the
+		// same as a hit of Ronova.
+		// [-1 … 100 hp]  default: -1
+		"escape_debt": -1,
+		// Dead chat radius: In the Afterlife, souls hear each other only within this many blocks. 0 — nobody
+		// hears. Ronova is heard everywhere.
+		// [0 … 10000 blocks]  default: 100
+		"chat_radius": 100,
+		// Scares: The watcher, the runner, footsteps, eerie sounds and «someone heard you».
+		// [true / false]  default: true
+		"scares": true,
+		// Afterlife music: Background music in the Afterlife. Off — the Afterlife is silent; the rift's eye and
+		// her Realm keep their music (see Ronova's theme). The track comes from a resource pack.
+		// [true / false]  default: true
+		"music": true,
+		// Strikes from the sky: Now and then a crimson beam with the eyes of the Authority of Death strikes the
+		// path just ahead of a soul and smashes a piece of the bridge. The broken blocks come back on their
+		// own.
+		// [true / false]  default: true
+		"strikes": true,
+		// Strikes: how often: Average time between strikes on one soul. The first one comes 25–60 seconds after
+		// arriving.
+		// [5 … 3600 s]  default: 70
+		"strike_interval": 70,
+		// Ruin collapses: Now and then, ahead of a soul and in plain view, a piece of a ruin's edge cracks,
+		// breaks off and falls into the void in a cloud of dust. The broken blocks come back on their own.
+		// [true / false]  default: true
+		"collapses": true,
+		// Collapses: how often: Average time between collapses seen by one soul. The first one comes 40–100
+		// seconds after arriving.
+		// [10 … 3600 s]  default: 120
+		"collapse_interval": 120,
+		// Ash storms: Now and then a storm of ash sweeps through the afterlife like a sandstorm: wind, walls of
+		// dust, poor visibility. It dies down after a few minutes.
+		// [true / false]  default: true
+		"ash_storms": true,
+		// Ash storms: how often: Average time between ash storms.
+		// [60 … 36000 s]  default: 1200
+		"ash_storm_interval": 1200,
+		// Restore broken blocks after: How long anything broken in the Afterlife — by strikes, players or
+		// explosions — stays broken before its blocks fly back into place. Blocks placed by players are not
+		// restored. 0 — never.
+		// [0 … 3600 s]  default: 30
+		"restore_after": 30
+	}
+}

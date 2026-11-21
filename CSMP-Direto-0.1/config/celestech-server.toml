@@ -1,0 +1,197 @@
+#Forja Estelar: núcleo de nebulosa -> astro
+[forja]
+	#FE/t mientras forja, por tier del astro (tiers 1–5, de 0 a 30000)
+	consumo = [20, 80, 250, 1000, 4000]
+	#Segundos que tarda en forjar, por tier del astro (tiers 1–5, de 0 a 30000)
+	segundos = [600, 900, 1200, 1800, 2700]
+
+#Radar estelar: analiza estrellas del cielo y las guarda en una Tableta estelar
+[radar]
+	#FE/t mientras analiza, por tier de la estrella (tiers 1–5, de 0 a 30000)
+	consumo = [20, 80, 250, 1000, 1000]
+	#Segundos de análisis por cada tier de la estrella
+	# Default: 30
+	# Range: 1 ~ 3600
+	segundosPorTier = 30
+	#Multiplicador del tiempo la primera vez que se analiza un tipo de astro
+	# Default: 2.0
+	# Range: 1.0 ~ 10.0
+	factorDescubrir = 2.0
+
+#Cañón estelar: deshace una estrella con un rayo y da materia estelar
+[canon]
+	#FE/t con el rayo encendido, por tier de la estrella (tiers 1–5, de 0 a 30000)
+	consumo = [40, 120, 400, 1500, 1500]
+	#Minutos de rayo para deshacer la estrella, por tier (tiers 1–5, de 0 a 500)
+	minutos = [5, 8, 12, 15, 15]
+	#Materia estelar mínima que da, por tier (tiers 1–5, de 0 a 64)
+	materiaMinima = [4, 4, 3, 2, 2]
+	#Materia estelar máxima que da, por tier (tiers 1–5, de 0 a 64)
+	materiaMaxima = [6, 6, 5, 4, 4]
+	#Altura (grados) por debajo de la cual el rayo se pausa
+	# Default: 12.0
+	# Range: 0.0 ~ 80.0
+	alturaMinima = 12.0
+
+#Generadores de astros: reactor de enanas, crisol de gigantes, estabilizador de neutrones y motor de Penrose
+[generadores]
+	#Multiplica la energía que da cada astro (su FE/t base está en el código, por tipo de astro)
+	# Default: 1.0
+	# Range: 0.0 ~ 100.0
+	multiplicadorEnergia = 1.0
+	#Ticks que un agujero negro produce por cada ítem de materia que se le da
+	# Default: 200
+	# Range: 1 ~ 72000
+	ticksPorMateria = 200
+
+#Fundición estelar: funde materiales con el calor de un astro y gasta su vida
+[fundicion]
+	#Minutos que dura un astro con un solo crisol en el borde de la máquina (más cerca gasta más deprisa: (T / T_borde)²)
+	# Default: 30
+	# Range: 1 ~ 100000
+	minutosVida = 30
+
+#Condensador de nebulosas: extrae gas de una nebulosa del cielo y lo condensa en núcleos
+[condensador]
+	#FE/t mientras el cañón extrae gas
+	# Default: 60
+	# Range: 0 ~ 1000000
+	consumoExtraccion = 60
+	#Multiplica el gas que da cada nebulosa por tick (su caudal base está en el código)
+	# Default: 1.0
+	# Range: 0.0 ~ 100.0
+	multiplicadorCaudal = 1.0
+
+#Panel solar: energía del sol, sin estrellas (sigue al sol de día y se guarda de noche)
+[panelSolar]
+	#FE/t a pleno sol de mediodía, por tier de las carcasas (baja con el sol bajo, la lluvia y los eclipses) (tiers 1–5, de 0 a 30000)
+	produccion = [20, 50, 120, 300, 800]
+
+#Máquinas de procesado del tier 1: horno de arco, triturador, compresor y electrolizador
+[procesado]
+	#FE que guarda cada máquina
+	# Default: 40000
+	# Range: 1000 ~ 10000000
+	capacidad = 40000
+	#Multiplica la velocidad de las recetas (2: tardan la mitad; el consumo por tick no cambia)
+	# Default: 1.0
+	# Range: 0.1 ~ 100.0
+	velocidad = 1.0
+	#Calor (por mil) que necesita el horno de arco para las aleaciones caras (60 FE/t o más): hay que precalentarlo
+	# Default: 800
+	# Range: 0 ~ 1000
+	calorAleaciones = 800
+
+#El cielo: eclipses y otros acontecimientos, iguales para todos los jugadores
+[cielo]
+	#Días (más o menos uno) entre un eclipse total de sol y el siguiente; 0 los quita
+	# Default: 10
+	# Range: 0 ~ 1000
+	diasEntreEclipses = 10
+	#Durante la totalidad se hace de noche para el juego: salen monstruos y los no muertos dejan de quemarse
+	eclipseOscurece = true
+
+#Puntería del radar, el cañón y el condensador desde su cámara
+[punteria]
+	#Sin módulo de puntería automática, las máquinas solo apuntan a mano desde la cámara; false: apuntan solas como antes
+	manual = true
+	#En la cámara, la mira se imanta un poco al objetivo cuando está cerca
+	asistencia = true
+
+#Multibloques
+[multibloques]
+	#Al formarse, la máquina se construye delante del jugador (unos 5 s, sin trabajar mientras tanto); false: aparece de golpe
+	construccion = true
+	#Al formarse, un multibloque pone bloques invisibles (selección y colisión) en las partes de su modelo fuera de sus bloques, y exige ese volumen libre; false: esas partes se atraviesan y no se forman fantasmas
+	hitboxFantasma = true
+
+#Guía del jugador
+[guia]
+	#La primera vez que un jugador entra a este mundo recibe la Holotableta (la guía del mod); false: tiene que fabricarla
+	tabletaAlEntrar = true
+
+#Dron de combate: vuelo y combate
+[dron]
+	#Puntos de vida del dron (armadura 8, fija)
+	# Default: 80
+	# Range: 1 ~ 2000
+	vida = 80
+	#Velocidad máxima de crucero, en bloques por tick (0,45 = 9 bloques por segundo)
+	# Default: 0.45
+	# Range: 0.05 ~ 2.0
+	velocidadCrucero = 0.45
+	#Cuánto gana de velocidad por tick al acelerar, en bloques por tick al cuadrado
+	# Default: 0.04
+	# Range: 0.005 ~ 0.5
+	aceleracion = 0.04
+	#Cuánto pierde de velocidad por tick al frenar (más que al acelerar: los motores empujan hacia atrás)
+	# Default: 0.06
+	# Range: 0.005 ~ 0.5
+	deceleracion = 0.06
+	#Altura de patrulla sobre el suelo, en bloques
+	# Default: 5
+	# Range: 2 ~ 32
+	alturaPatrulla = 5
+	#Batería del dron, en FE
+	# Default: 20000
+	# Range: 100 ~ 1000000
+	energia = 20000
+	#FE que gasta cada disparo
+	# Default: 100
+	# Range: 0 ~ 10000
+	costeDisparo = 100
+	#FE por tick que recupera aparcado tras retirarse (con la energía bajo el 20 % o la vida bajo el 30 % se retira; vuelve con el 90 % y el 60 %)
+	# Default: 50
+	# Range: 1 ~ 10000
+	recargaPorTick = 50
+	#Vida por tick que repara aparcado tras retirarse
+	# Default: 0.1
+	# Range: 0.0 ~ 20.0
+	reparacionPorTick = 0.1
+	#Distancia a la que detecta enemigos, en bloques (los pierde a 36)
+	# Default: 28
+	# Range: 4 ~ 64
+	deteccion = 28
+	#Ataca a los jugadores que no son su propietario, solo si el servidor permite PvP (nunca en creativo ni espectador)
+	atacarJugadores = true
+	#Daño de cada bala a criaturas (respeta la armadura)
+	# Default: 3.0
+	# Range: 0.0 ~ 100.0
+	danoCriatura = 3.0
+	#Daño de cada bala a jugadores (respeta la armadura)
+	# Default: 2.5
+	# Range: 0.0 ~ 100.0
+	danoJugador = 2.5
+	#Al ser golpeado por una bala del dron, la cámara se sacude y los bordes se ponen rojos un instante
+	sacudidaCamara = true
+
+#Hangar de drones: energía, antena y recarga de los drones guardados
+[hangar]
+	#Batería del hangar, en FE
+	# Default: 2000000
+	# Range: 1000 ~ 100000000
+	capacidad = 2000000
+	#FE por tick máximos que entran por las paredes
+	# Default: 10000
+	# Range: 1 ~ 1000000
+	entradaPorTick = 10000
+	#FE/t que gasta la antena encendida, por nivel de antena (I, II, III) (tiers 1–5, de 0 a 10000)
+	antena = [5, 20, 60]
+	#FE por tick con los que recarga la batería de cada dron guardado en su bahía
+	# Default: 250
+	# Range: 1 ~ 100000
+	recargaPorTick = 250
+	#Vida por tick que repara a cada dron guardado
+	# Default: 0.1
+	# Range: 0.0 ~ 20.0
+	reparacionPorTick = 0.1
+	#FE por tick que cuesta esa reparación (por dron)
+	# Default: 20
+	# Range: 0 ~ 100000
+	reparacionCoste = 20
+	#FE que cuesta cada ciclo de la escotilla (abrirla para lanzar o recibir drones)
+	# Default: 500
+	# Range: 0 ~ 1000000
+	cicloEscotilla = 500
+	#Los blancos que detecta la antena se ven con un aura naranja a través de los bloques (efecto Resplandor, solo visual)
+	auraBlancos = true

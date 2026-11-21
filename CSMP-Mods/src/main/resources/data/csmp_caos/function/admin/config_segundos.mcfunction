@@ -1,0 +1,1 @@
+$scoreboard players set #segundos csmp_cfg $(valor)

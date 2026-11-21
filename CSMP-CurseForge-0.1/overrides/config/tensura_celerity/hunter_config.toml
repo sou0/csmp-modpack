@@ -1,0 +1,278 @@
+#How likely each rank is, and what it gives. A rank's chance is its weight divided by the sum of all seven weights. The defaults sum to 10000, so each weight reads as hundredths of a percent: E 39.5%, D 27%, C 18%, B 9%, A 5%, S 1.4%, National Level 0.1%.
+[Ranks]
+
+	[Ranks.E]
+		#Weight of this rank in the awakening draw.
+		weight = 3950
+		#Innate max aura is drawn once, between these two, and kept for good.
+		innateAuraMin = 600.0
+		innateAuraMax = 900.0
+		#Innate max magicule is drawn once, between these two, and kept for good.
+		innateMagiculeMin = 400.0
+		innateMagiculeMax = 600.0
+		#Highest base max aura a Hunter of this rank can reach.
+		ceilingAura = 11000.0
+		#Highest base max magicule a Hunter of this rank can reach.
+		ceilingMagicule = 9000.0
+		#Max health this rank adds.
+		bonusHealth = 0.0
+		#Attack damage this rank adds.
+		bonusAttack = 0.0
+		#Max spiritual health this rank adds.
+		bonusSpiritualHealth = 0.0
+
+	[Ranks.D]
+		#Weight of this rank in the awakening draw.
+		weight = 2700
+		#Innate max aura is drawn once, between these two, and kept for good.
+		innateAuraMin = 1400.0
+		innateAuraMax = 2200.0
+		#Innate max magicule is drawn once, between these two, and kept for good.
+		innateMagiculeMin = 1100.0
+		innateMagiculeMax = 1800.0
+		#Highest base max aura a Hunter of this rank can reach.
+		ceilingAura = 27500.0
+		#Highest base max magicule a Hunter of this rank can reach.
+		ceilingMagicule = 22500.0
+		#Max health this rank adds.
+		bonusHealth = 4.0
+		#Attack damage this rank adds.
+		bonusAttack = 0.5
+		#Max spiritual health this rank adds.
+		bonusSpiritualHealth = 10.0
+
+	[Ranks.C]
+		#Weight of this rank in the awakening draw.
+		weight = 1800
+		#Innate max aura is drawn once, between these two, and kept for good.
+		innateAuraMin = 3300.0
+		innateAuraMax = 5000.0
+		#Innate max magicule is drawn once, between these two, and kept for good.
+		innateMagiculeMin = 2700.0
+		innateMagiculeMax = 4000.0
+		#Highest base max aura a Hunter of this rank can reach.
+		ceilingAura = 66000.0
+		#Highest base max magicule a Hunter of this rank can reach.
+		ceilingMagicule = 54000.0
+		#Max health this rank adds.
+		bonusHealth = 10.0
+		#Attack damage this rank adds.
+		bonusAttack = 1.0
+		#Max spiritual health this rank adds.
+		bonusSpiritualHealth = 25.0
+
+	[Ranks.B]
+		#Weight of this rank in the awakening draw.
+		weight = 900
+		#Innate max aura is drawn once, between these two, and kept for good.
+		innateAuraMin = 8200.0
+		innateAuraMax = 12000.0
+		#Innate max magicule is drawn once, between these two, and kept for good.
+		innateMagiculeMin = 6800.0
+		innateMagiculeMax = 10000.0
+		#Highest base max aura a Hunter of this rank can reach.
+		ceilingAura = 165000.0
+		#Highest base max magicule a Hunter of this rank can reach.
+		ceilingMagicule = 135000.0
+		#Max health this rank adds.
+		bonusHealth = 20.0
+		#Attack damage this rank adds.
+		bonusAttack = 2.0
+		#Max spiritual health this rank adds.
+		bonusSpiritualHealth = 60.0
+
+	[Ranks.A]
+		#Weight of this rank in the awakening draw.
+		weight = 500
+		#Innate max aura is drawn once, between these two, and kept for good.
+		innateAuraMin = 22000.0
+		innateAuraMax = 33000.0
+		#Innate max magicule is drawn once, between these two, and kept for good.
+		innateMagiculeMin = 18000.0
+		innateMagiculeMax = 27000.0
+		#Highest base max aura a Hunter of this rank can reach.
+		ceilingAura = 412500.0
+		#Highest base max magicule a Hunter of this rank can reach.
+		ceilingMagicule = 337500.0
+		#Max health this rank adds.
+		bonusHealth = 40.0
+		#Attack damage this rank adds.
+		bonusAttack = 3.5
+		#Max spiritual health this rank adds.
+		bonusSpiritualHealth = 150.0
+
+	[Ranks.S]
+		#Weight of this rank in the awakening draw.
+		weight = 140
+		#Innate max aura is drawn once, between these two, and kept for good.
+		innateAuraMin = 66000.0
+		innateAuraMax = 99000.0
+		#Innate max magicule is drawn once, between these two, and kept for good.
+		innateMagiculeMin = 54000.0
+		innateMagiculeMax = 81000.0
+		#Highest base max aura a Hunter of this rank can reach.
+		ceilingAura = 1100000.0
+		#Highest base max magicule a Hunter of this rank can reach.
+		ceilingMagicule = 900000.0
+		#Max health this rank adds.
+		bonusHealth = 80.0
+		#Attack damage this rank adds.
+		bonusAttack = 6.0
+		#Max spiritual health this rank adds.
+		bonusSpiritualHealth = 400.0
+
+	[Ranks.NationalLevel]
+		#Weight of this rank in the awakening draw.
+		weight = 10
+		#Innate max aura is drawn once, between these two, and kept for good.
+		innateAuraMin = 220000.0
+		innateAuraMax = 330000.0
+		#Innate max magicule is drawn once, between these two, and kept for good.
+		innateMagiculeMin = 180000.0
+		innateMagiculeMax = 270000.0
+		#Highest base max aura a Hunter of this rank can reach.
+		ceilingAura = 3300000.0
+		#Highest base max magicule a Hunter of this rank can reach.
+		ceilingMagicule = 2700000.0
+		#Max health this rank adds.
+		bonusHealth = 150.0
+		#Attack damage this rank adds.
+		bonusAttack = 10.0
+		#Max spiritual health this rank adds.
+		bonusSpiritualHealth = 1000.0
+
+[Selina]
+	#How much stronger than their rank a Hunter is after each of Selina's three stages, measured from the rank itself. These are totals, not steps: after Stage II a Hunter is 20% above their rank, not 10% and then 20% on top of that. The bonus raises the EP ceiling, the innate EP floor, the rank's health, attack and spiritual health bonuses, and the power of the Hunter's Specialization techniques.
+	stageOneBonus = 0.1
+	stageTwoBonus = 0.2
+	stageThreeBonus = 0.3
+	#Stellar Gold Coins (tensura:stellar_gold_coin) each stage costs. Tensura's dwarf merchants trade one for 100 Gold Coins.
+	pricePerStage = 1
+	#Whether Selina appears in the world at all. Off: no new Selina is ever created (existing ones stay).
+	spawnEnabled = true
+	#Chance that a villager created by one of the eligible spawn types below is Selina instead. 0.0001 = one in ten thousand. Rolled once, when the villager is created - never again when its chunk is loaded.
+	spawnChance = 1.0E-4
+	#Which ways of creating a villager may produce Selina, by Minecraft's spawn type name. STRUCTURE is how a village's villagers are placed when the village generates, and in vanilla it is the only natural source of villagers. Breeding (BREEDING), spawn eggs (SPAWN_EGG, DISPENSER), commands (COMMAND), curing (CONVERSION) and spawners are excluded by default.
+	eligibleSpawnTypes = ["STRUCTURE", "NATURAL", "CHUNK_GENERATION"]
+	#How close (blocks) a Hunter has to stand to Selina to talk to her or buy from her.
+	interactionRange = 6.0
+
+#Choosing and changing a Specialization, and how its techniques unlock.
+[Specializations]
+	#Stellar Gold Coins it costs to change to a different Specialization. The first choice is free. 0 makes changing free.
+	changeCost = 2
+	#Minutes of play (game time) that must pass after choosing before a Hunter may change again.
+	changeCooldownMinutes = 60
+	#Mastery of a Specialization's techniques at which its second, third and fourth techniques open. The fourth needs the skill mastered (Tensura's Extra Skill mastery, 500 by default) whatever is set here, if this is higher.
+	tierTwoMastery = 100
+	tierThreeMastery = 250
+	tierFourMastery = 500
+	#Mastery points given for each act the Specialization is about (a backstab, a blow taken while protecting, a spell landed), on top of what Tensura gives for using a technique. At most once per this many ticks.
+	roleMastery = 1.0
+	roleMasteryIntervalTicks = 40
+
+#Assassin: mobility, burst and evasion. Fragile.
+[Assassin]
+	#Tensura melee dodge chance (percent) the passive gives; the second figure once mastered.
+	dodgeChance = 5.0
+	dodgeChanceMastered = 10.0
+	#Extra damage on a blow struck at a target's back (from behind its line of sight).
+	backstabBonus = 0.25
+	backstabBonusMastered = 0.35
+	#Attack speed a short blade (anything in the tensura:short_swords tag) gives an Assassin.
+	shortBladeAttackSpeed = 0.1
+	#Max health an Assassin gives up (0.10 = a tenth).
+	healthPenalty = 0.1
+	shadowStepAura = 60.0
+	shadowStepCooldown = 8
+	shadowStepRange = 10.0
+	#Ticks after Shadow Step during which the next blow is a critical one, and how much harder it lands.
+	shadowStepWindow = 60
+	shadowStepBonus = 0.5
+	vitalStrikeAura = 120.0
+	vitalStrikeCooldown = 12
+	#Vital Strike lands for this many times the Hunter's attack damage, and twice that again on a target under the threshold of its health.
+	vitalStrikeMultiplier = 2.5
+	vitalStrikeExecuteThreshold = 0.3
+	vitalStrikeExecuteMultiplier = 2.0
+	veilMagicule = 150.0
+	veilCooldown = 25
+	veilDuration = 80
+	veilSpeed = 0.3
+	#How much harder the first blow out of the Veil lands.
+	veilAmbushBonus = 0.4
+	thousandCutsAura = 300.0
+	thousandCutsCooldown = 30
+	thousandCutsLength = 10.0
+	thousandCutsTargets = 5
+	thousandCutsMultiplier = 1.5
+
+#Tank: durability, threat and protecting others. Slow, and hits less hard.
+[Tank]
+	#Armour the passive gives; the second figure once mastered.
+	armor = 4.0
+	armorMastered = 8.0
+	knockbackResistance = 0.15
+	#Share of incoming damage a Tank shrugs off while holding a shield or wearing at least heavyArmorThreshold armour.
+	heavyReduction = 0.1
+	heavyArmorThreshold = 15.0
+	#Movement speed and attack damage a Tank gives up.
+	speedPenalty = 0.05
+	attackPenalty = 0.1
+	provokeAura = 80.0
+	provokeCooldown = 12
+	provokeRadius = 10.0
+	provokeDuration = 120
+	ironWillAura = 150.0
+	ironWillCooldown = 20
+	ironWillDuration = 100
+	ironWillReduction = 0.4
+	oathMagicule = 120.0
+	oathCooldown = 30
+	oathDuration = 160
+	#Share of the damage an ally under Guardian's Oath takes that is moved onto the Tank.
+	oathShare = 0.4
+	oathRange = 8.0
+	unbreakableAura = 400.0
+	unbreakableCooldown = 90
+	unbreakableDuration = 120
+	#Share of the damage Unbreakable refused that is healed back when it ends.
+	unbreakableHeal = 0.25
+
+#Mage: ranged magic, areas and efficient casting. The least health of the three.
+[Mage]
+	#How much cheaper magic is (0.10 = a tenth off); the second figure once mastered.
+	costReduction = 0.1
+	costReductionMastered = 0.2
+	magiculeRegen = 0.2
+	chantSpeed = 0.1
+	#Max health a Mage gives up.
+	healthPenalty = 0.15
+	manaBoltMagicule = 40.0
+	manaBoltCooldown = 2
+	#Mana Bolt damage: the base, plus this much per point of max magicule, to at most the cap.
+	manaBoltBase = 4.0
+	manaBoltPerMagicule = 0.0015
+	manaBoltCap = 400.0
+	arcaneFieldMagicule = 160.0
+	arcaneFieldCooldown = 18
+	arcaneFieldRadius = 5.0
+	arcaneFieldDuration = 120
+	arcaneFieldBase = 1.0
+	arcaneFieldPerMagicule = 5.0E-4
+	blinkMagicule = 60.0
+	blinkCooldown = 6
+	blinkDistance = 10.0
+	meteorLanceMagicule = 450.0
+	meteorLanceCooldown = 40
+	meteorLanceRadius = 4.0
+	meteorLanceDelay = 30
+	meteorLanceBase = 12.0
+	meteorLancePerMagicule = 0.006
+	meteorLanceCap = 1500.0
+
+[ManaMeter]
+	#Ticks before a Mana Meter can take another reading.
+	cooldownTicks = 40
+	#How far (blocks) a Mana Meter reads somebody else.
+	range = 8.0

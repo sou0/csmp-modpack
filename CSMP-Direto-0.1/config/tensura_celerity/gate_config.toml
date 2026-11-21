@@ -1,0 +1,54 @@
+[Spawning]
+	#Whether gates open by themselves near players in the overworld.
+	naturalGates = true
+	#From this rank up (E, D, C, B, A or S), a gate's opening is announced to every player in its world, with how far and which way - the Hunter Association calling a raid. Empty: only those near it hear.
+	announceFrom = "A"
+	#Every this many minutes of a player's time in the overworld (survival or adventure), a gate may open near them: a rank is drawn by the weights below, then that rank's openChance decides whether it really opens - so the stronger a gate, the rarer. 0 turns the timer off and uses chancePerMinute instead.
+	gateEveryMinutes = 20
+	#With the timer: the chance a drawn gate really opens, by rank. At the defaults, of every roll: E 40%, D 25%, C 12%, B 5.4%, A 2.3%, S 0.6%, and nothing 15%.
+	openChanceE = 1.0
+	openChanceD = 0.9
+	openChanceC = 0.75
+	openChanceB = 0.6
+	openChanceA = 0.45
+	openChanceS = 0.3
+	#Only when gateEveryMinutes is 0: once a minute, for each player in the overworld, the chance that a gate opens near them (0.0 - 1.0).
+	chancePerMinute = 0.04
+	#No gate opens within this many blocks of another.
+	minimumSpacing = 160
+	#How far from the player a gate opens, in blocks.
+	minimumDistance = 18
+	maximumDistance = 40
+	#Chance that a gate of rank C or higher opens red: once entered it seals until its boss falls, and it is stronger.
+	redGateChance = 0.12
+
+[Dungeons]
+	#Minutes a gate stays open before it breaks and its monsters pour out (a dungeon break). While anyone is inside, it waits.
+	lifetimeMinutes = 30
+	#Whether a gate left open too long - or a dungeon run past its time - breaks loose: its monsters and boss pour out into the world and stay until killed. false (the default): the gate closes, and its dungeon with it, and monsters let loose by earlier breaks are cleared as they load.
+	breaksReleaseMonsters = false
+	#Most loose gate monsters a dungeon break adds to within 96 blocks of the gate. Loose monsters stay until they are killed, so without a cap the breaks of gates nobody clears - an AFK player's, say - would pile up around them. Its boss still comes while there is any room. 0 = no cap.
+	breakMonsterCap = 40
+	#Minutes a dungeon may take from the moment it is opened: past that its mana breaks loose - everyone inside is thrown out and the gate breaks.
+	timeLimitMinutes = 20
+	#Seconds the gate stays open after its boss falls before everyone still inside is sent back.
+	exitSeconds = 90
+	#Seconds a dungeon may stand empty (everyone left or died) before it collapses and must be started again.
+	emptySeconds = 60
+	#How much stronger a red gate's monsters are than a normal gate's of the same rank.
+	redGateStrength = 1.5
+	#System XP each Player inside earns when the dungeon is cleared, for an E-rank gate; each rank above doubles it.
+	clearXpE = 120
+	#Chance that an E- or D-rank gate is secretly a double dungeon: behind its boss, the Statue of God's temple.
+	doubleDungeonChance = 0.06
+	#EP an ordinary gate monster carries, as a share of its rank's champion EP (E 2,000 ... S 2,500,000). EP is how Tensura measures a creature: it raises its health with it, skills read it, and a kill pays out of it. 0 leaves them their own.
+	monsterEpShare = 0.25
+
+#How likely each rank is when a gate opens by itself: a rank's chance is its weight divided by the sum of all six.
+[Weights]
+	E = 40
+	D = 28
+	C = 16
+	B = 9
+	A = 5
+	S = 2

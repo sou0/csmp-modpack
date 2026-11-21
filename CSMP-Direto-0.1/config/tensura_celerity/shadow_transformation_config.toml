@@ -1,0 +1,22 @@
+[Transformation]
+	#Magicule a second while it is held; the first second is paid as it is taken (the Dragon Form's is 1,500).
+	upkeep = 900.0
+	#Flat attack and maximum health added before the multipliers (the Dragon Form's are 20 and 80).
+	attackFlat = 12.0
+	healthFlat = 40.0
+	#Attack and maximum-health multipliers, 0.4 = +40% (the Dragon Form's are 0.75 and 0.5).
+	attackMultiplier = 0.4
+	healthMultiplier = 0.25
+	#Armour, armour toughness and knockback resistance (the Dragon Form's are 20, 12 and 0.8).
+	armour = 10.0
+	toughness = 6.0
+	knockbackResistance = 0.4
+	#Movement speed multiplier, 0.35 = +35% (the Dragon Form's is 0.3).
+	speedMultiplier = 0.35
+	#Whether the form flies, and how fast: vanilla's creative flight is 0.05, the Dragon Form's wings 0.09.
+	flight = true
+	flySpeed = 0.1
+	#Seconds before the form can be switched again either way, so it cannot flicker.
+	toggleLockoutSeconds = 2
+	#Seconds before it can be taken again once an empty pool has ended it.
+	exhaustedCooldownSeconds = 8

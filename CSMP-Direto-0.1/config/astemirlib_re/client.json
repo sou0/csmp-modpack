@@ -1,0 +1,8 @@
+{
+  "particle_compatibility_mode": false,
+  "immediate_model_rendering": false,
+  "enable_post_processing": true,
+  "enable_screen_shake": true,
+  "enable_fog_effects": true,
+  "enable_lighting_effects": true
+}

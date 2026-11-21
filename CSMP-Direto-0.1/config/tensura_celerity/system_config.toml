@@ -1,0 +1,87 @@
+[Leveling]
+	#Highest level a Player can reach.
+	levelCap = 100
+	#XP needed to go from level L to L+1: needBase x L^needExponent + needFlat. The defaults put level 30 at about 48,000 XP in all, and each later level at a few thousand more.
+	needBase = 25.0
+	needExponent = 1.5
+	needFlat = 25.0
+	#Stat points given at each level up.
+	pointsPerLevel = 5
+	#Whether a level up restores the Player's health, aura and magicule in full, as the System's does in the story.
+	levelUpRestores = true
+	#XP for a kill: killBase + killPerHealth x the victim's max health + killPerRootEp x the square root of its max EP.
+	killBase = 2.0
+	killPerHealth = 0.5
+	killPerRootEp = 0.35
+	#A boss (anything in the c:bosses tag, or one of Celerity's bosses) gives this many times as much.
+	bossMultiplier = 4.0
+	#No single kill gives more than this share of the XP the Player's current level needs.
+	maxKillShareOfLevel = 1.5
+	#Kills of the same kind of mob within the window give full XP up to this count; after it each gives freeKills/count of its XP, never less than minDiminish.
+	sameTypeFreeKills = 25
+	sameTypeWindowSeconds = 600
+	minDiminish = 0.1
+	#Share of the XP a mob from a spawner or trial spawner gives.
+	spawnerMultiplier = 0.2
+	#Share of the XP an animal or other non-hostile mob gives.
+	passiveMultiplier = 0.2
+	#A mob with less EP than this share of the Player's own gives only trivialMultiplier of its XP.
+	trivialEpRatio = 0.005
+	trivialMultiplier = 0.25
+
+[Stats]
+	#Strength: attack damage, as a share of the base, per point.
+	strengthAttack = 0.01
+	#Vitality: max health and max spiritual health per point.
+	vitalityHealth = 2.0
+	vitalitySpirit = 4.0
+	#Agility: movement speed and attack speed per point (shares of the base), each with a cap.
+	agilitySpeed = 0.0025
+	agilitySpeedCap = 0.5
+	agilityAttackSpeed = 0.005
+	agilityAttackSpeedCap = 0.75
+	#Intelligence: max magicule (share of the base) and magicule regeneration per point.
+	intelligenceMagicule = 0.01
+	intelligenceRegen = 0.005
+	#Perception: max aura (share of the base) and critical hit chance (percent) per point; the chance is capped.
+	perceptionAura = 0.01
+	perceptionCrit = 0.1
+	perceptionCritCap = 20.0
+	#Level at which the System grants a free redistribution of stat points.
+	freeRespecAtLevel = 10
+
+[Daily]
+	enabled = true
+	#Hour of the day (0-23, in the server's time zone offset below) at which the Daily Quest resets. The reset follows the real-world clock, so /time set cannot skip or repeat it.
+	resetHour = 0
+	#The server's time zone, as minutes ahead of UTC (60 = UTC+1, -300 = UTC-5).
+	utcOffsetMinutes = 0
+	hits = 100
+	distance = 1000
+	kills = 20
+	skills = 10
+	#Reward: this share of the XP the Player's level needs, and stat points.
+	rewardXpShare = 0.25
+	rewardPoints = 3
+	#A Player who was online at least this many minutes on a day and left its quest undone faces the penalty zone when the day ends. Nobody is punished for a day they were not there.
+	minimumOnlineMinutes = 30
+
+[Emergency]
+	enabled = true
+	#Minutes of play between chances of an Emergency Quest.
+	intervalMinutes = 20
+	#Chance that one comes when the interval is up.
+	chance = 0.4
+	timeLimitSeconds = 180
+	#Monsters an Extermination sends; Survival sends waves of half as many.
+	monsters = 6
+	rewardXpShare = 0.35
+	#Seconds of Weakness and Slowness a failed Emergency Quest leaves. Nothing else is taken - no items, no levels, no XP.
+	failDebuffSeconds = 600
+
+[Penalty]
+	#Whether a missed Daily Quest sends the Player to the penalty zone. Off: the day simply resets.
+	enabled = true
+	durationSeconds = 120
+	waveSeconds = 15
+	monstersPerWave = 4

@@ -1,0 +1,319 @@
+[Trial]
+	#Level at which the System offers the Job Change Quest.
+	level = 30
+	#Minutes the whole trial may take before it is failed.
+	timeLimitMinutes = 12
+	#Minutes of play before a failed trial may be tried again.
+	retryMinutes = 30
+	#The trial's final opponent: health and attack, plus this much per Player level.
+	bossHealth = 300.0
+	bossHealthPerLevel = 15.0
+	bossAttack = 8.0
+	bossAttackPerLevel = 0.2
+
+#How likely each Job is in the draw at the end of the Job Change Quest: a Job's chance is its weight divided by the sum of all ten. The defaults sum to 100, so each reads as a percentage. The Job is drawn, not chosen, and kept for good.
+[Weights]
+	knight = 14
+	guardian = 12
+	magician = 12
+	sagittarius = 12
+	dancer = 11
+	goliath = 10
+	beast = 9
+	saint = 9
+	ruler = 6
+	glutton = 5
+
+[Evolution]
+	#Level each tier needs: Advanced, Specialized, Endgame.
+	advancedLevel = 45
+	specializedLevel = 65
+	endgameLevel = 90
+	#Share of the Job skill's mastery each tier needs (1.0 = mastered).
+	advancedMastery = 0.25
+	specializedMastery = 0.6
+	endgameMastery = 1.0
+	#Bosses (any c:bosses or Celerity boss) defeated in all, for Specialized.
+	specializedBosses = 3
+	#What Specialized spends: an item id and a count.
+	specializedItem = "tensura:high_quality_magic_crystal"
+	specializedCount = 4
+	#What Endgame spends: an item id and a count. Endgame also needs the Job's own boss defeated once.
+	endgameItem = "tensura:pure_magisteel_ingot"
+	endgameCount = 3
+	#Job Quest points each tier needs, counted from the day the Job was given: Advanced, Specialized, Endgame. A point is one deed of the kind the Job is for (see docs/JOB_PROGRESSION.md), at most one a second.
+	advancedQuest = 60
+	specializedQuest = 250
+	endgameQuest = 800
+	#Mastery of the Job skill each Job Quest point also gives.
+	questMastery = 1.0
+
+[Power]
+	#Every Job technique's damage and healing, times this. 1.0 is as designed; a Job is meant to be weaker than the Unique Skill it echoes.
+	multiplier = 1.0
+	#How much stronger each tier makes a Job's techniques: Initial, Advanced, Specialized, Endgame.
+	tierOne = 1.0
+	tierTwo = 1.15
+	tierThree = 1.3
+	tierFour = 1.5
+	#Synergy with the System's stats: each point in the Job's primary stat makes its techniques this much stronger, up to the cap.
+	statSynergy = 0.004
+	statSynergyCap = 0.3
+	#Resonance: a Player who also holds the Unique Skill their Job echoes has the Job's cooldowns multiplied by this.
+	resonanceCooldown = 0.85
+	#How strong each Job's passive is, times this. 0 turns the passives off.
+	passiveMultiplier = 1.0
+
+#What keeps a Job's techniques, and a Hunter's, below the Unique Skills: they cool down longer, share a lockout, hit softer, and the strongest of the four leaves its user exhausted.
+[Discipline]
+	#Every Job and Hunter technique's cooldown is multiplied by this.
+	cooldownMultiplier = 1.6
+	#No Job or Hunter technique cools down in less than this many seconds.
+	minimumCooldownSeconds = 4
+	#Seconds for which any technique, once used, also locks the other three of the same skill, so four cannot be chained in a breath. 0 turns it off.
+	sharedLockoutSeconds = 3
+	#Every Job technique's damage and healing, times this, on top of the Power multiplier.
+	powerMultiplier = 0.8
+	#Seconds of Weakness I and Slowness I the fourth technique of a Job or Hunter skill leaves its user with. 0 turns it off.
+	exhaustionSeconds = 4
+
+#Each Job's four techniques, in tier order: what each costs (aura, or magicule for a Job marked magicule), its cooldown in seconds, its power and its duration in ticks. What 'power' means for each technique - damage, healing, a share - is listed in docs/JOB_PROGRESSION.md.
+[Dancer]
+	#Whether the techniques are paid in magicule rather than aura.
+	magicule = false
+	#Energy each technique costs.
+	cost1 = 40.0
+	cost2 = 70.0
+	cost3 = 120.0
+	cost4 = 220.0
+	#Seconds before each technique can be used again.
+	cooldown1 = 6
+	cooldown2 = 10
+	cooldown3 = 30
+	cooldown4 = 60
+	#Each technique's power: its damage, its healing or its share, as the documentation lists.
+	power1 = 4.0
+	power2 = 3.5
+	power3 = 0.25
+	power4 = 3.0
+	#How long each technique's effect lasts, in ticks (20 a second); 0 where it is instant.
+	duration1 = 0
+	duration2 = 0
+	duration3 = 120
+	duration4 = 0
+
+[Goliath]
+	#Whether the techniques are paid in magicule rather than aura.
+	magicule = false
+	#Energy each technique costs.
+	cost1 = 50.0
+	cost2 = 90.0
+	cost3 = 150.0
+	cost4 = 260.0
+	#Seconds before each technique can be used again.
+	cooldown1 = 8
+	cooldown2 = 14
+	cooldown3 = 45
+	cooldown4 = 90
+	#Each technique's power: its damage, its healing or its share, as the documentation lists.
+	power1 = 7.0
+	power2 = 5.0
+	power3 = 0.3
+	power4 = 10.0
+	#How long each technique's effect lasts, in ticks (20 a second); 0 where it is instant.
+	duration1 = 0
+	duration2 = 40
+	duration3 = 200
+	duration4 = 0
+
+[Beast]
+	#Whether the techniques are paid in magicule rather than aura.
+	magicule = false
+	#Energy each technique costs.
+	cost1 = 40.0
+	cost2 = 70.0
+	cost3 = 120.0
+	cost4 = 220.0
+	#Seconds before each technique can be used again.
+	cooldown1 = 6
+	cooldown2 = 10
+	cooldown3 = 40
+	cooldown4 = 80
+	#Each technique's power: its damage, its healing or its share, as the documentation lists.
+	power1 = 2.5
+	power2 = 6.0
+	power3 = 0.2
+	power4 = 6.0
+	#How long each technique's effect lasts, in ticks (20 a second); 0 where it is instant.
+	duration1 = 0
+	duration2 = 0
+	duration3 = 240
+	duration4 = 160
+
+[Magician]
+	#Whether the techniques are paid in magicule rather than aura.
+	magicule = true
+	#Energy each technique costs.
+	cost1 = 60.0
+	cost2 = 110.0
+	cost3 = 160.0
+	cost4 = 300.0
+	#Seconds before each technique can be used again.
+	cooldown1 = 4
+	cooldown2 = 12
+	cooldown3 = 35
+	cooldown4 = 75
+	#Each technique's power: its damage, its healing or its share, as the documentation lists.
+	power1 = 5.0
+	power2 = 4.5
+	power3 = 8.0
+	power4 = 4.0
+	#How long each technique's effect lasts, in ticks (20 a second); 0 where it is instant.
+	duration1 = 0
+	duration2 = 60
+	duration3 = 200
+	duration4 = 0
+
+[Ruler]
+	#Whether the techniques are paid in magicule rather than aura.
+	magicule = true
+	#Energy each technique costs.
+	cost1 = 50.0
+	cost2 = 90.0
+	cost3 = 140.0
+	cost4 = 280.0
+	#Seconds before each technique can be used again.
+	cooldown1 = 6
+	cooldown2 = 12
+	cooldown3 = 30
+	cooldown4 = 80
+	#Each technique's power: its damage, its healing or its share, as the documentation lists.
+	power1 = 2.0
+	power2 = 4.0
+	power3 = 6.0
+	power4 = 9.0
+	#How long each technique's effect lasts, in ticks (20 a second); 0 where it is instant.
+	duration1 = 0
+	duration2 = 0
+	duration3 = 50
+	duration4 = 80
+
+[Sagittarius]
+	#Whether the techniques are paid in magicule rather than aura.
+	magicule = false
+	#Energy each technique costs.
+	cost1 = 40.0
+	cost2 = 80.0
+	cost3 = 120.0
+	cost4 = 240.0
+	#Seconds before each technique can be used again.
+	cooldown1 = 5
+	cooldown2 = 12
+	cooldown3 = 40
+	cooldown4 = 80
+	#Each technique's power: its damage, its healing or its share, as the documentation lists.
+	power1 = 6.0
+	power2 = 3.0
+	power3 = 0.35
+	power4 = 3.0
+	#How long each technique's effect lasts, in ticks (20 a second); 0 where it is instant.
+	duration1 = 0
+	duration2 = 0
+	duration3 = 300
+	duration4 = 0
+
+[Saint]
+	#Whether the techniques are paid in magicule rather than aura.
+	magicule = true
+	#Energy each technique costs.
+	cost1 = 60.0
+	cost2 = 100.0
+	cost3 = 160.0
+	cost4 = 320.0
+	#Seconds before each technique can be used again.
+	cooldown1 = 8
+	cooldown2 = 20
+	cooldown3 = 45
+	cooldown4 = 120
+	#Each technique's power: its damage, its healing or its share, as the documentation lists.
+	power1 = 6.0
+	power2 = 3.0
+	power3 = 1.0
+	power4 = 0.4
+	#How long each technique's effect lasts, in ticks (20 a second); 0 where it is instant.
+	duration1 = 0
+	duration2 = 0
+	duration3 = 160
+	duration4 = 200
+
+[Guardian]
+	#Whether the techniques are paid in magicule rather than aura.
+	magicule = false
+	#Energy each technique costs.
+	cost1 = 40.0
+	cost2 = 80.0
+	cost3 = 130.0
+	cost4 = 240.0
+	#Seconds before each technique can be used again.
+	cooldown1 = 7
+	cooldown2 = 25
+	cooldown3 = 30
+	cooldown4 = 90
+	#Each technique's power: its damage, its healing or its share, as the documentation lists.
+	power1 = 4.0
+	power2 = 0.4
+	power3 = 0.0
+	power4 = 0.65
+	#How long each technique's effect lasts, in ticks (20 a second); 0 where it is instant.
+	duration1 = 30
+	duration2 = 120
+	duration3 = 120
+	duration4 = 160
+
+[Knight]
+	#Whether the techniques are paid in magicule rather than aura.
+	magicule = false
+	#Energy each technique costs.
+	cost1 = 40.0
+	cost2 = 80.0
+	cost3 = 140.0
+	cost4 = 220.0
+	#Seconds before each technique can be used again.
+	cooldown1 = 5
+	cooldown2 = 12
+	cooldown3 = 45
+	cooldown4 = 60
+	#Each technique's power: its damage, its healing or its share, as the documentation lists.
+	power1 = 5.0
+	power2 = 9.0
+	power3 = 0.0
+	power4 = 8.0
+	#How long each technique's effect lasts, in ticks (20 a second); 0 where it is instant.
+	duration1 = 0
+	duration2 = 0
+	duration3 = 200
+	duration4 = 0
+
+[Glutton]
+	#Whether the techniques are paid in magicule rather than aura.
+	magicule = false
+	#Energy each technique costs.
+	cost1 = 40.0
+	cost2 = 80.0
+	cost3 = 130.0
+	cost4 = 260.0
+	#Seconds before each technique can be used again.
+	cooldown1 = 8
+	cooldown2 = 12
+	cooldown3 = 45
+	cooldown4 = 90
+	#Each technique's power: its damage, its healing or its share, as the documentation lists.
+	power1 = 5.0
+	power2 = 3.5
+	power3 = 0.2
+	power4 = 8.0
+	#How long each technique's effect lasts, in ticks (20 a second); 0 where it is instant.
+	duration1 = 0
+	duration2 = 80
+	duration3 = 240
+	duration4 = 0

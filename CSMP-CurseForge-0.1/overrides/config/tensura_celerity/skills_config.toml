@@ -1,0 +1,551 @@
+[ShadowMonarch]
+	#Magicule required to learn the skill.
+	mpAcquirement = 5000.0
+	#Damage multiplier on every blow you land against a target that is under your live Mark of Dominion (1.25 = +25%).
+	markedDamageMultiplier = 1.25
+
+[ShadowSovereign]
+	#Magicule required to learn the skill directly (commands / admin grant).
+	mpAcquirement = 40000.0
+	#Duration in seconds of Monarch's Domain. The domain always ends on its own.
+	domainDurationSeconds = 30
+	#Cooldown in seconds of Monarch's Domain.
+	domainCooldownSeconds = 150
+	#Radius in blocks of Monarch's Domain. This is the visible boundary.
+	domainRadius = 16.0
+	#Magicule cost of opening Monarch's Domain.
+	domainMagiculeCost = 2500.0
+	#Aura cost of opening Monarch's Domain.
+	domainAuraCost = 600.0
+	#Maximum number of shadows Monarch's Domain may raise at once. 0 = every stored shadow.
+	domainSummonLimit = 0
+	#Attack multiplier added to every summoned shadow while the domain stands (1.0 = double damage).
+	domainShadowAttackMultiplier = 1.0
+	#Maximum-health multiplier added to every summoned shadow while the domain stands (1.0 = double health).
+	domainShadowHealthMultiplier = 1.0
+	#EP multiplier added to every summoned shadow while the domain stands (1.0 = double EP).
+	domainShadowEpMultiplier = 1.0
+	#Armour added to every summoned shadow while the domain stands.
+	domainShadowArmor = 12.0
+	#Attack multiplier granted to the caster while the domain stands (0.5 = +50%).
+	domainCasterAttackMultiplier = 0.5
+	#Maximum-health multiplier granted to the caster (0.5 = +50%).
+	domainCasterHealthMultiplier = 0.5
+	#Armour granted to the caster while the domain stands.
+	domainCasterArmor = 14.0
+	#Movement speed multiplier granted to the caster (0.2 = +20%).
+	domainCasterSpeedMultiplier = 0.2
+	#Extra caster attack multiplier per shadow in storage.
+	domainCasterAttackPerShadow = 0.01
+	#Maximum extra caster attack multiplier gained from army size.
+	domainCasterAttackCap = 0.25
+	#Healing per second returned to the caster while the domain stands.
+	domainCasterHealPerSecond = 3.0
+	#Shadow pressure damage dealt to every enemy inside the domain each second.
+	domainPressureDamagePerSecond = 6.0
+	#Seconds of Slowness reapplied to enemies inside the domain on every pulse.
+	domainEnemySlownessSeconds = 3
+	#Seconds of Weakness reapplied to enemies inside the domain on every pulse.
+	domainEnemyWeaknessSeconds = 3
+	#Seconds of Darkness applied once when an enemy first steps into the domain.
+	domainEnemyDarknessSeconds = 5
+	#Points used to draw the domain boundary. Lower means fewer packets per pulse.
+	domainRingPoints = 24
+	#Ticks between boundary particle pulses.
+	domainRingIntervalTicks = 5
+	#Ambient shadow particles scattered inside the domain per pulse.
+	domainAmbientParticles = 16
+	#Ticks between interior atmosphere / attribute re-assert pulses.
+	domainInteriorIntervalTicks = 20
+	#Whether the shadows Monarch's Domain raised are returned to storage when it ends. false = they stay on the field as ordinary summons instead.
+	domainDismissOnEnd = true
+	#How far the domain's edge wobbles away from the true radius, as a fraction of it (0.12 = the edge is drawn between 88% and 112% of the radius).
+	domainBoundaryJitter = 0.12
+	#Shadow pools spread across the ground inside the domain per interior pulse.
+	domainPoolBlobs = 5
+	#Rising shadow wisps drifting upward inside the domain per interior pulse.
+	domainWisps = 6
+	#How strongly the interior atmosphere thickens towards the middle, 0.0 = uniform density across the whole disc, 1.0 = almost everything happens at the centre and the rim stays quiet.
+	domainCentreBias = 0.6
+	#Vertical spread in blocks of the shadow pools on the ground. Presentation only.
+	domainPoolSpread = 1.8
+	#Complete Shadow Soldier EP required for +1 attack damage on a Shadow weapon (damageBonus = floor(EP / this)).
+	creationEpPerDamage = 10000.0
+	#Complete Shadow Soldier EP required for +1 armour on a Shadow armour piece (armourBonus = floor(EP / this)).
+	creationEpPerArmour = 50000.0
+	#Complete Shadow Soldier EP required for one enchantment step on a Shadow item (step = floor(EP / this)).
+	creationEpPerEnchant = 100000.0
+	#Maximum number of enchantments a Shadow item may receive.
+	creationMaxEnchantSteps = 5
+	#Highest level applied to each of those enchantments.
+	creationMaxEnchantLevel = 5
+	#Cooldown in seconds before another soldier may be folded into an item.
+	creationCooldownSeconds = 2
+
+[Dancer]
+	#Magicule required to learn the skill.
+	mpAcquirement = 45000.0
+	#Maximum Sword Dancer stacks a successful sword hit may build.
+	swordDancerMaxStacks = 5
+	#Seconds a stack lasts before it starts to fade.
+	swordDancerStackSeconds = 6
+	#Attack-speed bonus granted per Sword Dancer stack (0.06 = +6% per stack).
+	swordDancerAttackSpeedPerStack = 0.06
+	#Damage bonus granted per Sword Dancer stack (0.04 = +4% per stack).
+	swordDancerDamagePerStack = 0.04
+	#Whether only sword-class items build stacks. false lets any melee hit build them.
+	swordDancerSwordsOnly = true
+	#Ticks that must pass between two Sword Dancer stacks.
+	swordDancerStackIntervalTicks = 8
+	#Seconds between stacks falling away once the stack timer has lapsed.
+	swordDancerDecaySeconds = 1
+	#Radius in blocks Mana Scent sweeps for living presences.
+	manaScentRadius = 24.0
+	#Ticks between Mana Scent sweeps.
+	manaScentIntervalTicks = 40
+	#Presence Sense level Mana Scent adds, on Tensura's own attribute.
+	manaScentSenseLevel = 2.0
+	#Duration in seconds of Sword Dance.
+	swordDanceSeconds = 8
+	#Duration in seconds of Sword Dance once the skill is mastered.
+	swordDanceMasteredSeconds = 12
+	#Magicule cost of Sword Dance.
+	swordDanceMagiculeCost = 100.0
+	#Cooldown in seconds of Sword Dance.
+	swordDanceCooldownSeconds = 20
+	#Damage bonus while Sword Dance is running (0.35 = +35%).
+	swordDanceDamageBonus = 0.35
+	#Attack-speed bonus while Sword Dance is running (0.25 = +25%).
+	swordDanceAttackSpeedBonus = 0.25
+	#Distance in blocks Dancer's Step dashes.
+	stepRange = 8.0
+	#Distance in blocks Dancer's Step dashes once mastered.
+	stepRangeMastered = 12.0
+	#Magicule cost of Dancer's Step.
+	stepMagiculeCost = 40.0
+	#Cooldown in seconds of Dancer's Step.
+	stepCooldownSeconds = 6
+
+[Goliath]
+	#Magicule required to learn the skill.
+	mpAcquirement = 60000.0
+	#Strength level granted by Reinforced Body (5 = Strength V).
+	reinforcedBodyStrength = 5
+	#Resistance level granted by Reinforced Body (2 = Resistance II).
+	reinforcedBodyResistance = 2
+	#Resistance level granted by Reinforced Body once mastered (3 = Resistance III).
+	reinforcedBodyResistanceMastered = 3
+	#Flat attack-speed modifier granted by Reinforced Body.
+	reinforcedBodyAttackSpeed = 0.05
+	#Flat movement-speed modifier granted by Reinforced Body. Negative = slower.
+	reinforcedBodyMoveSpeed = -0.015
+	#Fraction of physical damage Giant's Constitution removes (0.10 = -10%).
+	giantsConstitutionReduction = 0.1
+	#Range in blocks Capture pulls its target from.
+	captureRange = 15.0
+	#Range in blocks Capture pulls its target from once mastered.
+	captureRangeMastered = 20.0
+	#Magicule cost of Capture.
+	captureMagiculeCost = 75.0
+	#Cooldown in seconds of Capture.
+	captureCooldownSeconds = 8
+	#Bonus damage fraction of Power Smash (0.75 = +75%).
+	powerSmashBonus = 0.75
+	#Bonus damage fraction of Power Smash once mastered.
+	powerSmashBonusMastered = 1.0
+	#Magicule cost of Power Smash.
+	powerSmashMagiculeCost = 100.0
+	#Cooldown in seconds of Power Smash.
+	powerSmashCooldownSeconds = 10
+	#Radius in blocks Roar hits.
+	roarRange = 6.0
+	#Magicule cost of Roar.
+	roarMagiculeCost = 150.0
+	#Cooldown in seconds of Roar.
+	roarCooldownSeconds = 20
+	#Seconds of Slowness Roar applies to everything it hits.
+	roarSlownessSeconds = 4
+	#Seconds of Weakness Roar applies to everything it hits.
+	roarWeaknessSeconds = 4
+	#Damage Roar deals to everything it hits.
+	roarDamage = 8.0
+
+[Beast]
+	#Magicule required to learn the skill.
+	mpAcquirement = 50000.0
+	#Strength level granted by Transformation (4 = Strength IV).
+	transformationStrength = 4
+	#Strength level granted by Transformation once mastered (5 = Strength V).
+	transformationStrengthMastered = 5
+	#Speed level granted by Transformation (2 = Speed II).
+	transformationSpeed = 2
+	#Resistance level granted by Transformation (2 = Resistance II).
+	transformationResistance = 2
+	#Flat movement-speed modifier granted on top of the Speed effect.
+	transformationMoveSpeed = 0.03
+	#Magicule drained per upkeep cycle while Transformation is active.
+	transformationUpkeepMagicule = 10.0
+	#Seconds between Transformation upkeep cycles.
+	transformationUpkeepSeconds = 10
+	#Chance an eligible attack is evaded outright (0.15 = 15%).
+	evasionChance = 0.15
+	#Chance an eligible attack is evaded once the skill is mastered.
+	evasionChanceMastered = 0.2
+	#Radius in blocks Beast Roar reaches.
+	beastRoarRange = 10.0
+	#Seconds of Fear and Slowness Beast Roar applies.
+	beastRoarSeconds = 5
+	#Magicule cost of Beast Roar.
+	beastRoarMagiculeCost = 100.0
+	#Cooldown in seconds of Beast Roar.
+	beastRoarCooldownSeconds = 20
+	#Bonus damage fraction of Savage Claw (0.5 = +50%).
+	savageClawBonus = 0.5
+	#Bonus damage fraction of Savage Claw once mastered.
+	savageClawBonusMastered = 0.75
+	#Magicule cost of Savage Claw.
+	savageClawMagiculeCost = 50.0
+	#Cooldown in seconds of Savage Claw.
+	savageClawCooldownSeconds = 5
+	#Reach in blocks of Savage Claw. It is a lunge, not a teleport.
+	savageClawRange = 4.0
+
+[Magician]
+	#Magicule required to learn the skill.
+	mpAcquirement = 55000.0
+	#Bonus fraction of fire damage dealt (0.2 = +20%).
+	fireDamageDealtBonus = 0.2
+	#Fraction of fire damage received that is removed (0.25 = -25%).
+	fireDamageTakenReduction = 0.25
+	#Discount applied to this skill's own magicule costs (0.1 = -10%).
+	manaEfficiencyDiscount = 0.1
+	#Range in blocks Flame Spear travels before it expires.
+	flameSpearRange = 20.0
+	#Range in blocks Flame Spear travels once mastered.
+	flameSpearRangeMastered = 30.0
+	#Magicule cost of Flame Spear.
+	flameSpearMagiculeCost = 80.0
+	#Cooldown in seconds of Flame Spear.
+	flameSpearCooldownSeconds = 3
+	#Direct damage of Flame Spear's impact.
+	flameSpearDamage = 14.0
+	#Speed of the Flame Spear in blocks per tick.
+	flameSpearSpeed = 1.6
+	#Radius in blocks of Inferno. 3 = the specified 7x7 area.
+	infernoRadius = 3
+	#Radius in blocks of Inferno once mastered. 4 = the specified 9x9 area.
+	infernoRadiusMastered = 4
+	#Maximum seconds Inferno may be held open.
+	infernoMaxSeconds = 10
+	#Magicule drained per second while Inferno is held.
+	infernoMagiculePerSecond = 50.0
+	#Cooldown in seconds of Inferno, charged when the channel opens so releasing early cannot reset it.
+	infernoCooldownSeconds = 20
+	#Damage per second Inferno deals inside its area.
+	infernoDamagePerSecond = 5.0
+	#Ticks between Inferno damage pulses. Lower is smoother but busier.
+	infernoPulseTicks = 10
+	#How far away, in blocks, Inferno may be placed.
+	infernoCastRange = 12.0
+
+[Ruler]
+	#Magicule required to learn the skill.
+	mpAcquirement = 65000.0
+	#Strength level granted by Ruler's Strength.
+	rulersStrengthLevel = 1
+	#Knockback resistance granted by Ruler's Strength (0.1 = +10%).
+	rulersKnockbackResistance = 0.1
+	#Resistance level granted by Concentration while standing still.
+	concentrationResistanceLevel = 1
+	#Distance in blocks the caster may drift from where they settled and still count as standing still.
+	concentrationMoveTolerance = 0.25
+	#Ticks the caster must stay still before Concentration engages.
+	concentrationSettleTicks = 20
+	#Range in blocks Force pushes its target away.
+	forceRange = 15.0
+	#Magicule cost of Force.
+	forceMagiculeCost = 50.0
+	#Cooldown in seconds of Force.
+	forceCooldownSeconds = 3
+	#Horizontal push strength of Force.
+	forcePushStrength = 2.4
+	#Magicule drained per second while Grip is held.
+	gripMagiculePerSecond = 20.0
+	#Maximum seconds Grip may hold a target.
+	gripMaxSeconds = 5
+	#Maximum seconds Grip may hold a target once mastered.
+	gripMaxSecondsMastered = 8
+	#Range in blocks Grip can reach.
+	gripRange = 14.0
+	#Distance in blocks in front of the caster at which Grip holds its target. Chosen value.
+	gripHoldDistance = 4.5
+	#Radius in blocks Authority Smash hits.
+	authoritySmashRange = 12.0
+	#Magicule cost of Authority Smash.
+	authoritySmashMagiculeCost = 125.0
+	#Cooldown in seconds of Authority Smash.
+	authoritySmashCooldownSeconds = 10
+	#Damage of Authority Smash.
+	authoritySmashDamage = 18.0
+
+[Sagittarius]
+	#Magicule required to learn the skill.
+	mpAcquirement = 40000.0
+	#Presence Sense granted by Eagle Eye.
+	eagleEyePresenceSense = 10.0
+	#Bonus fraction of ranged damage (0.1 = +10%).
+	archerFocusDamage = 0.1
+	#Projectile-speed modifier applied while the skill is learned (0.05 = +5%).
+	archerFocusProjectileSpeed = 0.05
+	#Magicule cost per Mana Arrow.
+	manaArrowMagiculeCost = 5.0
+	#Cooldown in seconds between Mana Arrows.
+	manaArrowCooldownSeconds = 1
+	#Damage of a Mana Arrow.
+	manaArrowDamage = 10.0
+	#Range in blocks a Mana Arrow flies before it dissipates. Chosen value.
+	manaArrowRange = 48.0
+	#Maximum seconds Piercing Shot may be charged.
+	piercingMaxChargeSeconds = 3
+	#Bonus damage fraction gained per second of charge (0.25 = +25%).
+	piercingBonusPerSecond = 0.25
+	#Maximum bonus damage fraction at full charge.
+	piercingMaxBonus = 0.75
+	#Maximum bonus damage fraction at full charge once mastered.
+	piercingMaxBonusMastered = 1.0
+	#Magicule cost of Piercing Shot, charged when it is released.
+	piercingMagiculeCost = 50.0
+	#Cooldown in seconds of Piercing Shot.
+	piercingCooldownSeconds = 5
+	#Range in blocks of the pierced line.
+	piercingRange = 32.0
+	#Magicule cost of Homing Arrow.
+	homingArrowMagiculeCost = 75.0
+	#Cooldown in seconds of Homing Arrow.
+	homingArrowCooldownSeconds = 10
+	#Damage of Homing Arrow.
+	homingArrowDamage = 16.0
+	#Radius in blocks Homing Arrow searches for a target inside.
+	homingArrowAcquireRange = 24.0
+	#Radians per tick the arrow may turn.
+	homingArrowTurnRate = 0.18
+	#Speed of the Homing Arrow in blocks per tick.
+	homingArrowSpeed = 1.4
+	#Blocks a Homing Arrow may fly in total. Chosen value.
+	homingArrowRange = 40.0
+
+[Saint]
+	#Magicule required to learn the skill.
+	mpAcquirement = 45000.0
+	#Bonus fraction this skill's own healing delivers (0.2 = +20%).
+	healingArtsBonus = 0.2
+	#Bonus fraction this skill's own healing delivers once mastered.
+	healingArtsBonusMastered = 0.3
+	#Radius in blocks Saint's Protection reaches.
+	saintsProtectionRadius = 8.0
+	#Seconds of Regeneration granted per application.
+	saintsProtectionSeconds = 6
+	#Regeneration level granted by Saint's Protection.
+	saintsProtectionLevel = 1
+	#Fraction of missing health Heal restores (0.25 = 25%).
+	healMissingRatio = 0.25
+	#Magicule cost of Heal.
+	healMagiculeCost = 150.0
+	#Cooldown in seconds of Heal.
+	healCooldownSeconds = 5
+	#Range in blocks at which Heal reaches an ally the caster is looking at.
+	healRange = 12.0
+	#Magicule cost of Purification.
+	purificationMagiculeCost = 200.0
+	#Cooldown in seconds of Purification.
+	purificationCooldownSeconds = 10
+	#Radius in blocks Purification reaches around the caster. Chosen value.
+	purificationRange = 10.0
+	#Effect ids Purification leaves alone even though they are harmful: conditions another ability imposes on purpose and expects to last.
+	purificationPreserved = ["tensura:infinite_imprisonment"]
+	#Radius in blocks of Healing Field. 3 = the specified 7x7 area.
+	healingFieldRadius = 3
+	#Radius in blocks of Healing Field once mastered.
+	healingFieldRadiusMastered = 4
+	#Seconds Healing Field stands.
+	healingFieldSeconds = 6
+	#Seconds Healing Field stands once mastered. Chosen value, with the wider area.
+	healingFieldSecondsMastered = 8
+	#Magicule cost of Healing Field.
+	healingFieldMagiculeCost = 75.0
+	#Cooldown in seconds of Healing Field.
+	healingFieldCooldownSeconds = 20
+	#Health restored per second to allies standing inside Healing Field.
+	healingFieldHealPerSecond = 2.0
+	#Ticks between Healing Field pulses.
+	healingFieldPulseTicks = 20
+
+[Guardian]
+	#Magicule required to learn the skill.
+	mpAcquirement = 30000.0
+	#Resistance level granted by Defensive Body.
+	defensiveBodyResistance = 1
+	#Knockback resistance granted by Defensive Body (0.2 = +20%).
+	defensiveBodyKnockbackResistance = 0.2
+	#Knockback resistance granted by Defensive Body once mastered. Chosen value.
+	defensiveBodyKnockbackResistanceMastered = 0.3
+	#Chance a shield block costs no durability at all (0.25 = one block in four).
+	shieldMasterySaveChance = 0.25
+	#Chance a shield block costs no durability once the skill is mastered.
+	shieldMasterySaveChanceMastered = 0.4
+	#Fraction of maximum health below which Guardian's Instinct trips for an ally (0.35 = below 35%).
+	instinctThreshold = 0.35
+	#Radius in blocks Guardian's Instinct watches.
+	instinctRange = 8.0
+	#Cooldown in seconds of Guardian's Instinct.
+	instinctCooldownSeconds = 15
+	#Fraction of the damage Guardian's Instinct absorbs for the ally it trips for.
+	instinctMitigation = 0.3
+	#Fraction Guardian's Instinct absorbs once mastered. Chosen value.
+	instinctMitigationMastered = 0.4
+	#Seconds Guardian Wall stands.
+	wallSeconds = 5
+	#Magicule cost of Guardian Wall.
+	wallMagiculeCost = 100.0
+	#Cooldown in seconds of Guardian Wall.
+	wallCooldownSeconds = 10
+	#Radius in blocks of Guardian Wall. Anyone inside shares its protection.
+	wallRange = 5.0
+	#Fraction of incoming damage Guardian Wall absorbs while it stands.
+	wallMitigation = 0.5
+	#Width in blocks of Guardian Wall once mastered. Chosen value.
+	wallWidthMastered = 7.0
+	#Distance in blocks in front of the caster at which the wall is raised. Chosen value.
+	wallDistance = 2.5
+	#Range in blocks Intercept reaches.
+	interceptRange = 15.0
+	#Magicule cost of Intercept.
+	interceptMagiculeCost = 75.0
+	#Cooldown in seconds of Intercept.
+	interceptCooldownSeconds = 15
+	#Seconds of Slowness Intercept plants on the target it engages.
+	interceptSlownessSeconds = 4
+	#Seconds an intercepted enemy stays marked.
+	interceptGuardSeconds = 5
+	#Fraction of the damage an intercepted enemy deals to the Guardian's allies that is taken off.
+	interceptMitigation = 0.5
+	#Range in blocks of Shield Bash.
+	shieldBashRange = 3.0
+	#Bonus damage fraction of Shield Bash.
+	shieldBashBonus = 0.5
+	#Bonus damage fraction of Shield Bash once mastered. Chosen value.
+	shieldBashBonusMastered = 0.75
+	#Seconds Shield Bash staggers its target when a shield is actually in hand.
+	shieldBashStunSeconds = 1
+	#Magicule cost of Shield Bash.
+	shieldBashMagiculeCost = 50.0
+	#Cooldown in seconds of Shield Bash.
+	shieldBashCooldownSeconds = 5
+
+[Knight]
+	#Magicule required to learn the skill.
+	mpAcquirement = 50000.0
+	#Bonus fraction of sword damage (0.15 = +15%).
+	swordsmanshipDamage = 0.15
+	#Bonus fraction of sword damage once mastered. Chosen value.
+	swordsmanshipDamageMastered = 0.2
+	#Attack-speed modifier granted by Swordsmanship (0.1 = +10%).
+	swordsmanshipAttackSpeed = 0.1
+	#Fraction of incoming damage Knight's Defence removes (0.15 = -15%).
+	knightsDefenceReduction = 0.15
+	#Fraction of incoming damage Knight's Defence removes once mastered.
+	knightsDefenceReductionMastered = 0.25
+	#Seconds of Resistance and Strength Counter grants.
+	counterSeconds = 2
+	#Seconds of Counter once mastered. Chosen value.
+	counterSecondsMastered = 3
+	#Damage of the riposte Counter answers the first blow with, as a multiple of the Knight's attack damage.
+	counterRiposteMultiplier = 1.0
+	#Strength level granted by Counter.
+	counterStrengthLevel = 2
+	#Resistance level granted by Counter.
+	counterResistanceLevel = 2
+	#Magicule cost of Counter.
+	counterMagiculeCost = 50.0
+	#Cooldown in seconds of Counter.
+	counterCooldownSeconds = 8
+	#Damage of Sword Wave. Chosen value: no authoritative figure existed in the project's design notes, and this is what was documented before implementation.
+	swordWaveDamage = 20.0
+	#Range in blocks Sword Wave travels. Chosen value.
+	swordWaveRange = 16.0
+	#Range in blocks Sword Wave travels once mastered. Chosen value.
+	swordWaveRangeMastered = 20.0
+	#Speed of Sword Wave in blocks per tick. Chosen value.
+	swordWaveSpeed = 1.5
+	#Magicule cost of Sword Wave. Chosen value.
+	swordWaveMagiculeCost = 75.0
+	#Cooldown in seconds of Sword Wave. Chosen value.
+	swordWaveCooldownSeconds = 6
+	#Distance in blocks Charge rushes. Chosen value.
+	chargeDistance = 12.0
+	#Damage dealt to everything Charge runs through. Chosen value.
+	chargeDamage = 25.0
+	#Damage of Charge once mastered. Chosen value.
+	chargeDamageMastered = 30.0
+	#Magicule cost of Charge. Chosen value.
+	chargeMagiculeCost = 100.0
+	#Cooldown in seconds of Charge. Chosen value.
+	chargeCooldownSeconds = 12
+	#Width in blocks of Charge's sweep. Chosen value.
+	chargeWidth = 2.5
+
+[Glutton]
+	#Magicule required to learn the skill.
+	mpAcquirement = 65000.0
+	#Regeneration level granted by the passive.
+	regenerationLevel = 1
+	#Regeneration level granted by the passive once mastered. Chosen value.
+	regenerationLevelMastered = 2
+	#Seconds of Regeneration granted per application, refreshed on the skill's own tick rather than every tick.
+	regenerationSeconds = 6
+	#Strength level granted by Predatory Physique.
+	physiqueStrength = 1
+	#Attack damage added by Predatory Physique once mastered. Chosen value.
+	physiqueStrengthMastered = 2
+	#Flat movement-speed modifier granted by Predatory Physique.
+	physiqueSpeed = 0.05
+	#Magicule cost of Gluttony. Chosen value: the project's design notes held no figure for it.
+	gluttonyMagiculeCost = 200.0
+	#Cooldown in seconds of Gluttony. Chosen value.
+	gluttonyCooldownSeconds = 5
+	#Range in blocks Gluttony reaches for a corpse. Chosen value.
+	gluttonyRange = 4.0
+	#Health restored by Gluttony.
+	gluttonyHeal = 8.0
+	#Hunger points restored by Gluttony.
+	gluttonyHunger = 8
+	#Seconds of Regeneration Gluttony grants. Chosen value.
+	gluttonyRegenerationSeconds = 8
+	#Seconds a kill stays fresh enough to consume.
+	gluttonyCorpseSeconds = 12
+	#Health restored by Gluttony once mastered. Chosen value.
+	gluttonyHealMastered = 12.0
+	#Magicule cost of Paralysis Poison. Chosen value.
+	paralysisMagiculeCost = 60.0
+	#Cooldown in seconds of Paralysis Poison. Chosen value.
+	paralysisCooldownSeconds = 8
+	#Range in blocks of Paralysis Poison.
+	paralysisRange = 4.0
+	#Seconds of Poison Paralysis Poison applies. Chosen value.
+	paralysisSeconds = 6
+	#Poison level applied by Paralysis Poison. Chosen value.
+	paralysisLevel = 2
+	#Damage of the sting itself. Chosen value.
+	paralysisDamage = 4.0
+	#Seconds of Tensura's Paralysis the sting applies.
+	paralysisStunSeconds = 2
+	#Seconds of Paralysis once mastered. Chosen value.
+	paralysisStunSecondsMastered = 3
+	#Magicule drained per second while Winged Form is on.
+	wingedFormMagiculePerSecond = 4.0
+	#Magicule drained per second by Winged Form once mastered. Chosen value.
+	wingedFormMagiculePerSecondMastered = 3.0
+	#Flight speed of Winged Form. Creative flight is 0.05; this is deliberately slower.
+	wingedFormFlySpeed = 0.035
+	#Flight speed of Winged Form once mastered. Chosen value.
+	wingedFormFlySpeedMastered = 0.045

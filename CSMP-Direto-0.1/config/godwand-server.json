@@ -1,0 +1,54 @@
+{
+  "cooldownDefaultsVersion": 1,
+  "cooldownMultiplier": 1.0,
+  "damageMultiplier": 1.0,
+
+  "spatialPathCooldownTicks": 20,
+
+  "singularityCooldownTicks": [60, 120, 200],
+  "singularityDamageMultipliers": [1.0, 1.0, 1.0],
+
+  "earthDrillCooldownTicks": [80, 140, 220, 320],
+  "earthDrillDamageMultipliers": [1.0, 1.0, 1.0, 1.0],
+  "earthDrillTerrainDamage": true,
+  "earthDrillBlockLift": true,
+
+  "stoneCannonCooldownTicks": [40, 80, 140, 220],
+  "stoneCannonDamageMultipliers": [1.0, 1.0, 1.0, 1.0],
+  "stoneCannonTerrainDamage": true,
+
+  "supernovaCooldownTicks": 900,
+  "supernovaDamageMultiplier": 1.0,
+  "supernovaInstantKillHealthThreshold": 50.0,
+  "supernovaTerrainDamage": true,
+  "supernovaBlockLift": true,
+  "supernovaTerrainRadius": 120,
+  "supernovaMaxDisplays": 1800,
+
+  "atomicCooldownTicks": 1200,
+  "atomicDamage": 9999.0,
+  "atomicShockwaveDamage": 15.0,
+  "atomicTerrainDamage": true,
+  "atomicTerrainRadius": 98,
+
+  "fugaCooldownTicks": 1200,
+  "fugaDamage": 9999.0,
+  "fugaShockwaveDamageMultiplier": 0.08,
+  "fugaIgniteEntities": true,
+  "fugaShockwaveKnockback": true,
+  "fugaSlowness": true,
+  "fugaTerrainDamage": true,
+  "fugaTerrainRadius": 48,
+
+  "gateCooldownTicks": 1200,
+  "gateBeamDamage": 80.0,
+  "gateTargetMode": "hostile",
+  "gateTargetRadius": 160,
+  "gateBarrageTicks": 400,
+  "gateWaitTicks": 139,
+  "gateSkyCircles": 220,
+  "gateTerrainDamage": true,
+  "gateCraterRadius": 3,
+
+  "dimensionBlacklist": []
+}

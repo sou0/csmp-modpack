@@ -1,0 +1,14 @@
+{
+  "wandSkin": "AUTO",
+  "postEffects": true,
+  "impactFrames": true,
+  "cameraFov": true,
+  "skyBlackout": true,
+  "targetMarker": true,
+  "atomicCutscene": true,
+  "fugaCutscene": true,
+  "gateCutscene": true,
+  "cameraShake": 1.0,
+  "bloomStrength": 0.85,
+  "bloomDownsample": 4
+}

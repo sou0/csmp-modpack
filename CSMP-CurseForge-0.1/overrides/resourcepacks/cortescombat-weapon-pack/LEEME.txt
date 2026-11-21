@@ -1,0 +1,26 @@
+WEAPON PACK DE ASSETS - Cortes Combat
+======================================
+
+Esta carpeta es la casa de los assets de tus armas. Activala como resource pack
+(Opciones > Paquetes de recursos), o el server la ofrece al conectar en multijugador.
+
+Donde va cada cosa (reemplaza 'cortescombat' por el namespace de tu ítem):
+
+  assets/<ns>/models/item/<id>.json     icono del ítem (el modelo)
+  assets/<ns>/textures/item/<id>.png     su textura
+  assets/<ns>/textures/particle/slash/   sprite del golpe (32x160, 5 frames)
+                                        se referencia con texture.slash en el YAML
+  assets/<ns>/poses/<id>.json            animación, se referencia con animation.pose
+  assets/<ns>/sounds.json + sounds/      sonidos, se referencian con sounds.swing, etc.
+
+Los STATS (daño, cono, carga...) van en config/cortescombat/weapons/*.yaml, NO acá:
+esa carpeta la leen los dos lados y esta sólo se carga como resource pack.
+
+La primera vez, el mod también escribe un ejemplo comentado en
+config/cortescombat/weapons/ejemplo.yaml.example, con cada campo anotado en
+español y en inglés. Copialo a mi_pack.yaml y editá lo que quieras.
+
+Si el juego reclama el pack_format al activarlo, el número que pide es el correcto:
+pónelo en pack.mcmeta.
+
+Guía completa: docs/custom-weapons.es.md (español) y docs/custom-weapons.md (inglés).

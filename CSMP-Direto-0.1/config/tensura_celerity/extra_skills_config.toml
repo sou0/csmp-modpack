@@ -1,0 +1,103 @@
+[Multicasting]
+	#Distinct mastered spells needed before Multicasting can be acquired. 10 is Tensura's own figure for Chant Annulment.
+	requiredMasteredSpells = 10
+	#Whether only Spiritual Magic counts toward that number. Multicasting only casts Spiritual Magic, so by default only Spiritual Magic earns it; set false to count every school of magic, as Chant Annulment does.
+	countOnlySpiritualMagic = true
+	#Spells cast together before the skill is mastered.
+	slots = 2
+	#Spells cast together once the skill is mastered.
+	slotsMastered = 3
+	#Ticks added to the chant for each spell beyond the first. The chant itself is as long as the slowest spell in the combination.
+	coordinationTicks = 10
+	#The same, once mastered.
+	coordinationTicksMastered = 5
+	#Seconds before Multicasting can be used again after a cast. Each spell also starts its own cooldown, as it always does.
+	cooldownSeconds = 3
+	#The same, once mastered.
+	cooldownSecondsMastered = 2
+	#Spells that move the caster, or drag others to them. A combination may hold at most one of them, and it is released last.
+	movementSpells = ["tensura:teleport", "tensura:swipe"]
+	#Spiritual Magic that must never be multicast, whatever else is true of it. Spells that are channelled, staged, toggled or open a menu are already refused; this list is for anything a server wants to add.
+	forbiddenSpells = []
+
+[Overcharge]
+	#Seconds an Overcharge lasts.
+	durationSeconds = 6
+	durationSecondsMastered = 8
+	#How much more magicule magic costs while overcharged (0.5 = half as much again).
+	costIncrease = 0.5
+	#How much more damage magic deals while overcharged (0.2 = a fifth more).
+	damageBonus = 0.2
+	damageBonusMastered = 0.3
+	#Magicule spent to overcharge.
+	magiculeCost = 40.0
+	#Seconds before it can be used again.
+	cooldownSeconds = 30
+	cooldownSecondsMastered = 24
+	#Acquisition: mastered magic spells of any school, and EP.
+	requiredMasteredMagic = 3
+	requiredEP = 15000.0
+
+[Reservoir]
+	#Fraction of maximum magicule banked each second while the pool is full (0.0025 = a quarter of a percent).
+	fillPerSecond = 0.0025
+	#Most the reservoir can hold, as a fraction of maximum magicule.
+	capacity = 0.15
+	capacityMastered = 0.25
+	#The reservoir empties itself into the pool when magicule falls under this fraction of the maximum...
+	releaseBelow = 0.2
+	#...provided it holds at least this fraction of the maximum.
+	releaseMinimum = 0.05
+	#Seconds after a release before it starts banking again.
+	lockoutSeconds = 45
+	lockoutSecondsMastered = 30
+	#Acquisition: maximum magicule, and EP.
+	requiredMaxMagicule = 6000.0
+	requiredEP = 12000.0
+
+[OpeningStrike]
+	#Extra damage on the first melee blow against a target (0.25 = a quarter more).
+	damageBonus = 0.25
+	damageBonusMastered = 0.4
+	#Seconds a target must have gone without being struck by you for the next blow to count as an opening.
+	resetSeconds = 10
+	#Acquisition: mobs killed, and EP.
+	requiredMobKills = 150
+	requiredEP = 8000.0
+
+[Pursuit]
+	#Blocks within which a target can be marked. It must be in line of sight.
+	range = 32.0
+	#Seconds a mark lasts.
+	durationSeconds = 20
+	durationSecondsMastered = 30
+	#Extra damage you deal to your marked target (0.08 = eight hundredths more).
+	damageBonus = 0.08
+	damageBonusMastered = 0.12
+	#The mark is lost if the target gets further than this from you.
+	leashRange = 64.0
+	#Magicule spent to mark a target.
+	magiculeCost = 30.0
+	#Seconds before another target can be marked.
+	cooldownSeconds = 25
+	#Acquisition: centimetres sprinted (500000 = 5 km), mobs killed, and EP.
+	requiredSprintCm = 500000
+	requiredMobKills = 100
+	requiredEP = 10000.0
+
+[Brace]
+	#A single blow that takes at least this fraction of maximum health sets Brace off.
+	triggerFraction = 0.2
+	#Seconds it lasts.
+	durationSeconds = 3
+	durationSecondsMastered = 4
+	#Damage taken while braced is reduced by this much (0.2 = a fifth). The blow that set it off is not reduced.
+	damageReduction = 0.2
+	#Knockback resistance while braced.
+	knockbackResistance = 0.5
+	#Seconds before it can be set off again.
+	cooldownSeconds = 14
+	cooldownSecondsMastered = 10
+	#Acquisition: damage taken (in vanilla's units, tenths of a point: 50000 = 5,000 damage), and EP.
+	requiredDamageTaken = 50000
+	requiredEP = 8000.0
