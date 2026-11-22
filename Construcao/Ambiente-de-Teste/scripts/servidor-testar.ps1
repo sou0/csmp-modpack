@@ -107,6 +107,14 @@ NivelClima 0  0 'Clima 0% -> normal'
     $r = Cmd 'execute if entity @e[type=csmp:monstro_corrupto]'
     Teste 'Mob Monstro Corrupto pode ser invocado (mod csmp)' ($r -match 'Test passed') $r.Trim()
     $null = Cmd 'kill @e[type=csmp:monstro_corrupto]'
+    # NPC Profeta: pode ser invocado e e invulneravel
+    $null = Cmd 'summon csmp:profeta ~ ~ ~'
+    $r = Cmd 'execute if entity @e[type=csmp:profeta]'
+    Teste 'NPC Profeta pode ser invocado (mod csmp)' ($r -match 'Test passed') $r.Trim()
+    $null = Cmd 'damage @e[type=csmp:profeta,limit=1] 5 minecraft:generic'
+    $r = Cmd 'execute if entity @e[type=csmp:profeta,nbt={Health:20.0f}]'
+    Teste 'NPC Profeta nao sofre dano (vida continua 20)' ($r -match 'Test passed') $r.Trim()
+    $null = Cmd 'kill @e[type=csmp:profeta]'
     # Dimensao Vazio: gera o chao proprio e aceita a arvore preta gigante
     $null = Cmd 'execute in csmp:vazio run forceload add 0 0 95 95'
     Start-Sleep -Seconds 10
@@ -120,6 +128,17 @@ NivelClima 0  0 'Clima 0% -> normal'
     Teste 'Arvore negra gigante e colocada no Vazio' ($r -match 'Placed') $r.Trim()
     $r = Cmd 'execute in csmp:vazio if block 8 6 8 csmp:tronco_negro'
     Teste 'Tronco negro existe onde a arvore foi colocada' ($r -match 'Test passed') $r.Trim()
+    # Ponto de sculk: coloca sculk e seca o entorno (folhas somem, tronco vira negro, grama vira terra seca)
+    $null = Cmd 'execute in csmp:vazio run fill 24 4 0 40 30 20 minecraft:air'
+    $null = Cmd 'execute in csmp:vazio run place feature minecraft:oak 30 4 8'
+    $r = Cmd 'execute in csmp:vazio if block 30 4 8 minecraft:oak_log'
+    Teste 'Preparo: carvalho vivo colocado antes do ponto de sculk' ($r -match 'Test passed') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio run place feature csmp:ponto_sculk 31 4 9'
+    Teste 'Ponto de sculk (csmp:ponto_sculk) e colocado' ($r -match 'Placed') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio if block 30 4 8 csmp:tronco_negro'
+    Teste 'Ponto de sculk transforma o tronco vivo em tronco negro' ($r -match 'Test passed') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio run fill 22 4 0 40 30 20 minecraft:glass replace minecraft:oak_leaves'
+    Teste 'Ponto de sculk remove as folhas vivas em volta' ($r -match 'No blocks were filled|Could not set') $r.Trim()
     # Sculk em pontos aleatorios: o sculk so se espalha em pedra/terra, entao usa um quadrado de pedra
     $null = Cmd 'execute in csmp:vazio run fill 40 3 40 56 3 56 minecraft:stone'
     $r = Cmd 'execute in csmp:vazio run place feature csmp:sculk_superficie 48 4 48'

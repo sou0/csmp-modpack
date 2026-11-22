@@ -1,0 +1,6 @@
+{
+  "type": "csmp:ponto_sculk",
+  "config": {
+    "raio": 8
+  }
+}

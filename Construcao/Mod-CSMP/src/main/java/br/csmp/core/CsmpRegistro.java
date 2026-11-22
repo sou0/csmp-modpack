@@ -1,6 +1,9 @@
 package br.csmp.core;
 
 import br.csmp.core.mob.MonstroCorrupto;
+import br.csmp.core.mundo.PontoSculkFeature;
+import br.csmp.core.npc.ProfetaEntity;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -25,6 +28,12 @@ public final class CsmpRegistro {
             DeferredRegister.create(Registries.ENTITY_TYPE, CsmpMod.ID);
     public static final DeferredRegister.Items ITENS = DeferredRegister.createItems(CsmpMod.ID);
     public static final DeferredRegister.Blocks BLOCOS = DeferredRegister.createBlocks(CsmpMod.ID);
+    public static final DeferredRegister<Feature<?>> FEICOES =
+            DeferredRegister.create(Registries.FEATURE, CsmpMod.ID);
+
+    /** Ponto de sculk que seca arvores e grama em volta. */
+    public static final DeferredHolder<Feature<?>, PontoSculkFeature> PONTO_SCULK =
+            FEICOES.register("ponto_sculk", () -> new PontoSculkFeature(PontoSculkFeature.Config.CODEC));
 
     // ---- Dimensao Vazio ----
     /** Chao branco que brilha um pouco; parece o auroracite, mas e solido sem precisar de item. */
@@ -55,6 +64,19 @@ public final class CsmpRegistro {
                     .eyeHeight(2.6F)
                     .clientTrackingRange(10)
                     .build("monstro_corrupto"));
+
+    // ---- NPC Profeta ----
+    public static final DeferredHolder<EntityType<?>, EntityType<ProfetaEntity>> PROFETA =
+            ENTIDADES.register("profeta", () -> EntityType.Builder
+                    .of(ProfetaEntity::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .eyeHeight(1.62F)
+                    .clientTrackingRange(10)
+                    .build("profeta"));
+
+    public static final DeferredItem<DeferredSpawnEggItem> OVO_PROFETA =
+            ITENS.register("profeta_spawn_egg",
+                    () -> new DeferredSpawnEggItem(PROFETA, 0xE8D9A8, 0x5B3A8C, new Item.Properties()));
 
     public static final DeferredItem<DeferredSpawnEggItem> OVO_MONSTRO_CORRUPTO =
             ITENS.register("monstro_corrupto_spawn_egg",

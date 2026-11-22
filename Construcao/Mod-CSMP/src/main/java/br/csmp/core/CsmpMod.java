@@ -14,6 +14,7 @@ public class CsmpMod {
 
     public CsmpMod(IEventBus modBus) {
         CsmpRegistro.BLOCOS.register(modBus);
+        CsmpRegistro.FEICOES.register(modBus);
         CsmpRegistro.ENTIDADES.register(modBus);
         CsmpRegistro.ITENS.register(modBus);
         modBus.addListener(CsmpNetwork::register);
@@ -25,11 +26,13 @@ public class CsmpMod {
 
     private static void atributos(EntityAttributeCreationEvent event) {
         event.put(CsmpRegistro.MONSTRO_CORRUPTO.get(), br.csmp.core.mob.MonstroCorrupto.criarAtributos().build());
+        event.put(CsmpRegistro.PROFETA.get(), br.csmp.core.npc.ProfetaEntity.criarAtributos().build());
     }
 
     private static void abas(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
             event.accept(CsmpRegistro.OVO_MONSTRO_CORRUPTO.get());
+            event.accept(CsmpRegistro.OVO_PROFETA.get());
         }
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
             event.accept(CsmpRegistro.ITEM_CHAO_VAZIO.get());

@@ -1,5 +1,5 @@
 {
-  "feature": "csmp:sculk_superficie",
+  "feature": "csmp:ponto_sculk",
   "placement": [
     { "type": "minecraft:rarity_filter", "chance": 80 },
     { "type": "minecraft:in_square" },

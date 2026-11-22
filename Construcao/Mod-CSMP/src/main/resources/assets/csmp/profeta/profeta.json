@@ -1,0 +1,25 @@
+{
+  "_aviso": "TEXTOS DE EXEMPLO. O escritor pode trocar tudo aqui. estado: disponivel, concluida ou bloqueada.",
+  "missoes": [
+    {
+      "titulo": "O primeiro erudito",
+      "descricao": "Encontre um erudito preso no sculk e liberte-o.",
+      "estado": "disponivel"
+    },
+    {
+      "titulo": "Cacos de eco",
+      "descricao": "Destrua um caco de eco gigante para enfraquecer o sculk.",
+      "estado": "disponivel"
+    },
+    {
+      "titulo": "Tempos de paz",
+      "descricao": "Fique um dia inteiro sem ferir ninguem.",
+      "estado": "bloqueada"
+    }
+  ],
+  "conversa": [
+    "Voce chegou. O sculk dorme, mas nao para sempre.",
+    "Oito eruditos guardam o que precisamos saber. Liberte-os e eu lhe darei o que for justo.",
+    "Cuidado com o que faz. O mundo se lembra."
+  ]
+}
