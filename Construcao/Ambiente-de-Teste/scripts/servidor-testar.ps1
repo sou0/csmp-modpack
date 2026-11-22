@@ -107,6 +107,30 @@ NivelClima 0  0 'Clima 0% -> normal'
     $r = Cmd 'execute if entity @e[type=csmp:monstro_corrupto]'
     Teste 'Mob Monstro Corrupto pode ser invocado (mod csmp)' ($r -match 'Test passed') $r.Trim()
     $null = Cmd 'kill @e[type=csmp:monstro_corrupto]'
+    # Dimensao Vazio: gera o chao proprio e aceita a arvore preta gigante
+    $null = Cmd 'execute in csmp:vazio run forceload add 0 0 95 95'
+    Start-Sleep -Seconds 10
+    $r = Cmd 'execute in csmp:vazio if block 0 3 0 csmp:chao_vazio'
+    Teste 'Dimensao Vazio gera o chao (csmp:chao_vazio)' ($r -match 'Test passed') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio if block 0 0 0 minecraft:bedrock'
+    Teste 'Dimensao Vazio tem bedrock embaixo' ($r -match 'Test passed') $r.Trim()
+    # limpa o espaco (arvores geradas sozinhas podem estar no caminho) e coloca uma arvore
+    $null = Cmd 'execute in csmp:vazio run fill 0 4 0 20 60 20 minecraft:air'
+    $r = Cmd 'execute in csmp:vazio run place feature csmp:arvore_negra 8 4 8'
+    Teste 'Arvore negra gigante e colocada no Vazio' ($r -match 'Placed') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio if block 8 6 8 csmp:tronco_negro'
+    Teste 'Tronco negro existe onde a arvore foi colocada' ($r -match 'Test passed') $r.Trim()
+    # Sculk em pontos aleatorios: o sculk so se espalha em pedra/terra, entao usa um quadrado de pedra
+    $null = Cmd 'execute in csmp:vazio run fill 40 3 40 56 3 56 minecraft:stone'
+    $r = Cmd 'execute in csmp:vazio run place feature csmp:sculk_superficie 48 4 48'
+    Teste 'Sculk de superficie (csmp:sculk_superficie) e colocado' ($r -match 'Placed') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio run fill 36 3 36 60 6 60 minecraft:glass replace minecraft:sculk'
+    Teste 'Sculk de superficie realmente espalha blocos de sculk' ($r -match 'Successfully filled') $r.Trim()
+    $null = Cmd 'execute in csmp:vazio run fill 70 3 70 86 3 86 minecraft:stone'
+    $r = Cmd 'execute in csmp:vazio run place feature csmp:sculk_caverna 78 4 78'
+    Teste 'Sculk de caverna (csmp:sculk_caverna) e colocado' ($r -match 'Placed') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio run fill 66 3 66 90 6 90 minecraft:glass replace minecraft:sculk'
+    Teste 'Sculk de caverna realmente espalha blocos de sculk' ($r -match 'Successfully filled') $r.Trim()
 # Persistencia: grava 42, desliga, religa o MESMO mundo e confere se o caos continua 42
     $null = Cmd 'function csmp_caos:admin/definir {valor:42}'
     $null = Cmd 'function csmp_caos:admin/config_ganho {valor:7}'

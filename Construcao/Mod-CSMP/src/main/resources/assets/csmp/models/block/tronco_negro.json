@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "csmp:block/tronco_negro_topo",
+    "side": "csmp:block/tronco_negro"
+  }
+}

@@ -13,6 +13,7 @@ public class CsmpMod {
     public static final String ID = "csmp";
 
     public CsmpMod(IEventBus modBus) {
+        CsmpRegistro.BLOCOS.register(modBus);
         CsmpRegistro.ENTIDADES.register(modBus);
         CsmpRegistro.ITENS.register(modBus);
         modBus.addListener(CsmpNetwork::register);
@@ -29,6 +30,13 @@ public class CsmpMod {
     private static void abas(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
             event.accept(CsmpRegistro.OVO_MONSTRO_CORRUPTO.get());
+        }
+        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
+            event.accept(CsmpRegistro.ITEM_CHAO_VAZIO.get());
+        }
+        if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
+            event.accept(CsmpRegistro.ITEM_TRONCO_NEGRO.get());
+            event.accept(CsmpRegistro.ITEM_FOLHAS_NEGRAS.get());
         }
     }
 }

@@ -1,0 +1,16 @@
+{
+  "type": "csmp:vazio",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "csmp:vazio",
+      "features": true,
+      "lakes": false,
+      "layers": [
+        { "block": "minecraft:bedrock", "height": 1 },
+        { "block": "csmp:chao_vazio", "height": 3 }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

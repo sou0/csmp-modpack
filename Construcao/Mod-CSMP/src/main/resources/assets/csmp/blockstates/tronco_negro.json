@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "axis=y": { "model": "csmp:block/tronco_negro" },
+    "axis=z": { "model": "csmp:block/tronco_negro", "x": 90 },
+    "axis=x": { "model": "csmp:block/tronco_negro", "x": 90, "y": 90 }
+  }
+}
