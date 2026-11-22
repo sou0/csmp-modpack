@@ -72,6 +72,26 @@ function Sync-TLauncher {
     }
 }
 
+function Limpar-FolhasSalvas {
+    # O Rustling Leaves salva as folhas caidas por ENDERECO de servidor (localhost), e nao por mundo.
+    # Ao criar um mundo novo, as folhas do mundo antigo apareceriam presas no ar. So apaga com o jogo
+    # fechado: o mod regrava tudo ao sair e desfaria a limpeza.
+    $jogoAberto = Get-CimInstance Win32_Process -Filter "Name='javaw.exe'" |
+        Where-Object { $_.CommandLine -match 'net.minecraft.client.main.Main' }
+    if ($jogoAberto) {
+        Write-Host '  AVISO: o jogo esta aberto, entao nao deu para limpar as folhas salvas.'
+        Write-Host '         Feche o jogo e rode 6-MAPA-NOVO.bat se aparecerem folhas paradas no ar.'
+        return
+    }
+    foreach ($jogo in @("$TLauncher\versions\CSMP", $Instancia)) {
+        $folhas = "$jogo\rustling_leaves\servers\localhost"
+        if (Test-Path $folhas) {
+            Remove-Item $folhas -Recurse -Force
+            Write-Host "  folhas salvas apagadas: $folhas"
+        }
+    }
+}
+
 function Sync-Cliente {
     Write-Host '  mods...';          Espelhar "$Pack\mods"          "$Instancia\mods"
     Write-Host '  config...';        Espelhar "$Pack\config"        "$Instancia\config"

@@ -139,6 +139,8 @@ NivelClima 0  0 'Clima 0% -> normal'
     Teste 'Ponto de sculk transforma o tronco vivo em tronco negro' ($r -match 'Test passed') $r.Trim()
     $r = Cmd 'execute in csmp:vazio run fill 22 4 0 40 30 20 minecraft:glass replace minecraft:oak_leaves'
     Teste 'Ponto de sculk remove as folhas vivas em volta' ($r -match 'No blocks were filled|Could not set') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio run fill 22 4 0 40 40 20 minecraft:glass replace csmp:folhas_negras'
+    Teste 'Ponto de sculk deixa uma copa rala de folhas negras' ($r -match 'Successfully filled') $r.Trim()
     # Sculk em pontos aleatorios: o sculk so se espalha em pedra/terra, entao usa um quadrado de pedra
     $null = Cmd 'execute in csmp:vazio run fill 40 3 40 56 3 56 minecraft:stone'
     $r = Cmd 'execute in csmp:vazio run place feature csmp:sculk_superficie 48 4 48'

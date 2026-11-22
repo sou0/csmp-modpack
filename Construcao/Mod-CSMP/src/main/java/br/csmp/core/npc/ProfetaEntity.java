@@ -75,7 +75,7 @@ public class ProfetaEntity extends PathfinderMob {
         }
         if (!this.level().isClientSide && jogador instanceof ServerPlayer servidorJogador) {
             PacketDistributor.sendToPlayer(servidorJogador,
-                    new AbrirProfetaPayload(ServerProfeta.eruditosLibertados(servidorJogador.server)));
+                    new AbrirProfetaPayload(ServerProfeta.eruditosLibertados(servidorJogador.server), this.getId()));
         }
         return InteractionResult.sidedSuccess(this.level().isClientSide);
     }

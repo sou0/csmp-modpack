@@ -6,11 +6,16 @@
   "block.csmp.chao_vazio": "Void Floor",
   "block.csmp.tronco_negro": "Black Log",
   "block.csmp.folhas_negras": "Black Leaves",
-  "gui.csmp.profeta.missoes": "Quests",
+  "gui.csmp.profeta.missoes": "View quests",
   "gui.csmp.profeta.conversar": "Talk",
-  "gui.csmp.profeta.sair": "Leave",
+  "gui.csmp.profeta.sair": "Say goodbye",
   "gui.csmp.profeta.voltar": "Back",
-  "gui.csmp.profeta.proxima": "Next",
-  "gui.csmp.profeta.saudacao": "What do you seek?",
-  "gui.csmp.profeta.eruditos": "Scholars freed: %s/%s"
+  "gui.csmp.profeta.papel": "Keeper of the Sculk",
+  "gui.csmp.profeta.pular": "click to skip",
+  "gui.csmp.profeta.eruditos": "Scholars",
+  "gui.csmp.profeta.objetivo": "Objective",
+  "gui.csmp.profeta.recompensa": "Reward",
+  "gui.csmp.profeta.estado.disponivel": "Available",
+  "gui.csmp.profeta.estado.concluida": "Completed",
+  "gui.csmp.profeta.estado.bloqueada": "Locked"
 }

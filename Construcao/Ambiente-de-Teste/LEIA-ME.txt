@@ -11,6 +11,11 @@ ATALHOS (de dois cliques)
   3-SERVIDOR-ABERTO.bat    servidor de teste com mundo persistente ("world") para voce jogar
                            (conecte em  localhost  ; para ser OP digite no console:  op SeuNome)
   4-ABRIR-CLIENTE.bat      sincroniza e abre o jogo (Prism Launcher, instancia "CSMP Teste")
+  6-MAPA-NOVO.bat          cria um MAPA NOVO: guarda o mundo antigo (servidor\world-antigo-<data>) e apaga as
+                           folhas salvas do Rustling Leaves no cliente. Feche o jogo e o servidor antes.
+                           Por que: esse mod salva as folhas por endereco de servidor (localhost), nao por
+                           mundo; sem a limpeza, folhas do mundo antigo aparecem paradas no ar no mundo novo.
+                           (O 3-SERVIDOR-ABERTO ja faz essa limpeza sozinho quando nao existe servidor\world.)
 
 QUANDO PRECISA FECHAR E ABRIR DE NOVO?
   Mudou um mod (.jar) ........ reiniciar (servidor e/ou cliente). Nao existe troca a quente de mods.

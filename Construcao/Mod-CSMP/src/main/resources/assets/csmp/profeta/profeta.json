@@ -1,25 +1,87 @@
 {
-  "_aviso": "TEXTOS DE EXEMPLO. O escritor pode trocar tudo aqui. estado: disponivel, concluida ou bloqueada.",
+  "_aviso": "TEXTOS DE EXEMPLO. O escritor pode trocar tudo aqui. Missões: estado = disponivel, concluida ou bloqueada. Diálogo: cada nó tem 'fala' e 'opcoes' [{texto, vai}]; 'vai' é o id de outro nó, 'menu' (volta ao menu) ou 'fechar'. O nó 'inicio' é obrigatório.",
+  "titulo": "Guardião das Memórias",
+  "saudacao": "Você chegou. Eu esperava por você. O que deseja saber, viajante?",
   "missoes": [
     {
       "titulo": "O primeiro erudito",
-      "descricao": "Encontre um erudito preso no sculk e liberte-o.",
+      "descricao": "Um erudito foi engolido pelo sculk. Encontre-o, enfrente o que o prende e liberte-o.",
+      "objetivo": "Libertar 1 erudito",
+      "recompensa": "A confiança do Profeta",
       "estado": "disponivel"
     },
     {
       "titulo": "Cacos de eco",
-      "descricao": "Destrua um caco de eco gigante para enfraquecer o sculk.",
+      "descricao": "Grandes cacos de eco alimentam o sculk adormecido. Destrua um deles para enfraquecê-lo.",
+      "objetivo": "Destruir 1 caco de eco gigante",
+      "recompensa": "Item especial (a definir)",
       "estado": "disponivel"
     },
     {
       "titulo": "Tempos de paz",
-      "descricao": "Fique um dia inteiro sem ferir ninguem.",
+      "descricao": "O mundo se lembra do que você faz. Prove que ainda há bondade em você.",
+      "objetivo": "Ficar um dia inteiro sem ferir ninguém",
+      "recompensa": "Sanidade restaurada",
+      "estado": "bloqueada"
+    },
+    {
+      "titulo": "A voz do vazio",
+      "descricao": "Alguém está preso do outro lado. Ouça com atenção: ele ainda chama.",
+      "objetivo": "A definir",
+      "recompensa": "A definir",
       "estado": "bloqueada"
     }
   ],
-  "conversa": [
-    "Voce chegou. O sculk dorme, mas nao para sempre.",
-    "Oito eruditos guardam o que precisamos saber. Liberte-os e eu lhe darei o que for justo.",
-    "Cuidado com o que faz. O mundo se lembra."
-  ]
+  "dialogo": {
+    "inicio": {
+      "fala": "Pergunte. As respostas que eu tenho custaram caro a quem veio antes de você.",
+      "opcoes": [
+        { "texto": "Quem é você?", "vai": "quem" },
+        { "texto": "O que aconteceu com o mundo?", "vai": "mundo" },
+        { "texto": "Fale-me dos Eruditos.", "vai": "eruditos" },
+        { "texto": "Voltar", "vai": "menu" }
+      ]
+    },
+    "quem": {
+      "fala": "Sou o que restou de quem lembrava. Guardo o que o sculk quer apagar: nomes, lugares, promessas.",
+      "opcoes": [
+        { "texto": "E por que me ajuda?", "vai": "ajuda" },
+        { "texto": "Voltar", "vai": "inicio" }
+      ]
+    },
+    "ajuda": {
+      "fala": "Porque sozinho eu não alcanço os eruditos. Mas você alcança. Cada um libertado me devolve uma parte do que perdi.",
+      "opcoes": [
+        { "texto": "Entendi. Fale dos Eruditos.", "vai": "eruditos" },
+        { "texto": "Voltar", "vai": "inicio" }
+      ]
+    },
+    "mundo": {
+      "fala": "O sculk dorme. Dorme, não morreu. Onde ele repousa, a vida murcha: as árvores secam, a grama vira pó.",
+      "opcoes": [
+        { "texto": "Dorme... por quanto tempo?", "vai": "dormente" },
+        { "texto": "Voltar", "vai": "inicio" }
+      ]
+    },
+    "dormente": {
+      "fala": "Enquanto os cacos de eco forem deixados em paz, ele sonha. Se alguém os perturbar do jeito errado, acorda.",
+      "opcoes": [
+        { "texto": "Entendi.", "vai": "inicio" },
+        { "texto": "Encerrar a conversa", "vai": "fechar" }
+      ]
+    },
+    "eruditos": {
+      "fala": "São oito. Cada um sabia uma verdade que o mundo precisa. Liberte todos e eu lhe mostro o caminho adiante.",
+      "opcoes": [
+        { "texto": "Onde encontro um deles?", "vai": "onde" },
+        { "texto": "Voltar", "vai": "inicio" }
+      ]
+    },
+    "onde": {
+      "fala": "Onde o sculk é mais denso. Siga o silêncio, viajante: onde nada canta, algo escuta.",
+      "opcoes": [
+        { "texto": "Obrigado.", "vai": "menu" }
+      ]
+    }
+  }
 }

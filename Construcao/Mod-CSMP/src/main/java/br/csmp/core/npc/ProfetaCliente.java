@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 public final class ProfetaCliente {
     private ProfetaCliente() {}
 
-    public static void abrir(int eruditos) {
-        Minecraft.getInstance().setScreen(new ProfetaTela(eruditos));
+    public static void abrir(int eruditos, int entidade) {
+        Minecraft.getInstance().setScreen(new ProfetaTela(eruditos, entidade));
     }
 }

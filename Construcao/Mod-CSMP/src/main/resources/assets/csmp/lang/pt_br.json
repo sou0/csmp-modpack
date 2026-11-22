@@ -6,11 +6,16 @@
   "block.csmp.chao_vazio": "Chão do Vazio",
   "block.csmp.tronco_negro": "Tronco Negro",
   "block.csmp.folhas_negras": "Folhas Negras",
-  "gui.csmp.profeta.missoes": "Missões",
+  "gui.csmp.profeta.missoes": "Ver missões",
   "gui.csmp.profeta.conversar": "Conversar",
-  "gui.csmp.profeta.sair": "Sair",
+  "gui.csmp.profeta.sair": "Despedir-se",
   "gui.csmp.profeta.voltar": "Voltar",
-  "gui.csmp.profeta.proxima": "Próxima",
-  "gui.csmp.profeta.saudacao": "O que você deseja?",
-  "gui.csmp.profeta.eruditos": "Eruditos libertados: %s/%s"
+  "gui.csmp.profeta.papel": "Guardião do Sculk",
+  "gui.csmp.profeta.pular": "clique para pular",
+  "gui.csmp.profeta.eruditos": "Eruditos",
+  "gui.csmp.profeta.objetivo": "Objetivo",
+  "gui.csmp.profeta.recompensa": "Recompensa",
+  "gui.csmp.profeta.estado.disponivel": "Disponível",
+  "gui.csmp.profeta.estado.concluida": "Concluída",
+  "gui.csmp.profeta.estado.bloqueada": "Bloqueada"
 }
