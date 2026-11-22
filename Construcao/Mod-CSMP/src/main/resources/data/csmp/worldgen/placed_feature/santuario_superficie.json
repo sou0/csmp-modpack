@@ -1,0 +1,6 @@
+{
+  "feature": "csmp:santuario_superficie",
+  "placement": [
+    { "type": "minecraft:biome" }
+  ]
+}

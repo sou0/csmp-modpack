@@ -3,6 +3,10 @@ package br.csmp.core;
 import br.csmp.core.mob.MonstroCorrupto;
 import br.csmp.core.mundo.PontoSculkFeature;
 import br.csmp.core.npc.ProfetaEntity;
+import br.csmp.core.santuario.AltarSantuarioBlock;
+import br.csmp.core.santuario.SantuarioFeature;
+import br.csmp.core.npc.VazioNpcEntity;
+import br.csmp.core.vazio.EstruturaVazioFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
@@ -31,6 +35,14 @@ public final class CsmpRegistro {
     public static final DeferredRegister<Feature<?>> FEICOES =
             DeferredRegister.create(Registries.FEATURE, CsmpMod.ID);
 
+    /** Santuario (mesma construcao nas duas dimensoes, blocos diferentes). */
+    public static final DeferredHolder<Feature<?>, SantuarioFeature> SANTUARIO =
+            FEICOES.register("santuario", () -> new SantuarioFeature(SantuarioFeature.Config.CODEC));
+
+    /** Estruturas soltas do Vazio (poste, portas, casinha, escada, sala, monolito, balanco, fonte). */
+    public static final DeferredHolder<Feature<?>, EstruturaVazioFeature> ESTRUTURA_VAZIO =
+            FEICOES.register("estrutura_vazio", () -> new EstruturaVazioFeature(EstruturaVazioFeature.Config.CODEC));
+
     /** Ponto de sculk que seca arvores e grama em volta. */
     public static final DeferredHolder<Feature<?>, PontoSculkFeature> PONTO_SCULK =
             FEICOES.register("ponto_sculk", () -> new PontoSculkFeature(PontoSculkFeature.Config.CODEC));
@@ -53,6 +65,16 @@ public final class CsmpRegistro {
             () -> new LeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_LEAVES)
                     .mapColor(MapColor.COLOR_BLACK)));
 
+    /** Altar do santuario (mesmo bloco no Vazio e no overworld). Inquebravel em sobrevivencia. */
+    public static final DeferredBlock<AltarSantuarioBlock> ALTAR_SANTUARIO = BLOCOS.register("altar_santuario",
+            () -> new AltarSantuarioBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_RED)
+                    .strength(-1.0F, 3600000.0F)
+                    .sound(SoundType.AMETHYST)
+                    .lightLevel(estado -> 10)
+                    .noLootTable()));
+
+    public static final DeferredItem<BlockItem> ITEM_ALTAR_SANTUARIO = ITENS.registerSimpleBlockItem(ALTAR_SANTUARIO);
     public static final DeferredItem<BlockItem> ITEM_CHAO_VAZIO = ITENS.registerSimpleBlockItem(CHAO_VAZIO);
     public static final DeferredItem<BlockItem> ITEM_TRONCO_NEGRO = ITENS.registerSimpleBlockItem(TRONCO_NEGRO);
     public static final DeferredItem<BlockItem> ITEM_FOLHAS_NEGRAS = ITENS.registerSimpleBlockItem(FOLHAS_NEGRAS);
@@ -64,6 +86,30 @@ public final class CsmpRegistro {
                     .eyeHeight(2.6F)
                     .clientTrackingRange(10)
                     .build("monstro_corrupto"));
+
+    // ---- NPCs do Vazio (estilo Yume Nikki) ----
+    public static final DeferredHolder<EntityType<?>, EntityType<VazioNpcEntity>> SOMBRA =
+            ENTIDADES.register("sombra", () -> EntityType.Builder
+                    .of(VazioNpcEntity::new, MobCategory.CREATURE)
+                    .sized(0.6F, 1.95F).eyeHeight(1.7F).clientTrackingRange(10).build("sombra"));
+    public static final DeferredHolder<EntityType<?>, EntityType<VazioNpcEntity>> CRIANCA =
+            ENTIDADES.register("crianca", () -> EntityType.Builder
+                    .of(VazioNpcEntity::new, MobCategory.CREATURE)
+                    .sized(0.4F, 1.3F).eyeHeight(1.1F).clientTrackingRange(10).build("crianca"));
+    public static final DeferredHolder<EntityType<?>, EntityType<VazioNpcEntity>> SENTINELA =
+            ENTIDADES.register("sentinela", () -> EntityType.Builder
+                    .of(VazioNpcEntity::new, MobCategory.CREATURE)
+                    .sized(0.9F, 2.9F).eyeHeight(2.6F).clientTrackingRange(12).build("sentinela"));
+
+    public static final DeferredItem<DeferredSpawnEggItem> OVO_SOMBRA =
+            ITENS.register("sombra_spawn_egg",
+                    () -> new DeferredSpawnEggItem(SOMBRA, 0x0A0A0E, 0xEDEDED, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> OVO_CRIANCA =
+            ITENS.register("crianca_spawn_egg",
+                    () -> new DeferredSpawnEggItem(CRIANCA, 0xE8D6C8, 0x961E28, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> OVO_SENTINELA =
+            ITENS.register("sentinela_spawn_egg",
+                    () -> new DeferredSpawnEggItem(SENTINELA, 0x5A5A62, 0xC81818, new Item.Properties()));
 
     // ---- NPC Profeta ----
     public static final DeferredHolder<EntityType<?>, EntityType<ProfetaEntity>> PROFETA =

@@ -152,6 +152,48 @@ NivelClima 0  0 'Clima 0% -> normal'
     Teste 'Sculk de caverna (csmp:sculk_caverna) e colocado' ($r -match 'Placed') $r.Trim()
     $r = Cmd 'execute in csmp:vazio run fill 66 3 66 90 6 90 minecraft:glass replace minecraft:sculk'
     Teste 'Sculk de caverna realmente espalha blocos de sculk' ($r -match 'Successfully filled') $r.Trim()
+    # --- NPCs do Vazio (estilo Yume Nikki): existem e nao sofrem dano
+    foreach ($npc in 'sombra', 'crianca', 'sentinela') {
+        $null = Cmd "summon csmp:$npc ~ ~ ~"
+        $r = Cmd "execute if entity @e[type=csmp:$npc]"
+        Teste "NPC do Vazio '$npc' pode ser invocado" ($r -match 'Test passed') $r.Trim()
+        $null = Cmd "damage @e[type=csmp:$npc,limit=1] 5 minecraft:generic"
+        $r = Cmd "execute if entity @e[type=csmp:$npc,nbt={Health:20.0f}]"
+        Teste "NPC do Vazio '$npc' nao sofre dano" ($r -match 'Test passed') $r.Trim()
+        $null = Cmd "kill @e[type=csmp:$npc]"
+    }
+    # --- Estruturas proprias do Vazio: cada uma e colocada e deixa seu bloco-assinatura
+    $null = Cmd 'execute in csmp:vazio run forceload add 112 112 191 191'
+    Start-Sleep -Seconds 8
+    $estruturas = @(@('poste', 'minecraft:lantern'), @('portas', 'minecraft:iron_door'),
+        @('casinha', 'minecraft:red_stained_glass_pane'), @('escada', 'minecraft:polished_blackstone_brick_stairs'),
+        @('sala', 'minecraft:sea_lantern'), @('monolito', 'minecraft:shroomlight'),
+        @('balanco', 'minecraft:chain'), @('fonte', 'minecraft:nether_wart_block'))
+    for ($i = 0; $i -lt $estruturas.Count; $i++) {
+        $nome = $estruturas[$i][0]; $assinatura = $estruturas[$i][1]
+        $cx = 128 + 16 * ($i % 4); $cz = 128 + 16 * [int][math]::Floor($i / 4)
+        $r = Cmd "execute in csmp:vazio run place feature csmp:estrutura_$nome $($cx + 8) 4 $($cz + 8)"
+        Teste "Estrutura do Vazio '$nome' e colocada" ($r -match 'Placed') $r.Trim()
+        $r = Cmd "execute in csmp:vazio run fill $cx 2 $cz $($cx + 15) 24 $($cz + 15) minecraft:glass replace $assinatura"
+        Teste "Estrutura do Vazio '$nome' deixa o bloco $assinatura" ($r -match 'Successfully filled') $r.Trim()
+    }
+    # --- Santuario: nas duas dimensoes, e o ritual de troca de terreno
+    $null = Cmd 'execute in csmp:vazio run forceload add 176 176 239 239'
+    $null = Cmd 'execute in minecraft:overworld run forceload add 176 176 239 239'
+    Start-Sleep -Seconds 12
+    $r = Cmd 'execute in csmp:vazio run place feature csmp:santuario_vazio_direto 208 4 208'
+    Teste 'Santuario do Vazio e colocado' ($r -match 'Placed') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio if block 208 5 208 csmp:altar_santuario'
+    Teste 'Altar do santuario existe no Vazio' ($r -match 'Test passed') $r.Trim()
+    $r = Cmd 'execute in minecraft:overworld positioned 208 64 208 positioned over world_surface run place feature csmp:santuario_superficie_direto ~ ~ ~'
+    Teste 'Santuario do overworld e colocado' ($r -match 'Placed') $r.Trim()
+    $r = Cmd 'csmp santuario trocar 208 208'
+    Teste 'Ritual de troca inicia (acha o altar nas duas dimensoes)' ($r -match 'Ritual iniciado') $r.Trim()
+    Start-Sleep -Seconds 9
+    $r = Cmd 'execute in minecraft:overworld run fill 208 -60 208 208 200 208 minecraft:glass replace minecraft:smooth_quartz'
+    Teste 'Troca: o overworld passou a ter o chao branco do Vazio' ($r -match 'Successfully filled') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio run fill 208 0 208 208 60 208 minecraft:glass replace minecraft:mossy_stone_bricks'
+    Teste 'Troca: o Vazio passou a ter a pedra do overworld' ($r -match 'Successfully filled') $r.Trim()
 # Persistencia: grava 42, desliga, religa o MESMO mundo e confere se o caos continua 42
     $null = Cmd 'function csmp_caos:admin/definir {valor:42}'
     $null = Cmd 'function csmp_caos:admin/config_ganho {valor:7}'
@@ -172,8 +214,12 @@ NivelClima 0  0 'Clima 0% -> normal'
         if ((Ler-Log) -match '\]: Done \(') { $pronto2 = $true; break }
     }
     if ($pronto2) {
+        Start-Sleep -Seconds 6   # deixa o servidor terminar de escrever o log de inicio (voice chat etc.)
         $null = Cmd ''
-        $r = Cmd 'scoreboard players get #caos csmp_caos'
+        $r = ''
+        for ($tentativa = 0; $tentativa -lt 4 -and $r -notmatch '#caos has'; $tentativa++) {
+            $r = Cmd 'scoreboard players get #caos csmp_caos'
+        }
         Teste 'Caos salvo apos reiniciar o servidor (42)' ($r -match '#caos has 42 ') $r.Trim()
         $r = Cmd 'bossbar get csmp_caos:medidor value'
         Teste 'Barra volta com o valor salvo (42)' ($r -match 'value of 42') $r.Trim()

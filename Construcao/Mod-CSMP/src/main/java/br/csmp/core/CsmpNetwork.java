@@ -11,6 +11,8 @@ public final class CsmpNetwork {
         PayloadRegistrar registrar = event.registrar("1").optional();
         registrar.playToClient(CaosPayload.TYPE, CaosPayload.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> ClientCaos.set(payload.caos())));
+        registrar.playToClient(br.csmp.core.vazio.LuzesPayload.TYPE, br.csmp.core.vazio.LuzesPayload.CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> br.csmp.core.vazio.ClientLuzes.atualizar(payload)));
         registrar.playToClient(br.csmp.core.npc.AbrirProfetaPayload.TYPE, br.csmp.core.npc.AbrirProfetaPayload.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> br.csmp.core.npc.ProfetaCliente.abrir(payload.eruditos(), payload.entidade())));
     }

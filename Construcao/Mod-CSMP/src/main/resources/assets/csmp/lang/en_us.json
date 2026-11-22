@@ -17,5 +17,19 @@
   "gui.csmp.profeta.recompensa": "Reward",
   "gui.csmp.profeta.estado.disponivel": "Available",
   "gui.csmp.profeta.estado.concluida": "Completed",
-  "gui.csmp.profeta.estado.bloqueada": "Locked"
+  "gui.csmp.profeta.estado.bloqueada": "Locked",
+  "block.csmp.altar_santuario": "Sanctuary Altar",
+  "entity.csmp.sombra": "Shadow",
+  "item.csmp.sombra_spawn_egg": "Shadow Spawn Egg",
+  "entity.csmp.crianca": "Child",
+  "item.csmp.crianca_spawn_egg": "Child Spawn Egg",
+  "entity.csmp.sentinela": "Sentinel",
+  "item.csmp.sentinela_spawn_egg": "Sentinel Spawn Egg",
+  "subtitles.csmp.vazio.ambiente": "Heavy silence",
+  "subtitles.csmp.vazio.humor": "Something breathes in the distance",
+  "subtitles.csmp.vazio.sussurro": "Whispers",
+  "subtitles.csmp.vazio.susto": "Something approaches",
+  "subtitles.csmp.npc.murmurio": "Murmur",
+  "subtitles.csmp.santuario.chamado": "The sanctuary resonates",
+  "subtitles.csmp.santuario.troca": "The worlds trade places"
 }

@@ -21,5 +21,8 @@ public final class ClientSetup {
     public static void renderizadores(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(CsmpRegistro.MONSTRO_CORRUPTO.get(), MonstroCorruptoRenderer::new);
         event.registerEntityRenderer(CsmpRegistro.PROFETA.get(), br.csmp.core.npc.ProfetaRenderer::new);
+        event.registerEntityRenderer(CsmpRegistro.SOMBRA.get(), br.csmp.core.npc.VazioNpcRenderer::new);
+        event.registerEntityRenderer(CsmpRegistro.CRIANCA.get(), br.csmp.core.npc.VazioNpcRenderer::new);
+        event.registerEntityRenderer(CsmpRegistro.SENTINELA.get(), br.csmp.core.npc.VazioNpcRenderer::new);
     }
 }

@@ -1,0 +1,7 @@
+{
+  "type": "csmp:santuario",
+  "config": {
+    "estilo": "superficie",
+    "regional": false
+  }
+}

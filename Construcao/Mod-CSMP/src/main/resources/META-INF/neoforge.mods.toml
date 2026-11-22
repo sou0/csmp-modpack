@@ -11,6 +11,9 @@ description = '''
 Mod proprio do CSMP. Por enquanto: liga a cobertura de nuvens do Create: Skys ao Medidor de Caos.
 '''
 
+[[mixins]]
+config = "csmp.mixins.json"
+
 [[dependencies.csmp]]
 modId = "neoforge"
 type = "required"
