@@ -66,6 +66,7 @@ public class CsmpMod {
         }
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
             event.accept(CsmpRegistro.ITEM_CHAO_VAZIO.get());
+            event.accept(CsmpRegistro.ITEM_TERRA_NEGRA.get());
             event.accept(CsmpRegistro.ITEM_ALTAR_SANTUARIO.get());
         }
         if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {

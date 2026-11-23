@@ -8,7 +8,8 @@
       "lakes": false,
       "layers": [
         { "block": "minecraft:bedrock", "height": 1 },
-        { "block": "csmp:chao_vazio", "height": 3 }
+        { "block": "csmp:terra_negra", "height": 2 },
+        { "block": "csmp:chao_vazio", "height": 1 }
       ],
       "structure_overrides": []
     }

@@ -1,6 +1,8 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "all": "csmp:block/chao_vazio"
+    "top": "csmp:block/chao_vazio",
+    "side": "csmp:block/chao_vazio_lado",
+    "bottom": "csmp:block/terra_negra"
   }
 }

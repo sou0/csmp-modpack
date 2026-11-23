@@ -41,7 +41,7 @@ public class EstruturaVazioFeature extends Feature<EstruturaVazioFeature.Config>
         // mantem a estrutura perto do meio do chunk (a geracao so deixa escrever perto)
         int x = ((o.getX() >> 4) << 4) + 5 + Math.floorMod(o.getX(), 6);
         int z = ((o.getZ() >> 4) << 4) + 5 + Math.floorMod(o.getZ(), 6);
-        int y = nivel.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z);
+        int y = Vazio.alturaDoChao(nivel, x, z);
         BlockPos base = new BlockPos(x, y, z);
         switch (contexto.config().tipo()) {
             case "poste" -> poste(nivel, base);

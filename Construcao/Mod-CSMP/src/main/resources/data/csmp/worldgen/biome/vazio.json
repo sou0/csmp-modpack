@@ -36,7 +36,13 @@
     [],
     [],
     [],
+    [],
+    [],
+    [],
+    [],
+    [],
     [
+      "csmp:arvores_negras",
       "csmp:estrutura_poste",
       "csmp:estrutura_portas",
       "csmp:estrutura_casinha",
@@ -47,11 +53,6 @@
       "csmp:estrutura_fonte",
       "csmp:santuario_vazio"
     ],
-    [],
-    [],
-    [],
-    [],
-    [ "csmp:arvores_negras" ],
     []
   ],
   "has_precipitation": false,

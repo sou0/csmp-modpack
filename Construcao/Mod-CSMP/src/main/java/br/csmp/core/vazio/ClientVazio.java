@@ -5,11 +5,11 @@ import br.csmp.core.CsmpSons;
 import com.mojang.blaze3d.shaders.FogShape;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.material.FogType;
@@ -19,6 +19,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
+import net.neoforged.neoforge.client.event.sound.PlaySoundEvent;
 import org.joml.Vector3f;
 
 /**
@@ -56,6 +57,24 @@ public final class ClientVazio {
         evento.setCanceled(true);
     }
 
+    /**
+     * No Vazio so tocam os sons do proprio Vazio. Corta o ambiente de outros mods (passaros, grilos, vento,
+     * rio, mar do Create Atmospherics) e o som de chuva/trovao do jogo, que nao combinam com o lugar.
+     */
+    @SubscribeEvent
+    public static void silenciarAmbiente(PlaySoundEvent evento) {
+        SoundInstance som = evento.getSound();
+        if (som == null || !Vazio.eh(Minecraft.getInstance().level)) {
+            return;
+        }
+        String espaco = som.getLocation().getNamespace();
+        boolean deOutroMod = espaco.equals("aeronauticswinds") || espaco.equals("aeronautics_windsound");
+        boolean clima = som.getSource() == SoundSource.WEATHER && espaco.equals("minecraft");
+        if (deOutroMod || clima) {
+            evento.setSound(null);
+        }
+    }
+
     @SubscribeEvent
     public static void tick(ClientTickEvent.Post evento) {
         Minecraft mc = Minecraft.getInstance();
@@ -77,10 +96,6 @@ public final class ClientVazio {
         float chuva = AtmosferaVazio.chuva(tempo, 0.0F);
         if (chuva > 0.02F) {
             chuvaVermelha(nivel, jogador, chuva);
-            if (tempo % 70L == 0L && chuva > 0.25F) {
-                nivel.playLocalSound(jogador.getX(), jogador.getY(), jogador.getZ(), SoundEvents.WEATHER_RAIN,
-                        SoundSource.WEATHER, 0.5F * chuva, 0.6F, false);
-            }
         }
         sustos(nivel, jogador, tempo);
         ClientLuzes.tick(nivel, jogador, tempo);

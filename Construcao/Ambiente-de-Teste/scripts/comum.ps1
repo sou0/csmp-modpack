@@ -45,14 +45,14 @@ function Sync-Servidor([string]$mundo = 'world') {
 
 function Apontar-Menu-Local($pastaJogo) {
     # No teste, o botao "Entrar no CSMP" do FancyMenu aponta para o servidor local.
-    # O pack em si mantem o IP fixo real (csmp.enxada.host).
+    # O pack em si usa o IP do servidor na rede do Radmin VPN (26.179.92.56).
     $dir = "$pastaJogo\config\fancymenu\customization"
     if (-not (Test-Path $dir)) { return }
     $utf8 = New-Object System.Text.UTF8Encoding($false)
     Get-ChildItem $dir -Filter *.txt | ForEach-Object {
         $x = [IO.File]::ReadAllText($_.FullName)
-        if ($x.Contains('csmp.enxada.host')) {
-            [IO.File]::WriteAllText($_.FullName, $x.Replace('csmp.enxada.host','localhost'), $utf8)
+        if ($x.Contains('26.179.92.56')) {
+            [IO.File]::WriteAllText($_.FullName, $x.Replace('26.179.92.56','localhost'), $utf8)
             Write-Host "  menu -> localhost ($($_.Name))"
         }
     }

@@ -164,17 +164,35 @@ NivelClima 0  0 'Clima 0% -> normal'
     }
     # --- Estruturas proprias do Vazio: cada uma e colocada e deixa seu bloco-assinatura
     $null = Cmd 'execute in csmp:vazio run forceload add 112 112 191 191'
-    Start-Sleep -Seconds 8
+    # espera os chunks gerarem de verdade (com as estruturas naturais) antes de colocar as do teste
+    for ($t = 0; $t -lt 40; $t++) {
+        Start-Sleep -Seconds 5
+        $a = Cmd 'execute in csmp:vazio if loaded 112 3 112'
+        $b = Cmd 'execute in csmp:vazio if loaded 191 3 191'
+        if ($a -match 'Test passed' -and $b -match 'Test passed') { break }
+    }
+    Start-Sleep -Seconds 5
     $estruturas = @(@('poste', 'minecraft:lantern'), @('portas', 'minecraft:iron_door'),
         @('casinha', 'minecraft:red_stained_glass_pane'), @('escada', 'minecraft:polished_blackstone_brick_stairs'),
         @('sala', 'minecraft:sea_lantern'), @('monolito', 'minecraft:shroomlight'),
         @('balanco', 'minecraft:chain'), @('fonte', 'minecraft:nether_wart_block'))
+    # geracao natural: as estruturas tem que aparecer sozinhas na geracao normal do mundo (nao so por comando)
+    # (o fill so aceita ate 32768 blocos por comando, entao a area de 80x80 e dividida em caixas de 32x32x32;
+    # procura so os postes com lanterna, que sao os mais comuns: 1 a cada 6 chunks)
+    $naturais = 0
+    foreach ($bx in 112, 144, 176) {
+        foreach ($bz in 112, 144, 176) {
+            $r = Cmd "execute in csmp:vazio run fill $bx 2 $bz $($bx + 31) 33 $($bz + 31) minecraft:glass replace minecraft:lantern"
+            if ($r -match 'Successfully filled') { $naturais++ }
+        }
+    }
+    Teste "Estruturas do Vazio aparecem sozinhas na geracao natural (postes achados em $naturais de 9 caixas)" ($naturais -ge 1) "$naturais caixas"
     for ($i = 0; $i -lt $estruturas.Count; $i++) {
         $nome = $estruturas[$i][0]; $assinatura = $estruturas[$i][1]
         $cx = 128 + 16 * ($i % 4); $cz = 128 + 16 * [int][math]::Floor($i / 4)
         $r = Cmd "execute in csmp:vazio run place feature csmp:estrutura_$nome $($cx + 8) 4 $($cz + 8)"
         Teste "Estrutura do Vazio '$nome' e colocada" ($r -match 'Placed') $r.Trim()
-        $r = Cmd "execute in csmp:vazio run fill $cx 2 $cz $($cx + 15) 24 $($cz + 15) minecraft:glass replace $assinatura"
+        $r = Cmd "execute in csmp:vazio run fill $cx 2 $cz $($cx + 15) 40 $($cz + 15) minecraft:glass replace $assinatura"
         Teste "Estrutura do Vazio '$nome' deixa o bloco $assinatura" ($r -match 'Successfully filled') $r.Trim()
     }
     # --- Santuario: nas duas dimensoes, e o ritual de troca de terreno
@@ -190,10 +208,10 @@ NivelClima 0  0 'Clima 0% -> normal'
     $r = Cmd 'csmp santuario trocar 208 208'
     Teste 'Ritual de troca inicia (acha o altar nas duas dimensoes)' ($r -match 'Ritual iniciado') $r.Trim()
     Start-Sleep -Seconds 9
-    $r = Cmd 'execute in minecraft:overworld run fill 208 -60 208 208 200 208 minecraft:glass replace minecraft:smooth_quartz'
-    Teste 'Troca: o overworld passou a ter o chao branco do Vazio' ($r -match 'Successfully filled') $r.Trim()
-    $r = Cmd 'execute in csmp:vazio run fill 208 0 208 208 60 208 minecraft:glass replace minecraft:mossy_stone_bricks'
-    Teste 'Troca: o Vazio passou a ter a pedra do overworld' ($r -match 'Successfully filled') $r.Trim()
+    $r = Cmd 'execute in minecraft:overworld run fill 208 -60 208 208 200 208 minecraft:glass replace minecraft:polished_blackstone'
+    Teste 'Troca: o overworld passou a ter o piso preto do Vazio' ($r -match 'Successfully filled') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio run fill 208 0 208 208 60 208 minecraft:glass replace minecraft:spruce_planks'
+    Teste 'Troca: o Vazio passou a ter a madeira do overworld' ($r -match 'Successfully filled') $r.Trim()
 # Persistencia: grava 42, desliga, religa o MESMO mundo e confere se o caos continua 42
     $null = Cmd 'function csmp_caos:admin/definir {valor:42}'
     $null = Cmd 'function csmp_caos:admin/config_ganho {valor:7}'

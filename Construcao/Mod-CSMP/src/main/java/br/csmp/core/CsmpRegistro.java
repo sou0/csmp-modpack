@@ -48,14 +48,22 @@ public final class CsmpRegistro {
             FEICOES.register("ponto_sculk", () -> new PontoSculkFeature(PontoSculkFeature.Config.CODEC));
 
     // ---- Dimensao Vazio ----
-    /** Chao branco que brilha um pouco; parece o auroracite, mas e solido sem precisar de item. */
+    /**
+     * Chao de folhas vermelhas por cima da terra preta. Emite uma luz fraca: o Vazio e iluminado "de baixo",
+     * e o bloco e escuro, entao o chao em si nao parece brilhar.
+     */
     public static final DeferredBlock<Block> CHAO_VAZIO = BLOCOS.registerSimpleBlock("chao_vazio",
             BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.SNOW)
-                    .strength(2.0F, 6.0F)
-                    .sound(SoundType.AMETHYST)
-                    .lightLevel(estado -> 7)
-                    .requiresCorrectToolForDrops());
+                    .mapColor(MapColor.COLOR_RED)
+                    .strength(1.5F, 6.0F)
+                    .sound(SoundType.GRASS));
+
+    /** Terra preta: as camadas debaixo do chao do Vazio. */
+    public static final DeferredBlock<Block> TERRA_NEGRA = BLOCOS.registerSimpleBlock("terra_negra",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(1.0F, 6.0F)
+                    .sound(SoundType.GRAVEL));
 
     public static final DeferredBlock<RotatedPillarBlock> TRONCO_NEGRO = BLOCOS.register("tronco_negro",
             () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_LOG)
@@ -76,6 +84,7 @@ public final class CsmpRegistro {
 
     public static final DeferredItem<BlockItem> ITEM_ALTAR_SANTUARIO = ITENS.registerSimpleBlockItem(ALTAR_SANTUARIO);
     public static final DeferredItem<BlockItem> ITEM_CHAO_VAZIO = ITENS.registerSimpleBlockItem(CHAO_VAZIO);
+    public static final DeferredItem<BlockItem> ITEM_TERRA_NEGRA = ITENS.registerSimpleBlockItem(TERRA_NEGRA);
     public static final DeferredItem<BlockItem> ITEM_TRONCO_NEGRO = ITENS.registerSimpleBlockItem(TRONCO_NEGRO);
     public static final DeferredItem<BlockItem> ITEM_FOLHAS_NEGRAS = ITENS.registerSimpleBlockItem(FOLHAS_NEGRAS);
 

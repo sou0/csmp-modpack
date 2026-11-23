@@ -4,6 +4,7 @@
   "entity.csmp.profeta": "Prophet",
   "item.csmp.profeta_spawn_egg": "Prophet Spawn Egg",
   "block.csmp.chao_vazio": "Void Floor",
+  "block.csmp.terra_negra": "Black Soil",
   "block.csmp.tronco_negro": "Black Log",
   "block.csmp.folhas_negras": "Black Leaves",
   "gui.csmp.profeta.missoes": "View quests",

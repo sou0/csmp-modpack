@@ -257,7 +257,7 @@ element {
 
 element {
   button_element_executable_block_identifier = ee0adccb-6e4f-44cc-bf68-1f12558fd85b-1730212669822
-  [executable_action_instance:5aa93460-0329-4595-92d1-6b0edd151d4a-1730212749284][action_type:joinserver] = csmp.enxada.host
+  [executable_action_instance:5aa93460-0329-4595-92d1-6b0edd151d4a-1730212749284][action_type:joinserver] = 26.179.92.56
   [executable_block:ee0adccb-6e4f-44cc-bf68-1f12558fd85b-1730212669822][type:generic] = [executables:5aa93460-0329-4595-92d1-6b0edd151d4a-1730212749284;]
   restartbackgroundanimations = true
   loopbackgroundanimations = true
@@ -371,7 +371,7 @@ element {
   stay_on_screen = true
   element_loading_requirement_container_identifier = 7fe0cb86-7ac2-4dc1-86f8-e08bfa5c0433-1730259007307
   [loading_requirement_container_meta:7fe0cb86-7ac2-4dc1-86f8-e08bfa5c0433-1730259007307] = [groups:][instances:ec95f71a-f119-422c-99e1-e9a01e059611-1730259325877;]
-  [loading_requirement:fancymenu_loading_requirement_is_server_online][requirement_mode:if][req_id:ec95f71a-f119-422c-99e1-e9a01e059611-1730259325877] = csmp.enxada.host
+  [loading_requirement:fancymenu_loading_requirement_is_server_online][requirement_mode:if][req_id:ec95f71a-f119-422c-99e1-e9a01e059611-1730259325877] = 26.179.92.56
 }
 
 element {
