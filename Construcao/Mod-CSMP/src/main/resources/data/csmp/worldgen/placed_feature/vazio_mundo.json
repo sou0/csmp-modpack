@@ -1,0 +1,8 @@
+{
+  "feature": "csmp:vazio_mundo",
+  "placement": [
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

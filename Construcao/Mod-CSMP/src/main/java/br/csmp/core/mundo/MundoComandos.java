@@ -22,6 +22,11 @@ public final class MundoComandos {
     public static void comandos(RegisterCommandsEvent evento) {
         evento.getDispatcher().register(Commands.literal("csmp").requires(fonte -> fonte.hasPermission(2))
                 .then(Commands.literal("bosque").executes(ctx -> bosque(ctx.getSource())))
+                .then(Commands.literal("vazio")
+                        .then(Commands.argument("tipo", com.mojang.brigadier.arguments.StringArgumentType.word())
+                                .suggests((ctx, b) -> net.minecraft.commands.SharedSuggestionProvider.suggest(
+                                        new String[] {"rua", "casa", "loja", "capela", "praca", "ruina", "estatua"}, b))
+                                .executes(ctx -> vazio(ctx.getSource(), com.mojang.brigadier.arguments.StringArgumentType.getString(ctx, "tipo")))))
                 .then(Commands.literal("insanidade")
                         .then(Commands.literal("ver")
                                 .then(Commands.argument("jogador", EntityArgument.player())
@@ -42,6 +47,22 @@ public final class MundoComandos {
         }
         fonte.sendSuccess(() -> Component.literal("Bosque mais perto: x=" + centro[0] + " z=" + centro[1]
                 + " (raio medio " + Bosques.RAIO + ")"), false);
+        return 1;
+    }
+
+    /** /csmp vazio <tipo>: coordenadas (no Vazio) da rua ou da construcao desse tipo mais perto de quem digitou. */
+    private static int vazio(CommandSourceStack fonte, String tipo) {
+        long semente = fonte.getServer().overworld().getSeed();
+        int x = (int) fonte.getPosition().x;
+        int z = (int) fonte.getPosition().z;
+        int[] alvo = tipo.equals("rua")
+                ? br.csmp.core.vazio.VazioConsultas.ruaMaisPerto(semente, x, z, 400)
+                : br.csmp.core.vazio.VazioConsultas.loteMaisPerto(semente, x, z, tipo.equals("estatua") ? 1300 : 500, tipo);
+        if (alvo == null) {
+            fonte.sendFailure(Component.literal("Nao achei " + tipo + " por perto."));
+            return 0;
+        }
+        fonte.sendSuccess(() -> Component.literal("Vazio, " + tipo + " mais perto: x=" + alvo[0] + " z=" + alvo[1]), false);
         return 1;
     }
 

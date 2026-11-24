@@ -30,22 +30,7 @@
     [],
     [],
     [
-      "csmp:arvores_negras",
-      "csmp:estrutura_poste",
-      "csmp:estrutura_portas",
-      "csmp:estrutura_casinha",
-      "csmp:estrutura_cabana_torta",
-      "csmp:estrutura_cabana_aberta",
-      "csmp:estrutura_escada",
-      "csmp:estrutura_sala",
-      "csmp:estrutura_monolito",
-      "csmp:estrutura_balanco",
-      "csmp:estrutura_fonte",
-      "csmp:armadilha_poco",
-      "csmp:armadilha_flechas",
-      "csmp:armadilha_teia",
-      "csmp:armadilha_fio",
-      "csmp:estatua_vazio"
+      "csmp:vazio_mundo"
     ],
     []
   ],

@@ -99,14 +99,14 @@ public class EstruturaVazioFeature extends Feature<EstruturaVazioFeature.Config>
     // ------------------------------------------------------------------ estruturas
 
     /** Poste solitario: uma lanterna no alto de um poste de pedra escura. */
-    private static void poste(WorldGenLevel n, BlockPos base) {
+    static void poste(WorldGenLevel n, BlockPos base) {
         caixa(n, base, 0, 0, 0, 0, 5, 0, b(Blocks.POLISHED_BLACKSTONE_WALL));
         um(n, base, 0, 6, 0, b(Blocks.POLISHED_BLACKSTONE));
         um(n, base, 0, 7, 0, b(Blocks.LANTERN));
     }
 
     /** Tres portas de ferro em pe, sozinhas, com um tapete vermelho na frente de cada uma. */
-    private static void portas(WorldGenLevel n, BlockPos base) {
+    static void portas(WorldGenLevel n, BlockPos base) {
         for (int i = -1; i <= 1; i++) {
             int x = i * 4;
             caixa(n, base, x - 1, 0, 0, x - 1, 3, 0, b(Blocks.BLACK_CONCRETE));
@@ -118,7 +118,7 @@ public class EstruturaVazioFeature extends Feature<EstruturaVazioFeature.Config>
     }
 
     /** Casinha branca e vazia, com janela vermelha, tapete e uma cadeira de frente para a parede. */
-    private static void casinha(WorldGenLevel n, BlockPos base) {
+    static void casinha(WorldGenLevel n, BlockPos base) {
         caixa(n, base, -3, 0, -3, 3, 3, 3, b(Blocks.WHITE_CONCRETE));
         caixa(n, base, -2, 0, -2, 2, 3, 2, b(Blocks.AIR));
         caixa(n, base, -3, 4, -3, 3, 4, 3, b(Blocks.WHITE_CONCRETE));
@@ -130,7 +130,7 @@ public class EstruturaVazioFeature extends Feature<EstruturaVazioFeature.Config>
     }
 
     /** Escada que sobe ate uma moldura de porta no ar. Do outro lado, so o vazio. */
-    private static void escada(WorldGenLevel n, BlockPos base) {
+    static void escada(WorldGenLevel n, BlockPos base) {
         for (int i = 0; i < 10; i++) {
             int x = -5 + i;
             um(n, base, x, i, 0, escadaDe(Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS, Direction.EAST));
@@ -145,7 +145,7 @@ public class EstruturaVazioFeature extends Feature<EstruturaVazioFeature.Config>
     }
 
     /** Sala branca, fechada, com uma cadeira e uma mesinha no meio e luz fria no teto. */
-    private static void sala(WorldGenLevel n, BlockPos base) {
+    static void sala(WorldGenLevel n, BlockPos base) {
         caixa(n, base, -4, 0, -4, 4, 4, 4, b(Blocks.WHITE_CONCRETE));
         caixa(n, base, -3, 0, -3, 3, 4, 3, b(Blocks.AIR));
         caixa(n, base, -4, 5, -4, 4, 5, 4, b(Blocks.WHITE_CONCRETE));
@@ -162,7 +162,7 @@ public class EstruturaVazioFeature extends Feature<EstruturaVazioFeature.Config>
     }
 
     /** Monolito preto com um olho vermelho aceso. */
-    private static void monolito(WorldGenLevel n, BlockPos base) {
+    static void monolito(WorldGenLevel n, BlockPos base) {
         caixa(n, base, -2, 0, -2, 2, 0, 2, b(Blocks.POLISHED_BLACKSTONE));
         caixa(n, base, -1, 1, 0, 1, 9, 0, b(Blocks.POLISHED_BLACKSTONE));
         um(n, base, 0, 6, -1, b(Blocks.SHROOMLIGHT));
@@ -173,7 +173,7 @@ public class EstruturaVazioFeature extends Feature<EstruturaVazioFeature.Config>
     }
 
     /** Balanco de parquinho, parado, com as correntes esticadas. */
-    private static void balanco(WorldGenLevel n, BlockPos base) {
+    static void balanco(WorldGenLevel n, BlockPos base) {
         caixa(n, base, -2, 0, 0, -2, 4, 0, b(Blocks.DARK_OAK_FENCE));
         caixa(n, base, 2, 0, 0, 2, 4, 0, b(Blocks.DARK_OAK_FENCE));
         caixa(n, base, -2, 4, 0, 2, 4, 0, b(Blocks.STRIPPED_DARK_OAK_LOG).setValue(RotatedPillarBlock.AXIS, Direction.Axis.X));
@@ -308,7 +308,7 @@ public class EstruturaVazioFeature extends Feature<EstruturaVazioFeature.Config>
     }
 
     /** Fonte seca: um anel de pedra com uma poca vermelha no lugar da agua. */
-    private static void fonte(WorldGenLevel n, BlockPos base) {
+    static void fonte(WorldGenLevel n, BlockPos base) {
         for (int dx = -3; dx <= 3; dx++) {
             for (int dz = -3; dz <= 3; dz++) {
                 double distancia = Math.sqrt(dx * dx + dz * dz);

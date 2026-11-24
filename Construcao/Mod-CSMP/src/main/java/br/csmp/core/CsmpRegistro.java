@@ -46,6 +46,11 @@ public final class CsmpRegistro {
             FEICOES.register("bosque", () -> new br.csmp.core.mundo.BosqueFeature(
                     net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration.CODEC));
 
+    /** O Vazio inteiro (ruas, arvores e construcoes sem sobreposicao), chunk a chunk. */
+    public static final DeferredHolder<Feature<?>, br.csmp.core.vazio.VazioMundoFeature> VAZIO_MUNDO =
+            FEICOES.register("vazio_mundo", () -> new br.csmp.core.vazio.VazioMundoFeature(
+                    net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration.CODEC));
+
     public static final DeferredHolder<Feature<?>, EstatuaFeature> ESTATUA_FEATURE =
             FEICOES.register("estatua", () -> new EstatuaFeature(EstatuaFeature.Config.CODEC));
 
@@ -81,6 +86,14 @@ public final class CsmpRegistro {
                     .sound(br.csmp.core.vazio.ChaoVazioBlock.tipoDeSom())
                     .lightLevel(estado -> 6)
                     .noLootTable()));
+
+    /** Assoalho falso das casas do Vazio: igual ao carvalho escuro, sem colisao (armadilha). */
+    public static final DeferredBlock<Block> ASSOALHO_FALSO = BLOCOS.register("assoalho_falso",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_PLANKS).noCollission().noLootTable()));
+
+    /** Lajota falsa das pracas do Vazio: igual ao tijolo de pedra, sem colisao (armadilha). */
+    public static final DeferredBlock<Block> PEDRA_FALSA = BLOCOS.register("pedra_falsa",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).noCollission().noLootTable()));
 
     /** Terra preta: as camadas debaixo do chao do Vazio. */
     public static final DeferredBlock<Block> TERRA_NEGRA = BLOCOS.registerSimpleBlock("terra_negra",

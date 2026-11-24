@@ -15,7 +15,7 @@ public final class Bosques {
     /** Lado de cada celula, em blocos (uma floresta por celula). */
     public static final int CELULA = 3000;
     /** Raio medio de cada floresta, em blocos. */
-    public static final int RAIO = 130;
+    public static final int RAIO = 90;
 
     public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(CsmpMod.ID, "betulas_indoceis");
     public static final ResourceKey<Biome> BIOMA = ResourceKey.create(Registries.BIOME, ID);

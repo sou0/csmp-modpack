@@ -39,5 +39,7 @@
   "entity.csmp.estatua": "Estátua",
   "block.csmp.betula_olho": "Bétula Indócil",
   "item.csmp.venda": "Venda",
-  "block.csmp.chao_falso": "Chão Falso"
+  "block.csmp.chao_falso": "Chão Falso",
+  "block.csmp.assoalho_falso": "Assoalho Falso",
+  "block.csmp.pedra_falsa": "Lajota Falsa"
 }

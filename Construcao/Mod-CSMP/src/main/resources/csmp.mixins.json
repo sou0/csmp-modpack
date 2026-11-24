@@ -3,7 +3,10 @@
   "minVersion": "0.8",
   "package": "br.csmp.core.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": [
+    "NoiseBasedChunkGeneratorMixin",
+    "BiomeSourceMixin"
+  ],
   "client": [
     "ClientLevelMixin"
   ],

@@ -29,15 +29,11 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 /**
- * Faz a Floresta das Betulas Indoceis, um chunk por vez. Roda em todo chunk do overworld e so age nos que ficam
- * dentro de alguma floresta (veja {@link Bosques}): pinta o bioma, planta betulas, poe os olhos nos troncos,
- * monta o cemiterio com a estatua no chunk do centro e esconde minidungeons com uma peca rachada.
+ * Detalhes da Floresta das Betulas Indoceis, um chunk por vez. Roda so dentro do bioma (que ja nasce de verdade,
+ * com as betulas, pelo {@link BosquePintura}): poe os olhos nos troncos, monta o cemiterio com a estatua no chunk do
+ * centro e esconde minidungeons com uma peca rachada.
  */
 public class BosqueFeature extends Feature<NoneFeatureConfiguration> {
-    private static final ResourceKey<net.minecraft.world.level.levelgen.feature.ConfiguredFeature<?, ?>> BETULA =
-            ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.withDefaultNamespace("birch"));
-    private static final ResourceKey<net.minecraft.world.level.levelgen.feature.ConfiguredFeature<?, ?>> BETULA_ALTA =
-            ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.withDefaultNamespace("birch_tall"));
 
     public BosqueFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
@@ -54,8 +50,6 @@ public class BosqueFeature extends Feature<NoneFeatureConfiguration> {
             return false;
         }
         RandomSource aleatorio = contexto.random();
-        pintarBioma(nivel, chunk, centro);
-        plantarBetulas(contexto, chunk, centro, aleatorio);
         colocarOlhos(nivel, chunk, centro, aleatorio);
         boolean ehCentro = chunk.getMinBlockX() + 8 == centro[0] && chunk.getMinBlockZ() + 8 == centro[1];
         if (ehCentro) {
@@ -67,55 +61,8 @@ public class BosqueFeature extends Feature<NoneFeatureConfiguration> {
         return true;
     }
 
-    /** Troca o bioma das colunas que ficam dentro da floresta (de baixo a cima do chunk). */
-    private static void pintarBioma(WorldGenLevel nivel, ChunkPos chunk, int[] centro) {
-        Registry<Biome> registro = nivel.registryAccess().registryOrThrow(Registries.BIOME);
-        Holder<Biome> bioma = registro.getHolderOrThrow(Bosques.BIOMA);
-        ChunkAccess dados = nivel.getChunk(chunk.x, chunk.z);
-        for (int s = 0; s < dados.getSectionsCount(); s++) {
-            LevelChunkSection secao = dados.getSection(s);
-            for (int qx = 0; qx < 4; qx++) {
-                for (int qz = 0; qz < 4; qz++) {
-                    int x = chunk.getMinBlockX() + qx * 4 + 2;
-                    int z = chunk.getMinBlockZ() + qz * 4 + 2;
-                    if (Bosques.distanciaDaBorda(centro, x, z) > 0.0D) {
-                        continue;
-                    }
-                    for (int qy = 0; qy < 4; qy++) {
-                        @SuppressWarnings("unchecked")
-                        net.minecraft.world.level.chunk.PalettedContainer<Holder<Biome>> biomas =
-                                (net.minecraft.world.level.chunk.PalettedContainer<Holder<Biome>>) secao.getBiomes();
-                        biomas.set(qx, qy, qz, bioma);
-                    }
-                }
-            }
-        }
-        dados.setUnsaved(true);
-    }
-
     private static boolean dentro(int[] centro, int x, int z) {
         return Bosques.distanciaDaBorda(centro, x, z) <= 0.0D;
-    }
-
-    private void plantarBetulas(FeaturePlaceContext<NoneFeatureConfiguration> contexto, ChunkPos chunk, int[] centro, RandomSource r) {
-        WorldGenLevel nivel = contexto.level();
-        Registry<ConfiguredFeature<?, ?>> registro = nivel.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE);
-        int tentativas = 14;
-        for (int i = 0; i < tentativas; i++) {
-            int x = chunk.getMinBlockX() + r.nextInt(16);
-            int z = chunk.getMinBlockZ() + r.nextInt(16);
-            if (!dentro(centro, x, z) || Math.hypot(x - centro[0], z - centro[1]) < 13.0D) {
-                continue;
-            }
-            int y = nivel.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z);
-            BlockPos pos = new BlockPos(x, y, z);
-            if (!nivel.getBlockState(pos.below()).is(BlockTags.DIRT)) {
-                continue;
-            }
-            ResourceKey<ConfiguredFeature<?, ?>> chave = r.nextInt(3) == 0 ? BETULA_ALTA : BETULA;
-            registro.getHolder(chave).ifPresent(arvore ->
-                    arvore.value().place(nivel, contexto.chunkGenerator(), r, pos));
-        }
     }
 
     /** Troca alguns troncos de betula (de 1 a 4 blocos acima do chao) por troncos com olho. */

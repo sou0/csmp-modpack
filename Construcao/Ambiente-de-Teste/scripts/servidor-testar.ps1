@@ -179,17 +179,27 @@ NivelClima 0  0 'Clima 0% -> normal'
         @('estrutura_cabana_torta', 'minecraft:soul_lantern'), @('estrutura_cabana_aberta', 'minecraft:red_stained_glass'),
         @('armadilha_poco', 'minecraft:pointed_dripstone'), @('armadilha_flechas', 'minecraft:dispenser'),
         @('armadilha_teia', 'minecraft:cobweb'), @('armadilha_fio', 'minecraft:tripwire_hook'))
-    # geracao natural: as estruturas tem que aparecer sozinhas na geracao normal do mundo (nao so por comando)
-    # (o fill so aceita ate 32768 blocos por comando, entao a area de 80x80 e dividida em caixas de 32x32x32;
-    # procura so os postes com lanterna, que sao os mais comuns: 1 a cada 6 chunks)
-    $naturais = 0
-    foreach ($bx in 112, 144, 176) {
-        foreach ($bz in 112, 144, 176) {
-            $r = Cmd "execute in csmp:vazio run fill $bx 2 $bz $($bx + 31) 33 $($bz + 31) minecraft:glass replace minecraft:lantern"
-            if ($r -match 'Successfully filled') { $naturais++ }
-        }
+    # geracao natural do Vazio: ruas e casas tem que aparecer sozinhas, no lugar que o plano diz
+    foreach ($tipo in 'rua', 'casa') {
+        $r = Cmd "csmp vazio $tipo"
+        if ($r -match 'x=(-?\d+) z=(-?\d+)') {
+            $vx = [int]$Matches[1]; $vz = [int]$Matches[2]
+            $null = Cmd "execute in csmp:vazio run forceload add $($vx - 16) $($vz - 16) $($vx + 16) $($vz + 16)"
+            for ($t = 0; $t -lt 40; $t++) {
+                Start-Sleep -Seconds 3
+                if ((Cmd "execute in csmp:vazio if loaded $($vx + 16) 3 $($vz + 16)") -match 'Test passed' -and
+                    (Cmd "execute in csmp:vazio if loaded $($vx - 16) 3 $($vz - 16)") -match 'Test passed') { break }
+            }
+            Start-Sleep -Seconds 4
+            $blocos = if ($tipo -eq 'rua') { @('minecraft:blackstone', 'minecraft:polished_blackstone', 'minecraft:light_gray_concrete') } else { @('minecraft:dark_oak_planks') }
+            $achou = $false
+            foreach ($bl in $blocos) {
+                $r2 = Cmd "execute in csmp:vazio run fill $($vx - 1) 3 $($vz - 1) $($vx + 1) 3 $($vz + 1) minecraft:glass replace $bl"
+                if ($r2 -match 'Successfully filled') { $achou = $true; break }
+            }
+            Teste "Vazio: $tipo gerada sozinha no lugar planejado ($vx, $vz)" $achou "$tipo em $vx $vz"
+        } else { Teste "Vazio: comando acha $tipo" $false $r.Trim() }
     }
-    Teste "Estruturas do Vazio aparecem sozinhas na geracao natural (postes achados em $naturais de 9 caixas)" ($naturais -ge 1) "$naturais caixas"
     for ($i = 0; $i -lt $estruturas.Count; $i++) {
         $nome = $estruturas[$i][0]; $assinatura = $estruturas[$i][1]
         $cx = 128 + 16 * ($i % 4); $cz = 128 + 16 * [int][math]::Floor($i / 4)
