@@ -26,6 +26,8 @@ neoForge {
 dependencies {
     // Create: Skys so para compilar (nao e empacotado no nosso jar)
     compileOnly files('../Pack-Direto/mods/createskys-0.1.0.jar')
+    // Simple Voice Chat: so a API (esta dentro do jar do mod) para compilar; nao e empacotada no nosso jar
+    compileOnly files('../Pack-Direto/mods/voicechat-neoforge-1.21.1-2.6.27.jar')
 }
 
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }

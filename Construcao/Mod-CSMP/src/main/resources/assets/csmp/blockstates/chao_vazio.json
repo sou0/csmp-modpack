@@ -1,5 +1,6 @@
 {
   "variants": {
-    "": { "model": "csmp:block/chao_vazio" }
+    "powered=false": { "model": "csmp:block/chao_vazio" },
+    "powered=true": { "model": "csmp:block/chao_vazio" }
   }
 }

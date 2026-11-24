@@ -172,10 +172,13 @@ NivelClima 0  0 'Clima 0% -> normal'
         if ($a -match 'Test passed' -and $b -match 'Test passed') { break }
     }
     Start-Sleep -Seconds 5
-    $estruturas = @(@('poste', 'minecraft:lantern'), @('portas', 'minecraft:iron_door'),
-        @('casinha', 'minecraft:red_stained_glass_pane'), @('escada', 'minecraft:polished_blackstone_brick_stairs'),
-        @('sala', 'minecraft:sea_lantern'), @('monolito', 'minecraft:shroomlight'),
-        @('balanco', 'minecraft:chain'), @('fonte', 'minecraft:nether_wart_block'))
+    $estruturas = @(@('estrutura_poste', 'minecraft:lantern'), @('estrutura_portas', 'minecraft:iron_door'),
+        @('estrutura_casinha', 'minecraft:red_stained_glass_pane'), @('estrutura_escada', 'minecraft:polished_blackstone_brick_stairs'),
+        @('estrutura_sala', 'minecraft:sea_lantern'), @('estrutura_monolito', 'minecraft:shroomlight'),
+        @('estrutura_balanco', 'minecraft:chain'), @('estrutura_fonte', 'minecraft:nether_wart_block'),
+        @('estrutura_cabana_torta', 'minecraft:soul_lantern'), @('estrutura_cabana_aberta', 'minecraft:red_stained_glass'),
+        @('armadilha_poco', 'minecraft:pointed_dripstone'), @('armadilha_flechas', 'minecraft:dispenser'),
+        @('armadilha_teia', 'minecraft:cobweb'), @('armadilha_fio', 'minecraft:tripwire_hook'))
     # geracao natural: as estruturas tem que aparecer sozinhas na geracao normal do mundo (nao so por comando)
     # (o fill so aceita ate 32768 blocos por comando, entao a area de 80x80 e dividida em caixas de 32x32x32;
     # procura so os postes com lanterna, que sao os mais comuns: 1 a cada 6 chunks)
@@ -190,28 +193,64 @@ NivelClima 0  0 'Clima 0% -> normal'
     for ($i = 0; $i -lt $estruturas.Count; $i++) {
         $nome = $estruturas[$i][0]; $assinatura = $estruturas[$i][1]
         $cx = 128 + 16 * ($i % 4); $cz = 128 + 16 * [int][math]::Floor($i / 4)
-        $r = Cmd "execute in csmp:vazio run place feature csmp:estrutura_$nome $($cx + 8) 4 $($cz + 8)"
+        $r = Cmd "execute in csmp:vazio run place feature csmp:$nome $($cx + 8) 4 $($cz + 8)"
         Teste "Estrutura do Vazio '$nome' e colocada" ($r -match 'Placed') $r.Trim()
-        $r = Cmd "execute in csmp:vazio run fill $cx 2 $cz $($cx + 15) 40 $($cz + 15) minecraft:glass replace $assinatura"
+        $r = Cmd "execute in csmp:vazio run fill $cx 1 $cz $($cx + 15) 40 $($cz + 15) minecraft:glass replace $assinatura"
         Teste "Estrutura do Vazio '$nome' deixa o bloco $assinatura" ($r -match 'Successfully filled') $r.Trim()
     }
     # --- Santuario: nas duas dimensoes, e o ritual de troca de terreno
     $null = Cmd 'execute in csmp:vazio run forceload add 176 176 239 239'
     $null = Cmd 'execute in minecraft:overworld run forceload add 176 176 239 239'
     Start-Sleep -Seconds 12
-    $r = Cmd 'execute in csmp:vazio run place feature csmp:santuario_vazio_direto 208 4 208'
-    Teste 'Santuario do Vazio e colocado' ($r -match 'Placed') $r.Trim()
-    $r = Cmd 'execute in csmp:vazio if block 208 5 208 csmp:altar_santuario'
-    Teste 'Altar do santuario existe no Vazio' ($r -match 'Test passed') $r.Trim()
-    $r = Cmd 'execute in minecraft:overworld positioned 208 64 208 positioned over world_surface run place feature csmp:santuario_superficie_direto ~ ~ ~'
-    Teste 'Santuario do overworld e colocado' ($r -match 'Placed') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio run place feature csmp:estatua_vazio_direto 208 4 208'
+    Teste 'Estatua do Vazio (cemiterio) e colocada' ($r -match 'Placed') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio if block 208 3 208 csmp:base_estatua'
+    Teste 'Base da estatua existe no Vazio' ($r -match 'Test passed') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio if entity @e[type=csmp:estatua,x=208,y=4,z=208,distance=..3,nbt={Brilha:1b,Partes:15}]'
+    Teste 'Estatua do Vazio ja nasce inteira e brilhando' ($r -match 'Test passed') $r.Trim()
+    $r = Cmd 'execute in minecraft:overworld positioned 208 64 208 positioned over world_surface run place feature csmp:estatua_superficie_direto ~ ~ ~'
+    Teste 'Estatua do overworld (cemiterio) e colocada' ($r -match 'Placed') $r.Trim()
+    $r = Cmd 'execute in minecraft:overworld positioned 208 64 208 positioned over world_surface if entity @e[type=csmp:estatua,distance=..4,nbt={Partes:0}]'
+    Teste 'Estatua do overworld nasce quebrada (sem partes)' ($r -match 'Test passed') $r.Trim()
+    $r = Cmd 'csmp rituais estado'
+    Teste 'Rituais comecam escondidos (so admin revela)' ($r -match 'escondidos') $r.Trim()
+    $r = Cmd 'csmp rituais revelar'
+    Teste 'Admin revela os rituais' ($r -match 'Rituais revelados') $r.Trim()
     $r = Cmd 'csmp santuario trocar 208 208'
-    Teste 'Ritual de troca inicia (acha o altar nas duas dimensoes)' ($r -match 'Ritual iniciado') $r.Trim()
+    Teste 'Ritual de troca inicia (acha a base nas duas dimensoes)' ($r -match 'Ritual iniciado') $r.Trim()
     Start-Sleep -Seconds 9
-    $r = Cmd 'execute in minecraft:overworld run fill 208 -60 208 208 200 208 minecraft:glass replace minecraft:polished_blackstone'
+    $r = Cmd 'execute in minecraft:overworld run fill 209 -60 208 212 200 208 minecraft:glass replace minecraft:polished_blackstone'
     Teste 'Troca: o overworld passou a ter o piso preto do Vazio' ($r -match 'Successfully filled') $r.Trim()
-    $r = Cmd 'execute in csmp:vazio run fill 208 0 208 208 60 208 minecraft:glass replace minecraft:spruce_planks'
-    Teste 'Troca: o Vazio passou a ter a madeira do overworld' ($r -match 'Successfully filled') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio run fill 209 0 208 212 60 208 minecraft:glass replace minecraft:stone_bricks'
+    Teste 'Troca: o Vazio passou a ter a pedra do overworld' ($r -match 'Successfully filled') $r.Trim()
+    # --- Floresta das Betulas Indocis: gera de verdade no overworld, com bioma, estatua e olhos nas betulas
+    $r = Cmd 'csmp bosque'
+    if ($r -match 'x=(-?\d+) z=(-?\d+)') {
+        $bx = [int]$Matches[1]; $bz = [int]$Matches[2]
+        Teste "Comando /csmp bosque informa o centro ($bx, $bz)" $true $r.Trim()
+        $null = Cmd "execute in minecraft:overworld run forceload add $($bx - 48) $($bz - 48) $($bx + 47) $($bz + 47)"
+        for ($t = 0; $t -lt 60; $t++) {
+            Start-Sleep -Seconds 4
+            $a = Cmd "execute in minecraft:overworld if loaded $($bx - 40) 70 $($bz - 40)"
+            $b = Cmd "execute in minecraft:overworld if loaded $($bx + 40) 70 $($bz + 40)"
+            if ($a -match 'Test passed' -and $b -match 'Test passed') { break }
+        }
+        Start-Sleep -Seconds 8
+        $r = Cmd "execute in minecraft:overworld positioned $bx 70 $bz if biome ~ ~ ~ csmp:betulas_indoceis"
+        Teste 'Bosque: o bioma Betulas Indocis foi pintado no centro' ($r -match 'Test passed') $r.Trim()
+        $r = Cmd "execute in minecraft:overworld run fill $($bx - 1) -60 $($bz - 1) $($bx + 1) 150 $($bz + 1) minecraft:glass replace csmp:base_estatua"
+        Teste 'Bosque: a base da estatua nasce no centro' ($r -match 'Successfully filled') $r.Trim()
+        $olhos = 0
+        foreach ($ox in ($bx - 48), ($bx - 16), ($bx + 16)) {
+            foreach ($oz in ($bz - 48), ($bz - 16), ($bz + 16)) {
+                foreach ($oy in 40, 72) {
+                    $r = Cmd "execute in minecraft:overworld run fill $ox $oy $oz $($ox + 31) $($oy + 31) $($oz + 31) minecraft:glass replace csmp:betula_olho"
+                    if ($r -match 'Successfully filled') { $olhos++ }
+                }
+            }
+        }
+        Teste "Bosque: ha troncos de betula com olho ($olhos de 18 caixas)" ($olhos -ge 1) "$olhos caixas"
+    } else { Teste 'Comando /csmp bosque informa o centro' $false $r.Trim() }
 # Persistencia: grava 42, desliga, religa o MESMO mundo e confere se o caos continua 42
     $null = Cmd 'function csmp_caos:admin/definir {valor:42}'
     $null = Cmd 'function csmp_caos:admin/config_ganho {valor:7}'

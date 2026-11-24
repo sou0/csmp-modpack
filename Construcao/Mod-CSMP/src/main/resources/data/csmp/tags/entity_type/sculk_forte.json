@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:warden",
+    {
+      "id": "ec_ad:sculksaur",
+      "required": false
+    }
+  ]
+}

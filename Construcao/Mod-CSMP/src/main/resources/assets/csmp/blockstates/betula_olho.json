@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "aberto=false,axis=y": {
+      "model": "csmp:block/betula_olho"
+    },
+    "aberto=false,axis=x": {
+      "model": "csmp:block/betula_olho_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "aberto=false,axis=z": {
+      "model": "csmp:block/betula_olho_horizontal",
+      "x": 90
+    },
+    "aberto=true,axis=y": {
+      "model": "csmp:block/betula_olho_aberto"
+    },
+    "aberto=true,axis=x": {
+      "model": "csmp:block/betula_olho_aberto_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "aberto=true,axis=z": {
+      "model": "csmp:block/betula_olho_aberto_horizontal",
+      "x": 90
+    }
+  }
+}

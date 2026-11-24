@@ -1,0 +1,75 @@
+{
+  "carvers": {},
+  "creature_spawn_probability": 0.05,
+  "downfall": 0.6,
+  "effects": {
+    "additions_sound": {
+      "sound": "csmp:vazio.sussurro",
+      "tick_chance": 0.0035
+    },
+    "ambient_sound": "csmp:vazio.ambiente",
+    "fog_color": 2760000,
+    "foliage_color": 6048078,
+    "grass_color": 5784648,
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2.0,
+      "sound": "csmp:vazio.humor",
+      "tick_delay": 6000
+    },
+    "sky_color": 4204324,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+  ],
+  "has_precipitation": true,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [
+      {
+        "type": "minecraft:spider",
+        "weight": 100,
+        "minCount": 4,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:zombie",
+        "weight": 95,
+        "minCount": 4,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:skeleton",
+        "weight": 100,
+        "minCount": 4,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:enderman",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 4
+      }
+    ],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 0.6
+}

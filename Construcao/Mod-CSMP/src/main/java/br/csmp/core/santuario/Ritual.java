@@ -2,6 +2,7 @@ package br.csmp.core.santuario;
 
 import br.csmp.core.CsmpRegistro;
 import br.csmp.core.CsmpSons;
+import br.csmp.core.sanidade.Sanidade;
 import br.csmp.core.vazio.Vazio;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -38,43 +39,53 @@ final class Ritual {
     private final MinecraftServer servidor;
     private final ServerLevel overworld;
     private final ServerLevel vazio;
-    private final int cx;
-    private final int cz;
+    /** Centro (x, z) da estatua no overworld e no Vazio. */
+    private final int ox;
+    private final int oz;
+    private final int vx;
+    private final int vz;
     private final int yOverworld;
     private final int yVazio;
     private final int deslocamento;
     private final UUID chamador;
+    private final UUID invocador;
     private final List<int[]> colunas;
     private int indice = 0;
     private int tick = 0;
 
-    private Ritual(MinecraftServer servidor, ServerLevel overworld, ServerLevel vazio, int cx, int cz,
-                   int yOverworld, int yVazio, UUID chamador) {
+    private Ritual(MinecraftServer servidor, ServerLevel overworld, ServerLevel vazio, int ox, int oz, int vx, int vz,
+                   int yOverworld, int yVazio, UUID chamador, UUID invocador) {
         this.servidor = servidor;
         this.overworld = overworld;
         this.vazio = vazio;
-        this.cx = cx;
-        this.cz = cz;
+        this.ox = ox;
+        this.oz = oz;
+        this.vx = vx;
+        this.vz = vz;
         this.yOverworld = yOverworld;
         this.yVazio = yVazio;
         this.deslocamento = yOverworld - yVazio;
         this.chamador = chamador;
-        this.colunas = forma(cx, cz);
+        this.invocador = invocador;
+        this.colunas = forma(ox, oz);
     }
 
-    /** Acha o altar nas duas dimensoes e prepara o ritual; devolve null se faltar algum dos dois. */
-    static Ritual criar(MinecraftServer servidor, int x, int z, UUID chamador) {
+    /**
+     * Acha a base da estatua nas duas dimensoes e prepara o ritual; devolve null se faltar alguma. O chamador
+     * e o preso (volta ao overworld); o invocador, se houver, troca de lugar com ele (ritual sem amuleto).
+     */
+    static Ritual criar(MinecraftServer servidor, int ox, int oz, int vx, int vz, UUID chamador, UUID invocador) {
         ServerLevel overworld = servidor.getLevel(Level.OVERWORLD);
         ServerLevel vazio = servidor.getLevel(Vazio.DIMENSAO);
         if (overworld == null || vazio == null) {
             return null;
         }
-        int yOv = acharAltar(overworld, x, z);
-        int yVz = acharAltar(vazio, x, z);
+        int yOv = acharBase(overworld, ox, oz);
+        int yVz = acharBase(vazio, vx, vz);
         if (yOv < 0 || yVz < 0) {
             return null;
         }
-        return new Ritual(servidor, overworld, vazio, x, z, yOv, yVz, chamador);
+        return new Ritual(servidor, overworld, vazio, ox, oz, vx, vz, yOv, yVz, chamador, invocador);
     }
 
     int yOverworld() {
@@ -85,12 +96,12 @@ final class Ritual {
         return yVazio;
     }
 
-    private static int acharAltar(ServerLevel nivel, int x, int z) {
+    private static int acharBase(ServerLevel nivel, int x, int z) {
         if (!nivel.hasChunk(x >> 4, z >> 4)) {
             return -1;
         }
         for (int y = nivel.getMaxBuildHeight() - 1; y >= nivel.getMinBuildHeight(); y--) {
-            if (nivel.getBlockState(new BlockPos(x, y, z)).is(CsmpRegistro.ALTAR_SANTUARIO.get())) {
+            if (nivel.getBlockState(new BlockPos(x, y, z)).is(CsmpRegistro.BASE_ESTATUA.get())) {
                 return y;
             }
         }
@@ -183,7 +194,8 @@ final class Ritual {
                 particulas();
             }
             if (this.tick == 1 || this.tick == 40) {
-                efeitosNosJogadores();
+                efeito(this.overworld, this.ox, this.yOverworld, this.oz);
+                efeito(this.vazio, this.vx, this.yVazio, this.vz);
             }
             return false;
         }
@@ -196,53 +208,50 @@ final class Ritual {
     }
 
     private void sonsEMensagem() {
-        this.overworld.playSound(null, this.cx + 0.5D, this.yOverworld, this.cz + 0.5D,
+        this.overworld.playSound(null, this.ox + 0.5D, this.yOverworld, this.oz + 0.5D,
                 CsmpSons.SANTUARIO_TROCA.get(), SoundSource.BLOCKS, 3.0F, 1.0F);
-        this.vazio.playSound(null, this.cx + 0.5D, this.yVazio, this.cz + 0.5D,
+        this.vazio.playSound(null, this.vx + 0.5D, this.yVazio, this.vz + 0.5D,
                 CsmpSons.SANTUARIO_TROCA.get(), SoundSource.BLOCKS, 3.0F, 1.0F);
-        Component aviso = Component.literal("O santuario ressoa... o chao comeca a tremer, e os dois lados se confundem.")
+        Component aviso = Component.literal("A estatua ressoa... o chao comeca a tremer, e os dois lados se confundem.")
                 .withStyle(ChatFormatting.DARK_RED, ChatFormatting.ITALIC);
-        avisarPerto(this.overworld, this.yOverworld, aviso);
-        avisarPerto(this.vazio, this.yVazio, aviso);
+        avisarPerto(this.overworld, this.ox, this.yOverworld, this.oz, aviso);
+        avisarPerto(this.vazio, this.vx, this.yVazio, this.vz, aviso);
     }
 
-    private void avisarPerto(ServerLevel nivel, int y, Component mensagem) {
+    private void avisarPerto(ServerLevel nivel, int x, int y, int z, Component mensagem) {
         for (ServerPlayer jogador : nivel.players()) {
-            if (jogador.distanceToSqr(this.cx + 0.5D, y, this.cz + 0.5D) <= ALCANCE_DOS_EFEITOS * ALCANCE_DOS_EFEITOS) {
+            if (jogador.distanceToSqr(x + 0.5D, y, z + 0.5D) <= ALCANCE_DOS_EFEITOS * ALCANCE_DOS_EFEITOS) {
                 jogador.sendSystemMessage(mensagem);
             }
         }
     }
 
     private void particulas() {
-        this.overworld.sendParticles(ParticleTypes.REVERSE_PORTAL, this.cx + 0.5D, this.yOverworld + 1.2D, this.cz + 0.5D,
+        this.overworld.sendParticles(ParticleTypes.REVERSE_PORTAL, this.ox + 0.5D, this.yOverworld + 1.2D, this.oz + 0.5D,
                 14, 2.0D, 1.2D, 2.0D, 0.4D);
-        this.vazio.sendParticles(ParticleTypes.REVERSE_PORTAL, this.cx + 0.5D, this.yVazio + 1.2D, this.cz + 0.5D,
+        this.vazio.sendParticles(ParticleTypes.REVERSE_PORTAL, this.vx + 0.5D, this.yVazio + 1.2D, this.vz + 0.5D,
                 14, 2.0D, 1.2D, 2.0D, 0.4D);
     }
 
-    private void efeitosNosJogadores() {
-        efeito(this.overworld, this.yOverworld);
-        efeito(this.vazio, this.yVazio);
-    }
-
-    private void efeito(ServerLevel nivel, int y) {
+    private void efeito(ServerLevel nivel, int x, int y, int z) {
         for (ServerPlayer jogador : nivel.players()) {
-            if (jogador.distanceToSqr(this.cx + 0.5D, y, this.cz + 0.5D) <= ALCANCE_DOS_EFEITOS * ALCANCE_DOS_EFEITOS) {
+            if (jogador.distanceToSqr(x + 0.5D, y, z + 0.5D) <= ALCANCE_DOS_EFEITOS * ALCANCE_DOS_EFEITOS) {
                 jogador.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 160, 0, false, false, false));
                 jogador.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 160, 0, false, false, false));
             }
         }
     }
 
-    /** Troca, coluna a coluna, o que esta no Vazio com o que esta no overworld (mesma coordenada x, z). */
+    /** Troca, coluna a coluna, o que esta ao redor da estatua do Vazio com o que esta ao redor da do overworld. */
     private void trocarLote() {
         int fim = Math.min(this.colunas.size(), this.indice + COLUNAS_POR_TICK);
         for (; this.indice < fim; this.indice++) {
             int[] coluna = this.colunas.get(this.indice);
-            int x = this.cx + coluna[0];
-            int z = this.cz + coluna[1];
-            if (!this.overworld.hasChunk(x >> 4, z >> 4) || !this.vazio.hasChunk(x >> 4, z >> 4)) {
+            int xo = this.ox + coluna[0];
+            int zo = this.oz + coluna[1];
+            int xv = this.vx + coluna[0];
+            int zv = this.vz + coluna[1];
+            if (!this.overworld.hasChunk(xo >> 4, zo >> 4) || !this.vazio.hasChunk(xv >> 4, zv >> 4)) {
                 continue;
             }
             int altura = coluna[2] == MIOLO ? ALTURA_DO_VAZIO : Math.min(ALTURA_DO_VAZIO, this.yVazio + ALTURA_DA_RAIZ);
@@ -251,8 +260,8 @@ final class Ritual {
                 if (yo < this.overworld.getMinBuildHeight() || yo >= this.overworld.getMaxBuildHeight()) {
                     continue;
                 }
-                BlockPos posVazio = new BlockPos(x, yv, z);
-                BlockPos posOverworld = new BlockPos(x, yo, z);
+                BlockPos posVazio = new BlockPos(xv, yv, zv);
+                BlockPos posOverworld = new BlockPos(xo, yo, zo);
                 BlockState doVazio = this.vazio.getBlockState(posVazio);
                 BlockState doOverworld = this.overworld.getBlockState(posOverworld);
                 if (doVazio == doOverworld || doVazio.hasBlockEntity() || doOverworld.hasBlockEntity()) {
@@ -264,32 +273,44 @@ final class Ritual {
         }
     }
 
-    /** Devolve ao overworld quem estava preso e fecha o ritual. */
+    /** Primeiro lugar livre (chao embaixo, ar em cima) perto da estatua, a 4 blocos dela. */
+    private static BlockPos lugarSeguro(ServerLevel nivel, int x, int z, int yBase) {
+        for (int cima = yBase + 25; cima >= Math.max(nivel.getMinBuildHeight() + 1, yBase - 6); cima--) {
+            BlockPos pos = new BlockPos(x + 4, cima, z);
+            if (!nivel.getBlockState(pos.below()).isAir() && nivel.getBlockState(pos).isAir()
+                    && nivel.getBlockState(pos.above()).isAir()) {
+                return pos;
+            }
+        }
+        return new BlockPos(x + 4, yBase + 2, z);
+    }
+
+    /** Devolve ao overworld quem estava preso (e, sem amuleto, leva o invocador para o Vazio) e fecha o ritual. */
     private void finalizar() {
         ServerPlayer preso = this.chamador == null ? null : this.servidor.getPlayerList().getPlayer(this.chamador);
         if (preso != null && Vazio.eh(preso.level())) {
-            double x = this.cx + 0.5D;
-            // 8 blocos a frente do altar: no caminho, entre o salao e o torii (nao em cima do telhado)
-            double z = this.cz + 8.5D;
-            int y = this.yOverworld + 2;
-            for (int cima = this.yOverworld + 25; cima >= this.yOverworld - 6; cima--) {
-                BlockPos pos = new BlockPos(this.cx, cima, this.cz + 8);
-                if (!this.overworld.getBlockState(pos.below()).isAir() && this.overworld.getBlockState(pos).isAir()
-                        && this.overworld.getBlockState(pos.above()).isAir()) {
-                    y = cima;
-                    break;
-                }
-            }
+            BlockPos destino = lugarSeguro(this.overworld, this.ox, this.oz, this.yOverworld);
             preso.removeEffect(MobEffects.DARKNESS);
             preso.removeEffect(MobEffects.CONFUSION);
-            preso.teleportTo(this.overworld, x, y, z, preso.getYRot(), 0.0F);
+            preso.teleportTo(this.overworld, destino.getX() + 0.5D, destino.getY(), destino.getZ() + 0.5D, preso.getYRot(), 0.0F);
             preso.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 200, 0, false, false, false));
+            Sanidade.definir(preso, 25.0F);
             preso.sendSystemMessage(Component.literal("Voce sente o chao de verdade sob os pes. Voce voltou.")
                     .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
         }
-        this.overworld.playSound(null, this.cx + 0.5D, this.yOverworld, this.cz + 0.5D,
+        ServerPlayer troca = this.invocador == null ? null : this.servidor.getPlayerList().getPlayer(this.invocador);
+        if (troca != null && !Vazio.eh(troca.level())) {
+            BlockPos destino = lugarSeguro(this.vazio, this.vx, this.vz, this.yVazio);
+            troca.removeEffect(MobEffects.DARKNESS);
+            troca.removeEffect(MobEffects.CONFUSION);
+            troca.teleportTo(this.vazio, destino.getX() + 0.5D, destino.getY(), destino.getZ() + 0.5D, troca.getYRot(), 0.0F);
+            troca.sendSystemMessage(Component.literal("Sem nada de valor para oferecer, voce tomou o lugar de quem estava preso.")
+                    .withStyle(ChatFormatting.DARK_RED, ChatFormatting.ITALIC));
+        }
+        this.overworld.playSound(null, this.ox + 0.5D, this.yOverworld, this.oz + 0.5D,
                 CsmpSons.SANTUARIO_CHAMADO.get(), SoundSource.BLOCKS, 2.0F, 1.2F);
-        avisarPerto(this.overworld, this.yOverworld, Component.literal("A troca terminou. Os lados estao invertidos.")
-                .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+        avisarPerto(this.overworld, this.ox, this.yOverworld, this.oz,
+                Component.literal("A troca terminou. Os lados estao invertidos.")
+                        .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
 }

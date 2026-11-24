@@ -1,0 +1,7 @@
+{
+  "type": "csmp:estatua",
+  "config": {
+    "estilo": "vazio",
+    "regional": false
+  }
+}

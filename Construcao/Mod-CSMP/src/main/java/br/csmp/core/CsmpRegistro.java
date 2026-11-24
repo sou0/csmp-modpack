@@ -3,8 +3,10 @@ package br.csmp.core;
 import br.csmp.core.mob.MonstroCorrupto;
 import br.csmp.core.mundo.PontoSculkFeature;
 import br.csmp.core.npc.ProfetaEntity;
-import br.csmp.core.santuario.AltarSantuarioBlock;
-import br.csmp.core.santuario.SantuarioFeature;
+import br.csmp.core.santuario.BaseEstatuaBE;
+import br.csmp.core.santuario.BaseEstatuaBlock;
+import br.csmp.core.santuario.EstatuaEntity;
+import br.csmp.core.santuario.EstatuaFeature;
 import br.csmp.core.npc.VazioNpcEntity;
 import br.csmp.core.vazio.EstruturaVazioFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -35,9 +37,17 @@ public final class CsmpRegistro {
     public static final DeferredRegister<Feature<?>> FEICOES =
             DeferredRegister.create(Registries.FEATURE, CsmpMod.ID);
 
-    /** Santuario (mesma construcao nas duas dimensoes, blocos diferentes). */
-    public static final DeferredHolder<Feature<?>, SantuarioFeature> SANTUARIO =
-            FEICOES.register("santuario", () -> new SantuarioFeature(SantuarioFeature.Config.CODEC));
+    public static final DeferredRegister<net.minecraft.world.level.block.entity.BlockEntityType<?>> BLOCOS_ENTIDADE =
+            DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, CsmpMod.ID);
+
+    /** Cemiterio com a estatua (mesma construcao nas duas dimensoes, blocos diferentes). */
+    /** A floresta das betulas indoceis (bioma pintado chunk a chunk). */
+    public static final DeferredHolder<Feature<?>, br.csmp.core.mundo.BosqueFeature> BOSQUE_FEATURE =
+            FEICOES.register("bosque", () -> new br.csmp.core.mundo.BosqueFeature(
+                    net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration.CODEC));
+
+    public static final DeferredHolder<Feature<?>, EstatuaFeature> ESTATUA_FEATURE =
+            FEICOES.register("estatua", () -> new EstatuaFeature(EstatuaFeature.Config.CODEC));
 
     /** Estruturas soltas do Vazio (poste, portas, casinha, escada, sala, monolito, balanco, fonte). */
     public static final DeferredHolder<Feature<?>, EstruturaVazioFeature> ESTRUTURA_VAZIO =
@@ -52,11 +62,25 @@ public final class CsmpRegistro {
      * Chao de folhas vermelhas por cima da terra preta. Emite uma luz fraca: o Vazio e iluminado "de baixo",
      * e o bloco e escuro, entao o chao em si nao parece brilhar.
      */
-    public static final DeferredBlock<Block> CHAO_VAZIO = BLOCOS.registerSimpleBlock("chao_vazio",
-            BlockBehaviour.Properties.of()
+    public static final DeferredBlock<Block> CHAO_VAZIO = BLOCOS.register("chao_vazio",
+            () -> new br.csmp.core.vazio.ChaoVazioBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_RED)
                     .strength(1.5F, 6.0F)
-                    .sound(SoundType.GRASS));
+                    .sound(br.csmp.core.vazio.ChaoVazioBlock.tipoDeSom())
+                    .lightLevel(estado -> estado.getValue(br.csmp.core.vazio.ChaoVazioBlock.POWERED) ? 9 : 6)));
+
+    /**
+     * Chao falso das armadilhas do Vazio: igual ao chao (mesmo modelo e som), mas sem colisao. Quem pisa cai.
+     * Nao tem item nem drop.
+     */
+    public static final DeferredBlock<Block> CHAO_FALSO = BLOCOS.register("chao_falso",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_RED)
+                    .strength(1.5F, 6.0F)
+                    .noCollission()
+                    .sound(br.csmp.core.vazio.ChaoVazioBlock.tipoDeSom())
+                    .lightLevel(estado -> 6)
+                    .noLootTable()));
 
     /** Terra preta: as camadas debaixo do chao do Vazio. */
     public static final DeferredBlock<Block> TERRA_NEGRA = BLOCOS.registerSimpleBlock("terra_negra",
@@ -73,16 +97,40 @@ public final class CsmpRegistro {
             () -> new LeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_LEAVES)
                     .mapColor(MapColor.COLOR_BLACK)));
 
-    /** Altar do santuario (mesmo bloco no Vazio e no overworld). Inquebravel em sobrevivencia. */
-    public static final DeferredBlock<AltarSantuarioBlock> ALTAR_SANTUARIO = BLOCOS.register("altar_santuario",
-            () -> new AltarSantuarioBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_RED)
+    /** Base da estatua (mesmo bloco nas duas dimensoes). Inquebravel em sobrevivencia. */
+    public static final DeferredBlock<BaseEstatuaBlock> BASE_ESTATUA = BLOCOS.register("base_estatua",
+            () -> new BaseEstatuaBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLACK)
                     .strength(-1.0F, 3600000.0F)
-                    .sound(SoundType.AMETHYST)
-                    .lightLevel(estado -> 10)
+                    .sound(SoundType.DEEPSLATE_BRICKS)
+                    .lightLevel(estado -> 7)
                     .noLootTable()));
 
-    public static final DeferredItem<BlockItem> ITEM_ALTAR_SANTUARIO = ITENS.registerSimpleBlockItem(ALTAR_SANTUARIO);
+    public static final DeferredHolder<net.minecraft.world.level.block.entity.BlockEntityType<?>,
+            net.minecraft.world.level.block.entity.BlockEntityType<BaseEstatuaBE>> BASE_ESTATUA_BE =
+            BLOCOS_ENTIDADE.register("base_estatua", () -> net.minecraft.world.level.block.entity.BlockEntityType.Builder
+                    .of(BaseEstatuaBE::new, BASE_ESTATUA.get()).build(null));
+
+    /** Tronco de betula com olho (abre quando um jogador chega perto). */
+    public static final DeferredBlock<br.csmp.core.mundo.BetulaOlhoBlock> BETULA_OLHO = BLOCOS.register("betula_olho",
+            () -> new br.csmp.core.mundo.BetulaOlhoBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BIRCH_LOG)));
+    public static final DeferredItem<BlockItem> ITEM_BETULA_OLHO = ITENS.registerSimpleBlockItem(BETULA_OLHO);
+
+    /** Minerio sculk: carrega o artefato (so o item por enquanto; nasce nas cavernas com sculk). */
+    public static final DeferredBlock<Block> MINERIO_SCULK = BLOCOS.registerSimpleBlock("minerio_sculk",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(3.0F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.SCULK));
+
+    public static final DeferredItem<BlockItem> ITEM_BASE_ESTATUA = ITENS.registerSimpleBlockItem(BASE_ESTATUA);
+    public static final DeferredItem<BlockItem> ITEM_MINERIO_SCULK = ITENS.registerSimpleBlockItem(MINERIO_SCULK);
+    public static final DeferredItem<Item> PECA_RACHADA = ITENS.registerSimpleItem("peca_rachada");
+    public static final DeferredItem<br.csmp.core.sanidade.VendaItem> VENDA = ITENS.register("venda",
+            () -> new br.csmp.core.sanidade.VendaItem(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<Item> AMULETO = ITENS.registerItem("amuleto",
+            propriedades -> new Item(propriedades.stacksTo(1).rarity(net.minecraft.world.item.Rarity.EPIC)));
     public static final DeferredItem<BlockItem> ITEM_CHAO_VAZIO = ITENS.registerSimpleBlockItem(CHAO_VAZIO);
     public static final DeferredItem<BlockItem> ITEM_TERRA_NEGRA = ITENS.registerSimpleBlockItem(TERRA_NEGRA);
     public static final DeferredItem<BlockItem> ITEM_TRONCO_NEGRO = ITENS.registerSimpleBlockItem(TRONCO_NEGRO);
@@ -119,6 +167,15 @@ public final class CsmpRegistro {
     public static final DeferredItem<DeferredSpawnEggItem> OVO_SENTINELA =
             ITENS.register("sentinela_spawn_egg",
                     () -> new DeferredSpawnEggItem(SENTINELA, 0x5A5A62, 0xC81818, new Item.Properties()));
+
+    /** A estatua de pedra do ritual. */
+    public static final DeferredHolder<EntityType<?>, EntityType<EstatuaEntity>> ESTATUA =
+            ENTIDADES.register("estatua", () -> EntityType.Builder
+                    .of(EstatuaEntity::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .eyeHeight(1.62F)
+                    .clientTrackingRange(16)
+                    .build("estatua"));
 
     // ---- NPC Profeta ----
     public static final DeferredHolder<EntityType<?>, EntityType<ProfetaEntity>> PROFETA =

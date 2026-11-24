@@ -13,6 +13,10 @@ public final class CsmpNetwork {
                 (payload, ctx) -> ctx.enqueueWork(() -> ClientCaos.set(payload.caos())));
         registrar.playToClient(br.csmp.core.vazio.LuzesPayload.TYPE, br.csmp.core.vazio.LuzesPayload.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> br.csmp.core.vazio.ClientLuzes.atualizar(payload)));
+        registrar.playToClient(br.csmp.core.sanidade.SanidadePayload.TYPE, br.csmp.core.sanidade.SanidadePayload.CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> br.csmp.core.sanidade.ClientSanidade.atualizar(payload.insanidade())));
+        registrar.playToClient(br.csmp.core.santuario.TremorPayload.TYPE, br.csmp.core.santuario.TremorPayload.CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> br.csmp.core.santuario.ClientTremor.tremer(payload.ticks(), payload.forca())));
         registrar.playToClient(br.csmp.core.npc.AbrirProfetaPayload.TYPE, br.csmp.core.npc.AbrirProfetaPayload.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> br.csmp.core.npc.ProfetaCliente.abrir(payload.eruditos(), payload.entidade())));
     }

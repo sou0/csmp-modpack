@@ -17,11 +17,13 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 public class CsmpMod {
     public static final String ID = "csmp";
 
-    public CsmpMod(IEventBus modBus) {
+    public CsmpMod(IEventBus modBus, net.neoforged.fml.ModContainer container) {
+        container.registerConfig(net.neoforged.fml.config.ModConfig.Type.CLIENT, CsmpConfig.ESPECIFICACAO, "csmp-client.toml");
         CsmpSons.SONS.register(modBus);
         CsmpRegistro.BLOCOS.register(modBus);
         CsmpRegistro.FEICOES.register(modBus);
         CsmpRegistro.ENTIDADES.register(modBus);
+        CsmpRegistro.BLOCOS_ENTIDADE.register(modBus);
         CsmpRegistro.ITENS.register(modBus);
         modBus.addListener(CsmpNetwork::register);
         modBus.addListener(CsmpMod::atributos);
@@ -33,10 +35,12 @@ public class CsmpMod {
         NeoForge.EVENT_BUS.addListener(br.csmp.core.vazio.ServerLuzes::onChat);
         NeoForge.EVENT_BUS.addListener(br.csmp.core.santuario.ServerSantuario::onServerTick);
         NeoForge.EVENT_BUS.addListener(br.csmp.core.santuario.ServerSantuario::comandos);
+        NeoForge.EVENT_BUS.addListener(br.csmp.core.mundo.MundoComandos::comandos);
     }
 
     private static void atributos(EntityAttributeCreationEvent event) {
         event.put(CsmpRegistro.MONSTRO_CORRUPTO.get(), br.csmp.core.mob.MonstroCorrupto.criarAtributos().build());
+        event.put(CsmpRegistro.ESTATUA.get(), br.csmp.core.santuario.EstatuaEntity.criarAtributos().build());
         event.put(CsmpRegistro.PROFETA.get(), br.csmp.core.npc.ProfetaEntity.criarAtributos().build());
         event.put(CsmpRegistro.SOMBRA.get(), br.csmp.core.npc.VazioNpcEntity.criarAtributos(0.0D).build());
         event.put(CsmpRegistro.CRIANCA.get(), br.csmp.core.npc.VazioNpcEntity.criarAtributos(0.22D).build());
@@ -67,11 +71,18 @@ public class CsmpMod {
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
             event.accept(CsmpRegistro.ITEM_CHAO_VAZIO.get());
             event.accept(CsmpRegistro.ITEM_TERRA_NEGRA.get());
-            event.accept(CsmpRegistro.ITEM_ALTAR_SANTUARIO.get());
+            event.accept(CsmpRegistro.ITEM_BASE_ESTATUA.get());
+            event.accept(CsmpRegistro.ITEM_MINERIO_SCULK.get());
+        }
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(CsmpRegistro.PECA_RACHADA.get());
+            event.accept(CsmpRegistro.AMULETO.get());
+            event.accept(CsmpRegistro.VENDA.get());
         }
         if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
             event.accept(CsmpRegistro.ITEM_TRONCO_NEGRO.get());
             event.accept(CsmpRegistro.ITEM_FOLHAS_NEGRAS.get());
+            event.accept(CsmpRegistro.ITEM_BETULA_OLHO.get());
         }
     }
 }

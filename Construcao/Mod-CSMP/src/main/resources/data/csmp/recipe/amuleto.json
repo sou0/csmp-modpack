@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PMP"
+  ],
+  "key": {
+    "P": {
+      "item": "csmp:peca_rachada"
+    },
+    "M": {
+      "item": "csmp:minerio_sculk"
+    }
+  },
+  "result": {
+    "id": "csmp:amuleto",
+    "count": 1
+  }
+}

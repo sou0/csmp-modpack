@@ -52,6 +52,12 @@ public class EstruturaVazioFeature extends Feature<EstruturaVazioFeature.Config>
             case "monolito" -> monolito(nivel, base);
             case "balanco" -> balanco(nivel, base);
             case "fonte" -> fonte(nivel, base);
+            case "cabana_torta" -> cabanaTorta(nivel, base);
+            case "cabana_aberta" -> cabanaAberta(nivel, base);
+            case "armadilha_poco" -> armadilhaPoco(nivel, base);
+            case "armadilha_flechas" -> armadilhaFlechas(nivel, base);
+            case "armadilha_teia" -> armadilhaTeia(nivel, base);
+            case "armadilha_fio" -> armadilhaFio(nivel, base);
             default -> {
                 return false;
             }
@@ -174,6 +180,131 @@ public class EstruturaVazioFeature extends Feature<EstruturaVazioFeature.Config>
         caixa(n, base, -1, 1, 0, -1, 3, 0, b(Blocks.CHAIN));
         caixa(n, base, 1, 1, 0, 1, 3, 0, b(Blocks.CHAIN));
         caixa(n, base, -1, 0, 0, 1, 0, 0, b(Blocks.DARK_OAK_SLAB));
+    }
+
+    /** Cabana de madeira escura, torta: paredes que saem do prumo, cama, estante riscada e uma luz fraca. */
+    private static void cabanaTorta(WorldGenLevel n, BlockPos base) {
+        caixa(n, base, -3, 0, -2, 3, 3, 2, b(Blocks.DARK_OAK_PLANKS));
+        caixa(n, base, -2, 0, -1, 2, 2, 1, b(Blocks.AIR));
+        // telhado inclinado para um lado so, como se tivesse cedido
+        for (int x = -4; x <= 4; x++) {
+            int altura = 4 + (x + 4) / 4;
+            caixa(n, base, x, altura - 1, -3, x, altura - 1, 3, b(Blocks.DARK_OAK_SLAB));
+        }
+        caixa(n, base, -3, 3, -2, 3, 3, 2, b(Blocks.DARK_OAK_PLANKS));
+        caixa(n, base, -2, 3, -1, 2, 3, 1, b(Blocks.AIR));
+        // parede torta: um canto empurrado para fora
+        caixa(n, base, 3, 0, 2, 4, 2, 2, b(Blocks.DARK_OAK_PLANKS));
+        caixa(n, base, -3, 0, 2, -3, 2, 3, b(Blocks.DARK_OAK_LOG));
+        // porta: vao aberto no meio, sem porta
+        caixa(n, base, 0, 0, 2, 0, 1, 2, b(Blocks.AIR));
+        um(n, base, -2, 0, -1, b(Blocks.RED_BED).setValue(net.minecraft.world.level.block.BedBlock.FACING, Direction.WEST));
+        um(n, base, 2, 0, -1, b(Blocks.BOOKSHELF));
+        um(n, base, 2, 1, -1, b(Blocks.BOOKSHELF));
+        um(n, base, 2, 0, 1, b(Blocks.CHISELED_BOOKSHELF));
+        um(n, base, 0, 2, 0, b(Blocks.CHAIN));
+        um(n, base, 0, 1, 0, b(Blocks.SOUL_LANTERN));
+        um(n, base, -3, 2, 0, b(Blocks.RED_STAINED_GLASS_PANE));
+        caixa(n, base, -2, -1, -1, 2, -1, 1, b(Blocks.DARK_OAK_PLANKS));
+    }
+
+    /** Cabana de pedra com a porta aberta e uma luz vermelha lá dentro, como se alguem tivesse acabado de sair. */
+    private static void cabanaAberta(WorldGenLevel n, BlockPos base) {
+        caixa(n, base, -3, 0, -3, 3, 4, 3, b(Blocks.DEEPSLATE_BRICKS));
+        caixa(n, base, -2, 0, -2, 2, 3, 2, b(Blocks.AIR));
+        caixa(n, base, -4, 5, -4, 4, 5, 4, b(Blocks.POLISHED_BLACKSTONE_SLAB));
+        caixa(n, base, -3, 4, -3, 3, 4, 3, b(Blocks.POLISHED_BLACKSTONE));
+        // porta de ferro escancarada (sem fechar), apontando para fora
+        BlockState inferior = b(Blocks.IRON_DOOR).setValue(DoorBlock.FACING, Direction.SOUTH)
+                .setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER).setValue(DoorBlock.OPEN, true);
+        caixa(n, base, 0, 0, 3, 0, 1, 3, b(Blocks.AIR));
+        um(n, base, 0, 0, 3, inferior);
+        um(n, base, 0, 1, 3, inferior.setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
+        um(n, base, 0, 0, 0, b(Blocks.SHROOMLIGHT));
+        um(n, base, 0, 1, 0, b(Blocks.RED_STAINED_GLASS));
+        um(n, base, -2, 0, -2, b(Blocks.CAULDRON));
+        um(n, base, 2, 0, -2, escadaDe(Blocks.OAK_STAIRS, Direction.WEST));
+        um(n, base, 3, 2, 0, b(Blocks.RED_STAINED_GLASS_PANE));
+        caixa(n, base, -2, -1, -2, 2, -1, 2, b(Blocks.DEEPSLATE_TILES));
+    }
+
+    /**
+     * Armadilha 1: poço escondido. Por cima fica o chão falso (igual ao chão do Vazio, mas sem colisão); embaixo,
+     * 2 blocos de queda até pontas de pedra. O chão do Vazio só tem 4 blocos de altura, por isso o poço é raso e
+     * o dano vem das pontas.
+     */
+    private static void armadilhaPoco(WorldGenLevel n, BlockPos base) {
+        BlockState falso = br.csmp.core.CsmpRegistro.CHAO_FALSO.get().defaultBlockState();
+        BlockState ponta = b(Blocks.POINTED_DRIPSTONE)
+                .setValue(net.minecraft.world.level.block.PointedDripstoneBlock.TIP_DIRECTION, Direction.UP);
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                um(n, base, dx, -2, dz, b(Blocks.AIR));
+                um(n, base, dx, -3, dz, ponta);
+                um(n, base, dx, -1, dz, falso);
+            }
+        }
+        // um galho seco ao lado, como as raizes de sempre: nada denuncia o buraco
+        um(n, base, 2, 0, 1, b(Blocks.DEAD_BUSH));
+    }
+
+    /**
+     * Armadilha 4: fio quase invisível entre dois tocos escuros. Quem encosta fica cego e preso por alguns
+     * segundos (o efeito é aplicado por {@link ArmadilhasVazio}).
+     */
+    private static void armadilhaFio(WorldGenLevel n, BlockPos base) {
+        BlockState toco = br.csmp.core.CsmpRegistro.TRONCO_NEGRO.get().defaultBlockState();
+        caixa(n, base, -3, 0, 0, -3, 1, 0, toco);
+        caixa(n, base, 3, 0, 0, 3, 1, 0, toco);
+        BlockState gancho = b(Blocks.TRIPWIRE_HOOK)
+                .setValue(net.minecraft.world.level.block.TripWireHookBlock.ATTACHED, true);
+        um(n, base, -2, 0, 0, gancho.setValue(net.minecraft.world.level.block.TripWireHookBlock.FACING, Direction.EAST));
+        um(n, base, 2, 0, 0, gancho.setValue(net.minecraft.world.level.block.TripWireHookBlock.FACING, Direction.WEST));
+        BlockState fio = b(Blocks.TRIPWIRE)
+                .setValue(net.minecraft.world.level.block.TripWireBlock.ATTACHED, true)
+                .setValue(net.minecraft.world.level.block.TripWireBlock.EAST, true)
+                .setValue(net.minecraft.world.level.block.TripWireBlock.WEST, true);
+        caixa(n, base, -1, 0, 0, 1, 0, 0, fio);
+    }
+
+    /**
+     * Armadilha 2: uma placa de pressão no chão com dois dispensers escondidos em postes de pedra, apontados
+     * para ela. Quem pisa leva flechas lentas.
+     */
+    private static void armadilhaFlechas(WorldGenLevel n, BlockPos base) {
+        um(n, base, 0, 0, 0, b(Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE));
+        BlockPos[] posicoes = {base.offset(2, 0, 0), base.offset(-2, 0, 0)};
+        Direction[] faces = {Direction.WEST, Direction.EAST};
+        for (int i = 0; i < 2; i++) {
+            BlockPos pos = posicoes[i];
+            // poste de 2 blocos; o dispenser fica na altura da cintura, ao lado da placa (a 1 de distancia)
+            BlockPos lado = pos.relative(faces[i]);
+            n.setBlock(pos.below(), b(Blocks.POLISHED_BLACKSTONE), 2);
+            n.setBlock(pos, b(Blocks.POLISHED_BLACKSTONE), 2);
+            n.setBlock(lado, b(Blocks.DISPENSER).setValue(net.minecraft.world.level.block.DispenserBlock.FACING, faces[i]), 2);
+            n.setBlock(pos.above(), b(Blocks.POLISHED_BLACKSTONE_WALL), 2);
+            // durante a geracao o bloco ainda nao tem block entity; guardo o conteudo como NBT no chunk
+            net.minecraft.nbt.CompoundTag dados = new net.minecraft.nbt.CompoundTag();
+            dados.putString("id", "minecraft:dispenser");
+            dados.putInt("x", lado.getX());
+            dados.putInt("y", lado.getY());
+            dados.putInt("z", lado.getZ());
+            net.minecraft.nbt.ListTag itens = new net.minecraft.nbt.ListTag();
+            net.minecraft.nbt.CompoundTag flecha = new net.minecraft.nbt.CompoundTag();
+            flecha.putByte("Slot", (byte) 0);
+            flecha.putString("id", "minecraft:arrow");
+            flecha.putInt("count", 64);
+            itens.add(flecha);
+            dados.put("Items", itens);
+            n.getChunk(lado).setBlockEntityNbt(dados);
+        }
+    }
+
+    /** Armadilha 3: dois postes e uma cortina de teias entre eles; quem passa fica preso e devagar. */
+    private static void armadilhaTeia(WorldGenLevel n, BlockPos base) {
+        caixa(n, base, -3, 0, 0, -3, 3, 0, b(Blocks.POLISHED_BLACKSTONE_WALL));
+        caixa(n, base, 3, 0, 0, 3, 3, 0, b(Blocks.POLISHED_BLACKSTONE_WALL));
+        caixa(n, base, -2, 0, 0, 2, 2, 1, b(Blocks.COBWEB));
     }
 
     /** Fonte seca: um anel de pedra com uma poca vermelha no lugar da agua. */

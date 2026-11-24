@@ -1,0 +1,8 @@
+{
+  "feature": "csmp:estatua_vazio",
+  "placement": [
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

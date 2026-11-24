@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "csmp:block/betula_olho_topo",
+    "side": "csmp:block/betula_olho_fechado"
+  }
+}

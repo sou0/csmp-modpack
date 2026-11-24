@@ -1,6 +1,10 @@
 {
   "type": "neoforge:add_features",
   "biomes": "#minecraft:is_overworld",
-  "features": "csmp:sculk_caverna",
+  "features": [
+    "csmp:sculk_caverna_topo",
+    "csmp:sculk_caverna_meio",
+    "csmp:sculk_caverna_fundo"
+  ],
   "step": "underground_decoration"
 }

@@ -9,18 +9,6 @@
     },
     "ambient_sound": "csmp:vazio.ambiente",
     "fog_color": 2754576,
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "csmp:vazio.humor",
-      "tick_delay": 6000
-    },
-    "music": {
-      "max_delay": 6000,
-      "min_delay": 1200,
-      "replace_current_music": true,
-      "sound": "csmp:vazio.trilha"
-    },
     "particle": {
       "options": {
         "type": "minecraft:crimson_spore"
@@ -46,12 +34,18 @@
       "csmp:estrutura_poste",
       "csmp:estrutura_portas",
       "csmp:estrutura_casinha",
+      "csmp:estrutura_cabana_torta",
+      "csmp:estrutura_cabana_aberta",
       "csmp:estrutura_escada",
       "csmp:estrutura_sala",
       "csmp:estrutura_monolito",
       "csmp:estrutura_balanco",
       "csmp:estrutura_fonte",
-      "csmp:santuario_vazio"
+      "csmp:armadilha_poco",
+      "csmp:armadilha_flechas",
+      "csmp:armadilha_teia",
+      "csmp:armadilha_fio",
+      "csmp:estatua_vazio"
     ],
     []
   ],
@@ -61,9 +55,24 @@
     "ambient": [],
     "axolotls": [],
     "creature": [
-      { "type": "csmp:sombra", "weight": 10, "minCount": 1, "maxCount": 1 },
-      { "type": "csmp:crianca", "weight": 8, "minCount": 1, "maxCount": 1 },
-      { "type": "csmp:sentinela", "weight": 3, "minCount": 1, "maxCount": 1 }
+      {
+        "type": "csmp:sombra",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "csmp:crianca",
+        "weight": 8,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "csmp:sentinela",
+        "weight": 3,
+        "minCount": 1,
+        "maxCount": 1
+      }
     ],
     "misc": [],
     "monster": [],
