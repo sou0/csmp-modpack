@@ -49,8 +49,8 @@ public class BosqueFeature extends Feature<NoneFeatureConfiguration> {
         ChunkPos chunk = new ChunkPos(contexto.origin());
         int meioX = chunk.getMinBlockX() + 8;
         int meioZ = chunk.getMinBlockZ() + 8;
-        int[] centro = Bosques.maisPerto(nivel.getSeed(), meioX, meioZ);
-        if (Bosques.distanciaDaBorda(centro, meioX, meioZ) > 24.0D) {
+        int[] centro = Bosques.maisPerto(nivel.getLevel(), meioX, meioZ);
+        if (centro == null || Bosques.distanciaDaBorda(centro, meioX, meioZ) > 24.0D) {
             return false;
         }
         RandomSource aleatorio = contexto.random();

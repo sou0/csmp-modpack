@@ -34,7 +34,12 @@ public final class MundoComandos {
     }
 
     private static int bosque(CommandSourceStack fonte) {
-        int[] centro = Bosques.maisPerto(fonte.getLevel().getSeed(), (int) fonte.getPosition().x, (int) fonte.getPosition().z);
+        net.minecraft.server.level.ServerLevel overworld = fonte.getServer().overworld();
+        int[] centro = Bosques.maisPerto(overworld, (int) fonte.getPosition().x, (int) fonte.getPosition().z);
+        if (centro == null) {
+            fonte.sendFailure(Component.literal("Nenhuma floresta perto daqui (as celulas em volta sao so agua)."));
+            return 0;
+        }
         fonte.sendSuccess(() -> Component.literal("Bosque mais perto: x=" + centro[0] + " z=" + centro[1]
                 + " (raio medio " + Bosques.RAIO + ")"), false);
         return 1;

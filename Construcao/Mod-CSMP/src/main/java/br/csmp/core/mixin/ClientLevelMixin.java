@@ -43,6 +43,20 @@ public abstract class ClientLevelMixin {
         });
     }
 
+    /**
+     * Correcao para o Create: Atmospherics: ele guarda num cache (ate 60 s) onde fica o mar perto da costa e desenha
+     * a superficie da agua a partir disso. Quebrando ou pondo blocos na praia, o desenho ficava velho: aparecia
+     * "agua" sem animacao e sem efeito onde nao tinha mais. Aqui o cache daquele chunk e descartado na hora.
+     */
+    @Inject(method = "sendBlockUpdated", at = @At("HEAD"))
+    private void csmp$avisarCosta(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState antes,
+                                  net.minecraft.world.level.block.state.BlockState depois, int flags,
+                                  org.spongepowered.asm.mixin.injection.callback.CallbackInfo info) {
+        if (antes != depois && br.csmp.core.compat.Atmospherics.presente()) {
+            br.csmp.core.compat.Atmospherics.blocoMudou((ClientLevel) (Object) this, pos);
+        }
+    }
+
     @Inject(method = "getSkyColor", at = @At("RETURN"), cancellable = true)
     private void csmp$ceuVermelho(Vec3 camera, float parcial, CallbackInfoReturnable<Vec3> retorno) {
         ClientLevel nivel = (ClientLevel) (Object) this;
