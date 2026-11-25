@@ -136,7 +136,11 @@ public final class ServerSanidade {
         jogador.getPersistentData().putLong("csmp_ultima_maldade", jogador.level().getGameTime());
     }
 
-    @SubscribeEvent
+    /**
+     * Prioridade mais baixa: o Revive by Death (encantamento que gasta XP para evitar a morte) e outros mods decidem
+     * antes. Se eles cancelarem a morte, este evento nem chega aqui; so quem morre de verdade pode cair no Vazio.
+     */
+    @SubscribeEvent(priority = net.neoforged.bus.api.EventPriority.LOWEST)
     public static void aoMatar(LivingDeathEvent evento) {
         LivingEntity morto = evento.getEntity();
         DamageSource fonte = evento.getSource();
@@ -182,7 +186,8 @@ public final class ServerSanidade {
     public static void aoClonar(PlayerEvent.Clone evento) {
         var antigo = evento.getOriginal().getPersistentData();
         var novo = evento.getEntity().getPersistentData();
-        for (String chave : new String[] {Sanidade.CHAVE, "csmp_ultima_maldade", "csmp_paranoia", "csmp_cair_no_vazio"}) {
+        for (String chave : new String[] {Sanidade.CHAVE, "csmp_ultima_maldade", "csmp_paranoia", "csmp_cair_no_vazio",
+                Sanidade.PRESO, Sanidade.INSANIDADE_AO_CAIR}) {
             if (antigo.contains(chave)) {
                 novo.put(chave, antigo.get(chave).copy());
             }
@@ -198,6 +203,8 @@ public final class ServerSanidade {
         var dados = jogador.getPersistentData();
         if (dados.getBoolean("csmp_cair_no_vazio")) {
             dados.putBoolean("csmp_cair_no_vazio", false);
+            dados.putBoolean(Sanidade.PRESO, true);
+            dados.putFloat(Sanidade.INSANIDADE_AO_CAIR, Sanidade.obter(jogador));
             ServerLevel vazio = jogador.server.getLevel(Vazio.DIMENSAO);
             if (vazio != null) {
                 BlockPos destino = VazioEntrada.pontoDeEntrada(vazio, jogador);

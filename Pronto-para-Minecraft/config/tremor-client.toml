@@ -1,0 +1,84 @@
+#Rendering quality of the ground deformation
+[render]
+	#One switch for weaker computers: LOW draws a third of the block copies within half the
+	#distance, with no fine tremble and no dust; MEDIUM two thirds within three quarters;
+	#HIGH everything as set below
+	#Allowed Values: LOW, MEDIUM, HIGH
+	quality = "HIGH"
+	#Upper bound of block copies drawn per frame; the rest is skipped
+	# Default: 1500
+	# Range: 0 ~ 20000
+	maxDeformedBlocks = 1500
+	#The same bound while the ground of an Awakening zone is drawn,
+	#where all of it in view breathes; the nearest is kept, and it lowers smoothly towards
+	#where the bound cuts it off
+	# Default: 4000
+	# Range: 0 ~ 40000
+	awakeningMaxBlocks = 4000
+	#Deformation further than this from the camera (blocks) is not drawn
+	# Default: 128
+	# Range: 16 ~ 512
+	renderDistance = 128
+	#Draw the fine tremble of the ground (noise term of the shape)
+	jitter = true
+	#blocks: whole block copies pushed out, the gap filled with more copies;
+	#warp: every vertex moved by the height at that vertex, a smooth mound
+	#Allowed Values: BLOCKS, WARP
+	style = "BLOCKS"
+
+#Visible effects of the entity's behaviour
+[effects]
+	#Draw the ripple that runs over the ground around an alerted entity
+	ripple = true
+	#Height of the ripple around a bump of full height (shape.amplitude), blocks
+	#(0 = off); it is lower around a lower bump and gone while the bump dives
+	# Default: 0.35
+	# Range: 0.0 ~ 1.0
+	rippleAmplitude = 0.35
+	#Kick up a little dust of the ground along the front of the ripples while they are
+	#drawn (around an alerted entity, the rings of steps in an Awakening and the rings of the
+	#node in the hollow, there with a few faint glints where it is too dark to see dust); half
+	#as much with the Particles video setting at Decreased, none at Minimal
+	rippleDust = true
+	#In the hollow a black fog hides everything further than this
+	#(blocks); it starts about a tenth of the way out and closes in a little as the hollow
+	#closes. Night vision does not lift it. The rings of the node and the heaving ground are
+	#drawn only about as far as this (at most 20 blocks)
+	# Default: 5.5
+	# Range: 2.0 ~ 32.0
+	hollowFogDistance = 5.5
+
+#Sounds of the entity
+[sound]
+	#Volume of the rustle of the moving bump (1 = normal, 0 = silent). Above 1 it is
+	#louder than the other hostile sounds, but at most at full volume: that only counts while
+	#the Hostile Creatures volume is below 100%
+	# Default: 1.0
+	# Range: 0.0 ~ 2.0
+	rustleVolume = 1.0
+	#Inside the zone of an Awakening every sound of the world (mobs, weather, blocks,
+	#music) fades to this share of its volume over 3 s, and comes back once you are out.
+	#The music plays on through it. 0 = complete silence, 1 = no silence; the menu
+	#and the mod's own sounds stay, and so may sound loops of other mods
+	# Default: 0.05
+	# Range: 0.0 ~ 1.0
+	silenceFloor = 0.05
+	#Volume of the heartbeat heard inside the zone of an Awakening; it starts at
+	#40% of this and quickens and grows to all of it as the zone closes (0 = off). In the
+	#hollow the heartbeat comes from the node: louder near it and as the hollow closes, and
+	#never quieter than about a fifth of this far off; the ring of a beat thumps faintly
+	#under you as it passes
+	# Default: 0.8
+	# Range: 0.0 ~ 1.0
+	heartbeatVolume = 0.8
+	#Volume of the low hum of the ground inside the zone of an Awakening and in the
+	#hollow; it starts at 35% of this and swells to all of it as the zone (the hollow) closes
+	#(0 = off)
+	# Default: 0.7
+	# Range: 0.0 ~ 1.0
+	humVolume = 0.7
+	#Volume of the squelch of the soft ground of the hollow pulling you in; it starts
+	#at 40% of this and grows to all of it the deeper you sink (0 = off)
+	# Default: 0.8
+	# Range: 0.0 ~ 1.0
+	pullVolume = 0.8

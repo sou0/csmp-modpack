@@ -1,0 +1,46 @@
+{
+  // Most logs in one tree; a bigger tree is left alone (only the chopped log breaks) (16..4096, default 1024)
+  "max_logs": 1024,
+  // Most leaves (and attached blocks) one tree takes with it (100..8000, default 5000)
+  "max_blocks": 5000,
+  // How far, in blocks sideways, a tree may reach from the cut (4..64, default 12)
+  "radius": 12,
+  // 1: only fell trees when chopping with an item from the tools list (axes by default) (0..1, default 1)
+  "require_axe": 1,
+  // 0: sneaking takes a single log; 1: only fell while sneaking; 2: always fell (0..2, default 0)
+  "sneak": 0,
+  // 1: each log costs axe durability (Unbreaking applies); a tree that would break the axe still falls and the axe breaks; chop mode pays per chop instead (0..1, default 1)
+  "durability": 1,
+  // 1: chop mode: each break of a trunk log is a chop that wears the axe and cracks the log; the tree falls on the last chop (chop_curve) (0..1, default 0)
+  "chops": 0,
+  // Chop mode: chops a tree takes = 1 + a * ln(1 + (logs - 1) / a) with a = this value; smaller is fewer chops (1..100, default 10)
+  "chop_curve": 10,
+  // 0: the tree vanishes at once and drops at the stump (0..1, default 1)
+  "animation": 1,
+  // 0: classic, the tree slams and its logs pop one ring at a time; 1: poof, the tree slams, sits there a moment and vanishes in one cloud, its items left behind (no tree stays fallen; ignored when animation is 0) (0..1, default 0)
+  "style": 0,
+  // Percent of the trunk that stays on the ground as sideways logs, with the leaves next to them, for you to chop by hand; the rest drops as items (ignored when animation is 0) (0..100, default 0)
+  "land_blocks": 0,
+  // 0: each log hops out where it lands, leaf drops burst from the crown; 1: everything drops at the player (0..1, default 0)
+  "drops": 0,
+  // 1: logs placed by players are never felled (0..1, default 1)
+  "protect": 1,
+  // 1: action bar message when a tree is not felled, and why (0..1, default 1)
+  "feedback": 1,
+  // 1: explain Timber to each player once, on their first join (0..1, default 0)
+  "welcome": 0,
+  // 1: a free sapling of the tree's kind is planted in each stump cell when the fall ends (giants get four) (0..1, default 0)
+  "replant": 0,
+  // 1: the falling trunk knocks back every mob it sweeps through (never players) (0..1, default 1)
+  "knockback": 1,
+  // Damage the trunk deals to a hostile mob without a name tag that it hits (half hearts); other mobs are only pushed (0..20, default 4)
+  "trunk_damage": 4,
+  // 1: leaves shut in on all sides get no display (cheaper, but the crown looks hollow when it falls) (0..1, default 0)
+  "hide_leaves": 0,
+  // Most displays one fall may spawn for players without Timber; over it the rest of the crown only bursts at the slam (100..4000, default 600)
+  "display_cap": 600,
+  // Server milliseconds a fall may spend per tick when work is time-sliced (1..20, default 2)
+  "slice_ms": 2,
+  // Items that fell trees while require_axe is 1: item ids (minecraft:stick) and item tags (#minecraft:axes) (default #minecraft:axes, #c:tools/axe)
+  "tools": ["#minecraft:axes","#c:tools/axe"]
+}

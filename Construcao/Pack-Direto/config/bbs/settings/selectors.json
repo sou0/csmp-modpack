@@ -1,0 +1,7 @@
+{
+    selectors: [
+        {
+            enabled: 1b
+        }
+    ]
+}

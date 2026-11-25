@@ -1,0 +1,18 @@
+#Integrations with modpacks
+[integrations]
+	#TerraFirmaGreg recipes (condition frostworks:tfg_compat): the pack's materials in place of
+	#Create's and Minecraft's, and no recipes for the Minecraft ores the pack does not have.
+	#AUTO: on when the mod tfg is loaded. ON / OFF: always / never. Read when recipes load (/reload).
+	#Allowed Values: AUTO, ON, OFF
+	tfgCompat = "AUTO"
+	#The cold room's speed bonus (machines past Create's speed limit in a COLD room). The cold's
+	#lower stress stays on either way. AUTO: off when the mod tfg is loaded, on otherwise.
+	#ON / OFF: always / never. Read when used.
+	#Allowed Values: AUTO, ON, OFF
+	coldSpeedBonus = "AUTO"
+	#Greate's stress scale: the stress of our machines divided by 10 (compressor, tower, cryogenic
+	#infuser) and what the expander gives back divided by 10 too, for the small networks of Greate's
+	#first tiers (32 su). The same fluids for the same setting: the loop stays balanced.
+	#AUTO: on when the mod greate is loaded. ON / OFF: always / never. Read when used.
+	#Allowed Values: AUTO, ON, OFF
+	greateStress = "AUTO"

@@ -17,6 +17,14 @@ public final class CsmpNetwork {
                 (payload, ctx) -> ctx.enqueueWork(() -> br.csmp.core.sanidade.ClientSanidade.atualizar(payload.insanidade())));
         registrar.playToClient(br.csmp.core.santuario.TremorPayload.TYPE, br.csmp.core.santuario.TremorPayload.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> br.csmp.core.santuario.ClientTremor.tremer(payload.ticks(), payload.forca())));
+        registrar.playToClient(br.csmp.core.santuario.RitualPayloads.AbrirMenu.TYPE, br.csmp.core.santuario.RitualPayloads.AbrirMenu.CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> br.csmp.core.santuario.RitualTela.abrir(payload)));
+        registrar.playToServer(br.csmp.core.santuario.RitualPayloads.Escolha.TYPE, br.csmp.core.santuario.RitualPayloads.Escolha.CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    if (ctx.player() instanceof net.minecraft.server.level.ServerPlayer jogador) {
+                        br.csmp.core.santuario.ServerSantuario.escolher(jogador, payload.base(), payload.preso(), payload.amuleto());
+                    }
+                }));
         registrar.playToClient(br.csmp.core.npc.AbrirProfetaPayload.TYPE, br.csmp.core.npc.AbrirProfetaPayload.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> br.csmp.core.npc.ProfetaCliente.abrir(payload.eruditos(), payload.entidade())));
     }

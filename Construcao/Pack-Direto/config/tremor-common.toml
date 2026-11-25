@@ -1,0 +1,1047 @@
+#How hard the mod is as a whole. CALM: it hears less, is slower and rarer, there is
+#more time everywhere, and a defeat in the hollow does not kill. NORMAL: the settings below as
+#they are. HARD: it hears more, is angrier and faster, there is less time, and a defeat always
+#kills. NIGHTMARE: harder still, and a defeat also takes everything the player carries. A level
+#scales the settings below, so a value tuned by hand stays tuned, only softer or harder
+#Allowed Values: CALM, NORMAL, HARD, NIGHTMARE
+difficulty = "NORMAL"
+
+#Shape of the bump the entity pushes through the ground. Lengths are in blocks.
+[shape]
+	#A: height of the bump
+	# Default: 2.0
+	# Range: 0.1 ~ 8.0
+	amplitude = 2.0
+	#Half-length ahead of the bump (smaller = steeper front)
+	# Default: 1.6
+	# Range: 0.25 ~ 16.0
+	sigmaFront = 1.6
+	#Half-length behind the bump
+	# Default: 2.6
+	# Range: 0.25 ~ 16.0
+	sigmaBack = 2.6
+	#Half-width of the bump
+	# Default: 2.2
+	# Range: 0.25 ~ 16.0
+	sigmaSide = 2.2
+	#L: how far behind the bump the trailing depression sits
+	# Default: 4.0
+	# Range: 0.0 ~ 32.0
+	trailLag = 4.0
+	#Length of the trailing depression
+	# Default: 3.0
+	# Range: 0.25 ~ 16.0
+	trailSigma = 3.0
+	#k: depth of the trailing depression relative to A
+	# Default: 0.3
+	# Range: 0.0 ~ 1.0
+	trailDepth = 0.3
+	#epsilon: amplitude of the fine tremble relative to A
+	# Default: 0.06
+	# Range: 0.0 ~ 0.5
+	jitter = 0.06
+
+#Movement over the surface of the world
+[movement]
+	#How far (blocks) the entity can travel straight through rock to another surface
+	# Default: 4
+	# Range: 0 ~ 16
+	maxDiveDepth = 4
+	#The narrowest ground (blocks) the entity crawls on: it does not climb pillars or walls
+	#narrower than this, so a player high enough on one is out of reach. 1: anywhere
+	# Default: 3
+	# Range: 1 ~ 5
+	minGroundWidth = 3
+	#Whether the entity keeps to caves: it never crawls where the light of the sky reaches,
+	#appears only in caves and takes nobody standing in the sky's light, so the surface is
+	#safe from it. Only in dimensions with a sky
+	cavesOnly = false
+	#Longest gap of open air (blocks) the entity flings itself across to another surface DORMANT (0 = none)
+	# Default: 1
+	# Range: 0 ~ 8
+	leapDormant = 1
+	#Longest gap of open air (blocks) the entity flings itself across to another surface ALERT (0 = none)
+	# Default: 2
+	# Range: 0 ~ 8
+	leapAlert = 2
+	#Longest gap of open air (blocks) the entity flings itself across to another surface HUNTING (0 = none)
+	# Default: 3
+	# Range: 0 ~ 8
+	leapHunting = 3
+	#Longest gap of open air (blocks) the entity flings itself across to another surface AWAKENING (0 = none)
+	# Default: 3
+	# Range: 0 ~ 8
+	leapAwakening = 3
+	#Longest gap of open air (blocks) the entity flings itself across to another surface a frenzy over a dropped shard (0 = none)
+	# Default: 5
+	# Range: 0 ~ 8
+	leapFrenzy = 5
+	#Path cost of a block travelled through rock, relative to a block on the surface
+	# Default: 2.0
+	# Range: 1.0 ~ 20.0
+	diveCost = 2.0
+	#A* gives up after expanding this many nodes and heads for the best one found
+	# Default: 4000
+	# Range: 100 ~ 100000
+	pathMaxNodes = 4000
+	#A* nodes expanded per server tick (the search is spread over ticks)
+	# Default: 500
+	# Range: 10 ~ 100000
+	pathNodesPerTick = 500
+	#Crawling speed, blocks per second
+	# Default: 3.0
+	# Range: 0.1 ~ 30.0
+	speed = 3.0
+	#Speed change limit, blocks per second squared
+	# Default: 3.0
+	# Range: 0.1 ~ 100.0
+	acceleration = 3.0
+	#Time constant (s) of the normal smoothing; a floor-to-wall turn takes ~3x this
+	# Default: 0.25
+	# Range: 0.0 ~ 5.0
+	normalSmoothing = 0.25
+	#Time constant (s) of the bump rising and sinking (surfacing / diving)
+	# Default: 0.35
+	# Range: 0.0 ~ 5.0
+	amplitudeSmoothing = 0.35
+
+#Server internals
+[server]
+	#Server ticks between state packets to nearby players (2 = 10 per second)
+	# Default: 2
+	# Range: 1 ~ 20
+	syncInterval = 2
+	#Players within this many blocks of the entity receive its state
+	# Default: 160
+	# Range: 16 ~ 1024
+	syncRange = 160
+	#Ticks after which cached terrain is re-read even without a block change event
+	# Default: 600
+	# Range: 20 ~ 72000
+	cacheMaxAge = 600
+
+#Hearing: vibrations through the ground.
+#perceived = loudness * footing / (1 + distance * average resistance along the way)
+[hearing]
+	#Perceived loudness from which the entity hears a vibration
+	# Default: 0.05
+	# Range: 0.001 ~ 100.0
+	threshold = 0.05
+	#Vibrations further away than this (blocks) are never heard
+	# Default: 96.0
+	# Range: 4.0 ~ 256.0
+	maxDistance = 96.0
+	#Spacing (blocks) of the conductivity samples between source and entity;
+	#raised automatically so that one vibration reads at most 128 blocks
+	# Default: 0.5
+	# Range: 0.1 ~ 8.0
+	sampleStep = 0.5
+	#Conductivities are clamped to at least this before taking the resistance 1/c
+	# Default: 0.01
+	# Range: 0.001 ~ 1.0
+	minConductivity = 0.01
+	#Anger added per unit of perceived loudness of a heard vibration
+	# Default: 6.0
+	# Range: 0.0 ~ 100.0
+	angerPerLoudness = 6.0
+	#Anger added on top when an explosion is heard
+	# Default: 20.0
+	# Range: 0.0 ~ 100.0
+	explosionAngerBonus = 20.0
+	#A heard sound replaces the one being followed at most this often (ticks),
+	#unless it is at least 1.5 times louder
+	# Default: 10
+	# Range: 0 ~ 1200
+	retargetCooldownTicks = 10
+	#Base loudness of vanilla game events, "namespace:event=loudness"; events not listed
+	#(or 0) are ignored. Steps of sneaking players are never heard.
+	loudness = ["minecraft:step=3", "minecraft:hit_ground=8", "minecraft:block_destroy=9", "minecraft:block_place=6", "minecraft:projectile_land=10", "minecraft:explode=20", "minecraft:block_open=14", "minecraft:block_close=14"]
+	#Loudness of a sprinting player's step (replaces the step loudness)
+	# Default: 8.0
+	# Range: 0.0 ~ 1000.0
+	sprintStepLoudness = 8.0
+	#Loudness of a step of a mount ridden by a player, and of a moving minecart
+	# Default: 6.0
+	# Range: 0.0 ~ 1000.0
+	mountStepLoudness = 6.0
+	#Loudness of a dropped item hitting the ground (up to 2 more for fast impacts)
+	# Default: 3.0
+	# Range: 0.0 ~ 1000.0
+	itemLandLoudness = 3.0
+	#Loudness of a fall with fall damage, plus the fall height in blocks
+	# Default: 10.0
+	# Range: 0.0 ~ 1000.0
+	fallLoudness = 10.0
+	#Loudness factor for living non-player sources: the entity hears animals and
+	#monsters too and goes for them (0: it listens for players only); explosions always count fully
+	# Default: 0.6
+	# Range: 0.0 ~ 10.0
+	mobLoudnessFactor = 0.6
+	#Share of the usual anger a heard animal or monster adds (it goes for them, but
+	#only players really anger it)
+	# Default: 0.3
+	# Range: 0.0 ~ 10.0
+	mobAngerFactor = 0.3
+	#Footing of a source that is not on the ground but in water or in a boat
+	#(a source in the air makes no vibration)
+	# Default: 0.2
+	# Range: 0.0 ~ 10.0
+	waterFactor = 0.2
+	#Footing of a source on a rustling block (block tag #tremor:rustling: leaves),
+	#which rustles under the feet: louder than stone. The leaves it rustles in carry the
+	#rustle at this factor too; leaves farther along the way conduct as their class below
+	#(leaves: insulating)
+	# Default: 1.5
+	# Range: 0.0 ~ 10.0
+	rustlingFactor = 1.5
+
+	#Vibration conductivity of blocks by class (block tags #tremor:conductivity/<class>,
+	#first match in this order); 1 = baseline
+	[hearing.conductivity]
+		#Wool, carpets
+		# Default: 0.1
+		# Range: 0.0 ~ 10.0
+		insulating = 0.1
+		#Planks, logs and other wooden blocks
+		# Default: 0.4
+		# Range: 0.0 ~ 10.0
+		wooden = 0.4
+		#Gravel
+		# Default: 0.4
+		# Range: 0.0 ~ 10.0
+		gravelly = 0.4
+		#Sand, soul sand and soil, snow
+		# Default: 0.7
+		# Range: 0.0 ~ 10.0
+		sandy = 0.7
+		#Stone, deepslate, ores, bedrock, obsidian
+		# Default: 1.2
+		# Range: 0.0 ~ 10.0
+		stony = 1.2
+		#Any other block with a collision shape (dirt, grass...)
+		# Default: 1.0
+		# Range: 0.0 ~ 10.0
+		earth = 1.0
+		#Water and other fluids
+		# Default: 0.3
+		# Range: 0.0 ~ 10.0
+		fluid = 0.3
+		#Air and other open blocks; also unloaded terrain
+		# Default: 0.05
+		# Range: 0.0 ~ 10.0
+		air = 0.05
+
+#Anger and stage behaviour. The anger runs from 0 to awakenAt. Times are in seconds,
+#distances in blocks, loudness in perceived units (see hearing). Needs
+#0 < alertAt < huntAt < awakenAt and hysteresis < alertAt, else the defaults are used.
+[behavior]
+	#Anger from which the entity is ALERT
+	# Default: 25.0
+	# Range: 1.0 ~ 100.0
+	alertAt = 25.0
+	#Anger from which the entity is HUNTING
+	# Default: 60.0
+	# Range: 1.0 ~ 100.0
+	huntAt = 60.0
+	#Anger of the AWAKENING (the entity seeks a player; the Awakening starts once it has
+	#reached one, see the awakening section); also the top of the scale
+	# Default: 100.0
+	# Range: 1.0 ~ 100.0
+	awakenAt = 100.0
+	#A stage is left downwards only once the anger is this far below its threshold
+	# Default: 3.0
+	# Range: 0.0 ~ 50.0
+	hysteresis = 3.0
+	#Anger lost per second
+	# Default: 0.5
+	# Range: 0.0 ~ 20.0
+	decayPerSecond = 0.5
+	#After this long without a heard sound...
+	# Default: 20.0
+	# Range: 0.0 ~ 3600.0
+	quietAfterSeconds = 20.0
+	#...the anger decays this many times faster
+	# Default: 3.0
+	# Range: 1.0 ~ 50.0
+	quietDecayFactor = 3.0
+	#A DORMANT entity goes after a sound only if it is at least this loud
+	#(quieter heard sounds still add anger)
+	# Default: 0.35
+	# Range: 0.0 ~ 100.0
+	dormantReactLoudness = 0.35
+	#An ALERT entity freezes and turns toward each heard sound for this long,
+	#then creeps toward it
+	# Default: 2.5
+	# Range: 0.0 ~ 60.0
+	alertFreezeSeconds = 2.5
+	#While it stands frozen (its ring of ripples running out), vibrations reach
+	#it this many times louder: whoever moves then gives themselves away
+	# Default: 3.0
+	# Range: 1.0 ~ 20.0
+	alertListenFactor = 3.0
+	#An ALERT entity that hears nothing for this long wanders again
+	# Default: 12.0
+	# Range: 0.0 ~ 600.0
+	alertLoseInterestSeconds = 12.0
+	#A HUNTING entity that finds nobody at the sound searches this far around it...
+	# Default: 8.0
+	# Range: 0.0 ~ 64.0
+	huntSearchRadius = 8.0
+	#...until this long after the sound, then wanders
+	# Default: 20.0
+	# Range: 0.0 ~ 600.0
+	huntSearchSeconds = 20.0
+	#Mean pause between two legs of wandering
+	# Default: 4.0
+	# Range: 0.0 ~ 120.0
+	wanderPauseSeconds = 4.0
+	#A wander leg ends at least this far away...
+	# Default: 16.0
+	# Range: 1.0 ~ 64.0
+	wanderMinRadius = 16.0
+	#...and at most this far (a smaller value than wanderMinRadius counts as it)
+	# Default: 32.0
+	# Range: 1.0 ~ 64.0
+	wanderMaxRadius = 32.0
+	#A DORMANT entity wanders no closer than this to any player (not a
+	#spectator); nor does one seeking at the top of its anger (AWAKENING) with no sound to go
+	#for, to any player it could take (alive, in survival mode), and its way there passes none
+	#of them within awakening.reachDistance. ALERT and HUNTING wandering keeps this distance
+	#only with wanderKeepAway. In every stage a wander point counts as seen by the nearest
+	#player (and is preferred, so that the bump is seen) only this far or farther from the
+	#eye; a nearer one is not preferred and can only be picked at random among the others.
+	#Going for a sound and searching around it (huntSearchRadius, awakening.searchRadius) are
+	#not wandering
+	# Default: 24.0
+	# Range: 0.0 ~ 128.0
+	minWanderDistance = 24.0
+	#ALERT and HUNTING wandering keeps minWanderDistance from every player (not a
+	#spectator) too. Off: those legs are random and may end next to a quiet player, as a
+	#warden roams; none is drawn toward a player either way
+	wanderKeepAway = false
+	#In the Nether it is fiercer: its speed is this many times what the stage
+	#gives elsewhere...
+	# Default: 1.25
+	# Range: 0.1 ~ 5.0
+	netherSpeedFactor = 1.25
+	#...and a heard sound angers it this many times as much
+	# Default: 1.5
+	# Range: 0.1 ~ 5.0
+	netherAngerFactor = 1.5
+	#Deeper underground it is fiercer (not in the Nether, which has the factors above):
+	#no effect at or above this height...
+	# Default: 40
+	# Range: -64 ~ 320
+	depthShallowY = 40
+	#...all of it at or below this one, in a straight line between
+	# Default: -40
+	# Range: -64 ~ 320
+	depthDeepY = -40
+	#At full depth its speed is this many times what the stage gives...
+	# Default: 1.25
+	# Range: 0.1 ~ 5.0
+	depthSpeedFactor = 1.25
+	#...a heard sound angers it this many times as much...
+	# Default: 1.5
+	# Range: 0.1 ~ 5.0
+	depthAngerFactor = 1.5
+	#...and sounds reach it this many times as loud (it hears from farther)
+	# Default: 1.5
+	# Range: 0.1 ~ 5.0
+	depthHearingFactor = 1.5
+	#Volume of the stage change sounds; heard up to 16 blocks times this away
+	# Default: 3.0
+	# Range: 0.0 ~ 16.0
+	transitionVolume = 3.0
+
+	#Movement per stage: factors on movement.speed and on the bump height
+	[behavior.stages]
+
+		#Lazy wandering: slow, a low bump
+		[behavior.stages.dormant]
+			#Factor on movement.speed
+			# Default: 0.6
+			# Range: 0.05 ~ 10.0
+			speedFactor = 0.6
+			#Factor on the bump height (shape.amplitude)
+			# Default: 0.6
+			# Range: 0.0 ~ 4.0
+			amplitudeFactor = 0.6
+
+		#Freezing and creeping toward sounds
+		[behavior.stages.alert]
+			#Factor on movement.speed
+			# Default: 0.5
+			# Range: 0.05 ~ 10.0
+			speedFactor = 0.5
+			#Factor on the bump height (shape.amplitude)
+			# Default: 0.85
+			# Range: 0.0 ~ 4.0
+			amplitudeFactor = 0.85
+
+		#Going for sounds: fast, a higher bump
+		[behavior.stages.hunting]
+			#Factor on movement.speed
+			# Default: 1.6
+			# Range: 0.05 ~ 10.0
+			speedFactor = 1.6
+			#Factor on the bump height (shape.amplitude)
+			# Default: 1.25
+			# Range: 0.0 ~ 4.0
+			amplitudeFactor = 1.25
+
+		#Seeking a player at the top of the anger (see the awakening section): faster and higher than hunting, a little faster than a player running and jumping
+		[behavior.stages.awakening]
+			#Factor on movement.speed
+			# Default: 2.5
+			# Range: 0.05 ~ 10.0
+			speedFactor = 2.5
+			#Factor on the bump height (shape.amplitude)
+			# Default: 1.4
+			# Range: 0.0 ~ 4.0
+			amplitudeFactor = 1.4
+
+	#Contact of the bump with a player while HUNTING or AWAKENING, with the bump at least
+	#half up; not in creative or spectator mode, and never through rock
+	[behavior.contact]
+		#Radius of the zone around the axis of the bump, from the middle of its block
+		#to 1.5 blocks above its top: players with feet, middle or head in it are struck
+		# Default: 1.6
+		# Range: 0.1 ~ 8.0
+		radius = 1.6
+		#Each player is struck at most this often (ticks)
+		# Default: 20
+		# Range: 1 ~ 1200
+		cooldownTicks = 20
+		#Damage of a strike (2 = one heart); a shield does not block it
+		# Default: 4.0
+		# Range: 0.0 ~ 100.0
+		damage = 4.0
+		#Horizontal speed a strike throws the player away with, blocks per tick, as
+		#the player's client gets it; times 1 - the player's knockback resistance
+		# Default: 0.9
+		# Range: 0.0 ~ 3.9
+		knockback = 0.9
+		#Upward speed of that throw, blocks per tick; also times 1 - the knockback
+		#resistance
+		# Default: 0.45
+		# Range: 0.0 ~ 3.0
+		lift = 0.45
+		#Anger added by a strike
+		# Default: 15.0
+		# Range: 0.0 ~ 100.0
+		anger = 15.0
+		#Animals and monsters the bump touches while it is not DORMANT are pulled under and
+		#gone (no drops, no crater); bosses and #tremor:undevourable never
+		devourMobs = true
+		#Items lying on the ground that the bump touches while it is not DORMANT are
+		#pulled under: gone for good. What the mod laid down for a player (it never despawns) is
+		#spared; what a player dropped by dying is too, for as long as spareDeathDropsSeconds says
+		devourItems = true
+		#What a player dropped by dying is not pulled under for this long after the
+		#death (seconds): time to come back for it; after that it is an item like any other.
+		#0: no such time, it is taken as any item on the ground
+		# Default: 0
+		# Range: 0 ~ 3600
+		spareDeathDropsSeconds = 0
+		#Mobs the bump never takes: entity ids ("minecraft:villager") or entity tags
+		#("#minecraft:raiders"), e.g. ["minecraft:villager", "minecraft:wolf"]
+		spareMobs = []
+		#Whether the bump never takes a tamed animal (a pet with an owner, from any mod)
+		spareTamed = false
+		#A player out of reach up high (more than 5 blocks over the entity, on a pillar, a
+		#platform or a bridge it cannot get onto) is guarded from below; under a ceiling a small bump
+		#crawls up over where the player was heard and drops a pointed dripstone on them
+		stalactites = true
+		#After 3 stalactites missed such a player (or after 10 s without a ceiling) it builds the
+		#pillar up to them out of the ground around it, a rough heap at least 3 wide, and comes up
+		buildUp = true
+
+	#A naturally spawned entity leaves (sinks and disappears) when no player was near for
+	#farSeconds, or nothing happened (no sound heard while DORMANT) for quietSeconds; while
+	#its chunk is not loaded the times run on, and it disappears at once
+	[behavior.despawn]
+		#A player within this distance counts as near
+		# Default: 96.0
+		# Range: 8.0 ~ 1024.0
+		playerDistance = 96.0
+		#Seconds without a player near
+		# Default: 120.0
+		# Range: 1.0 ~ 86400.0
+		farSeconds = 120.0
+		#Seconds without anything happening
+		# Default: 600.0
+		# Range: 1.0 ~ 86400.0
+		quietSeconds = 600.0
+
+#The things made from the entity's shard
+[items]
+	#A geophone hears the entity within this many blocks (its redstone signal is 15
+	#right by it and 1 at this distance)
+	# Default: 32.0
+	# Range: 4.0 ~ 128.0
+	geophoneRange = 32.0
+	#The needle of a seismograph points at the entity within this many blocks
+	#(as far as the client knows of it); beyond, it turns idly
+	# Default: 64.0
+	# Range: 8.0 ~ 160.0
+	seismographRange = 64.0
+	#Loudness of the steps and landings of a player whose boots have the
+	#"muffled steps" enchantment, as a share of the usual
+	# Default: 0.2
+	# Range: 0.0 ~ 1.0
+	muffledStepsFactor = 0.2
+	#Shards a destroyed node gives: at least...
+	# Default: 1
+	# Range: 0 ~ 64
+	shardsMin = 1
+	#...and at most
+	# Default: 1
+	# Range: 0 ~ 64
+	shardsMax = 1
+	#Fortune on the tool that breaks the node may give one more shard, at the chance
+	#it gives an ore: level/(level+2) (33% with Fortune I, 60% with III)
+	shardFortune = true
+	#A dropped shard is lost to the ground at once and drives the entity into a
+	#frenzy: it rushes to whoever dropped it. Its speed is this many times its HUNTING speed...
+	# Default: 4.5
+	# Range: 1.0 ~ 10.0
+	frenzySpeedFactor = 4.5
+	#...and its bump this many times taller
+	# Default: 1.7
+	# Range: 1.0 ~ 5.0
+	frenzyAmplitudeFactor = 1.7
+	#When it reaches that player an Awakening starts with a build-up of only this
+	#many ticks (no running from it)
+	# Default: 20
+	# Range: 1 ~ 600
+	frenzyBuildupTicks = 20
+	#A frenzy that has not reached the player in this long dies down (seconds)
+	# Default: 90
+	# Range: 5 ~ 3600
+	frenzySeconds = 90
+
+#Natural spawn: the entity appears by itself in the distance
+[spawn]
+	#Whether the entity appears by itself
+	enabled = true
+	#Dimensions it appears in, ids like minecraft:overworld
+	dimensions = ["minecraft:overworld", "minecraft:the_nether"]
+	#Every player in such a dimension gets a spawn check this often
+	#(seconds); the checks of different players are spread over this time
+	# Default: 30
+	# Range: 1 ~ 3600
+	checkIntervalSeconds = 30
+	#Chance that a check spawns the entity, before the multipliers below
+	# Default: 0.04
+	# Range: 0.0 ~ 1.0
+	baseChance = 0.04
+	#Chance multiplier when the player cannot see the sky (in a cave or under a
+	#roof; leaves and water are no roof)
+	# Default: 2.5
+	# Range: 0.0 ~ 100.0
+	caveMultiplier = 2.5
+	#Chance multiplier when the light at the player's eyes is below 7 (block light,
+	#or sky light dimmed by night and weather)
+	# Default: 2.0
+	# Range: 0.0 ~ 100.0
+	darkMultiplier = 2.0
+	#Chance multiplier when the player is below y = 0
+	# Default: 1.5
+	# Range: 0.0 ~ 100.0
+	deepMultiplier = 1.5
+	#Chance multiplier at night under the open sky, not in a cave (a thunderstorm
+	#counts as night, as for beds)
+	# Default: 2.0
+	# Range: 0.0 ~ 100.0
+	nightMultiplier = 2.0
+	#Nearest spawn point to the player (blocks)
+	# Default: 40.0
+	# Range: 0.0 ~ 256.0
+	minDistance = 40.0
+	#Farthest spawn point from the player (blocks; at least minDistance + 1 is used).
+	#Only loaded terrain is searched; a point the player sees but will not pass must also
+	#lie within the player's view distance
+	# Default: 80.0
+	# Range: 1.0 ~ 256.0
+	maxDistance = 80.0
+	#A spawn point the player does not see must lie within this distance (blocks,
+	#sideways) of the player's way ahead, which may climb or fall up to 45 degrees
+	# Default: 10.0
+	# Range: 0.0 ~ 64.0
+	routeHalfWidth = 10.0
+	#It appears by itself only at or above this height (y of where it comes up): with
+	#maxY, a band of the world it keeps to (say, only under the deepslate line: maxY 0)
+	# Default: -2048
+	# Range: -2048 ~ 2048
+	minY = -2048
+	#It appears by itself only at or below this height (y of where it comes up)
+	# Default: 2048
+	# Range: -2048 ~ 2048
+	maxY = 2048
+	#Spawn points are looked for this many blocks above and below the player's feet
+	# Default: 24
+	# Range: 0 ~ 128
+	verticalRange = 24
+	#Candidate points tried per spawn (each costs a column scan and a line of sight)
+	# Default: 48
+	# Range: 1 ~ 1024
+	attempts = 48
+	#No natural spawn within spacing of where a naturally spawned entity left, for
+	#this long after (seconds)
+	# Default: 600
+	# Range: 0 ~ 86400
+	cooldownSeconds = 600
+	#A dimension can have several entities, one for each part of the world where players
+	#are: none appears by itself within this distance (blocks) of another one, nor of where
+	#one has just left or gone deep after an Awakening. A command spawn this near another
+	#replaces it
+	# Default: 500
+	# Range: 64 ~ 100000
+	spacing = 500
+	#At most this many entities appear by themselves in a dimension at once (1: one
+	#for the whole dimension, as before 1.1.0)
+	# Default: 4
+	# Range: 1 ~ 64
+	maxEntities = 4
+	#Two entities that come this near each other (blocks, horizontally) do not stay
+	#so: the calmer one gives way, turning away, calming down and sinking into the ground;
+	#0 = off
+	# Default: 100
+	# Range: 0 ~ 10000
+	crowdDistance = 100
+	#A player's first spawn check comes this long after the player enters the
+	#dimension: joining, the server starting, changing dimension (seconds)
+	# Default: 60
+	# Range: 0 ~ 3600
+	graceSeconds = 60
+	#No spawn this close (blocks, horizontally) to the world spawn point and to
+	#the beds and respawn anchors of the players online; 0 = off
+	# Default: 32
+	# Range: 0 ~ 1024
+	protectionRadius = 32
+	#Whether the entity appears by itself in peaceful difficulty too
+	allowPeaceful = false
+	#Whether the entity appears by itself only in caves: under the ground where
+	#no light of the sky reaches, however dark it is (not under an overhang or a tree at
+	#night). Once there it may still crawl up after sounds. Only in dimensions with a sky
+	undergroundOnly = false
+	#Whether the entity appears by itself only where it is dark enough for monsters to
+	#spawn (the vanilla rule: no torch light, night or deep shade). Only in dimensions with
+	#a sky
+	darkOnly = false
+
+#The hollow: a copy of the terrain around a swallowed player in the dimension tremor:hollow,
+#where the Awakening is played out
+[hollow]
+	#Blocks copied around the player horizontally (the copy is 2 * radius + 1 wide)
+	# Default: 32
+	# Range: 8 ~ 96
+	radius = 32
+	#Blocks copied below the player's feet (cut at the bottom of the world)
+	# Default: 24
+	# Range: 4 ~ 128
+	below = 24
+	#Blocks copied above the player's feet (cut at the top of the world)
+	# Default: 24
+	# Range: 4 ~ 128
+	above = 24
+	#Server time per tick for copying the terrain, preparing the level inside it and
+	#clearing it again (milliseconds); the work is spread over as many ticks as it needs
+	# Default: 5.0
+	# Range: 0.5 ~ 50.0
+	budgetMillis = 5.0
+	#Length of the fade to black before a move into or out of the hollow, and of the
+	#fade back (ticks)
+	# Default: 20
+	# Range: 0 ~ 200
+	fadeTicks = 20
+	#After a move the screen stays black until the client has had the terrain around
+	#the player for this many ticks
+	# Default: 10
+	# Range: 0 ~ 200
+	settleTicks = 10
+	#Events in the hollow at the same time (one player each)
+	# Default: 8
+	# Range: 1 ~ 64
+	maxEvents = 8
+	#Light level around a player in the hollow (a torch gives 14): enough to make out the
+	#walls next to them without one; 0 for none. Shader packs show a faint light each their own
+	#way, some far darker than vanilla
+	# Default: 3
+	# Range: 0 ~ 15
+	playerLight = 3
+
+	#The level inside the hollow: the node to destroy, the edges closing in, walls that
+	#move, ground that pulls in a player who stands still
+	[hollow.level]
+		#Server time per tick for the level of one player while the player is inside
+		#(milliseconds; it is prepared within hollow.budgetMillis); the closing gets what the rest
+		#leaves of it
+		# Default: 2.0
+		# Range: 0.2 ~ 20.0
+		budgetMillis = 2.0
+		#A place with fewer open blocks than this connected to the player within 8 blocks
+		#(a tunnel up to some 4 blocks across, a small room) is widened into a cave some 16 blocks
+		#across before the player arrives (0 = never)
+		# Default: 400
+		# Range: 0 ~ 2000
+		widenBelow = 400
+		#The node is put at least this many steps from the player along the way
+		#there, a tunnel dug through the copy to a chamber under the ground (where the copy leaves
+		#no room for that, the best way found is taken: /tremor hollow status and the log say SHORT)
+		# Default: 40
+		# Range: 2 ~ 120
+		nodeMinDistance = 40
+		#...and at most this many
+		# Default: 60
+		# Range: 2 ~ 120
+		nodeMaxDistance = 60
+		#...and at least this far from where the player arrived in a straight line
+		#(blocks)
+		# Default: 12.0
+		# Range: 0.0 ~ 64.0
+		nodeMinStraight = 12.0
+		#Dead ends dug besides the way to the node, at least: out of the start (or decoy
+		#throats on open ground) and forking off the way
+		# Default: 3
+		# Range: 0 ~ 12
+		minDeadEnds = 3
+		#...and at most
+		# Default: 5
+		# Range: 0 ~ 12
+		maxDeadEnds = 5
+		#The edges start closing in this long after the player arrives (seconds)
+		# Default: 10
+		# Range: 0 ~ 600
+		graceSeconds = 10
+		#How fast the edges close in while the player is silent (blocks per second)
+		# Default: 0.08
+		# Range: 0.0 ~ 10.0
+		closeSpeed = 0.08
+		#Extra closing speed per unit of noise: blocks per second for each loudness per
+		#second the ground gets from the player (walking on stone makes about 6, sprinting
+		#about 16, sneaking nothing)
+		# Default: 0.02
+		# Range: 0.0 ~ 10.0
+		noiseFactor = 0.02
+		#The noise of the player fades away over this time (seconds)
+		# Default: 3.0
+		# Range: 0.1 ~ 60.0
+		noiseSeconds = 3.0
+		#The edges stop closing at this distance from where the player arrived (blocks);
+		#the way to the node always stays open
+		# Default: 6.0
+		# Range: 2.0 ~ 96.0
+		minRadius = 6.0
+		#A lure (a thrown item or projectile landing in the hollow away from the
+		#player) stops the closing for this long (seconds)
+		# Default: 4.0
+		# Range: 0.0 ~ 60.0
+		lurePauseSeconds = 4.0
+		#A lure within this long after the last one does nothing (seconds)
+		# Default: 8.0
+		# Range: 0.0 ~ 600.0
+		lureCooldownSeconds = 8.0
+		#A landing closer to the player than this is no lure (blocks)
+		# Default: 4.0
+		# Range: 0.0 ~ 64.0
+		lureMinDistance = 4.0
+		#Blocks the closing fills per tick at most
+		# Default: 96
+		# Range: 1 ~ 4096
+		fillsPerTick = 96
+		#Walls 5 to 14 blocks from the player bulge and recede this often (seconds)
+		# Default: 2.0
+		# Range: 0.1 ~ 60.0
+		wallShiftSeconds = 2.0
+		#...this many blocks each time (0 = the walls stand still)
+		# Default: 3
+		# Range: 0 ~ 64
+		wallShifts = 3
+		#A player who stays within a quarter of a block for this long is standing still,
+		#and the ground under the player starts to soften (seconds)
+		# Default: 3.0
+		# Range: 0.5 ~ 60.0
+		stillSeconds = 3.0
+		#How long the softening takes to pull a player who keeps standing on it in over
+		#the eyes: the defeat (seconds)
+		# Default: 10.0
+		# Range: 1.0 ~ 120.0
+		sinkSeconds = 10.0
+		#Time the player has inside the hollow (seconds; 0 = no limit): it runs out whatever the
+		#player eats or drinks, shown as a bar at the top of the screen; at its end the ground takes
+		#the player (the defeat)
+		# Default: 60.0
+		# Range: 0.0 ~ 600.0
+		breathSeconds = 60.0
+		#Blocks of the hollow break this many times as fast as elsewhere (the node excepted;
+		#no effect on the player): digging a way out is slow work
+		# Default: 0.15
+		# Range: 0.0 ~ 1.0
+		digFactor = 0.15
+		#Soft ground sets again this long after the player got off it (seconds)
+		# Default: 4.0
+		# Range: 0.5 ~ 120.0
+		recoverSeconds = 4.0
+		#Ticks between two beats of the node when the player arrives
+		# Default: 30
+		# Range: 4 ~ 200
+		beatSlowTicks = 30
+		#Ticks between two beats of the node once the hollow has closed
+		# Default: 12
+		# Range: 4 ~ 200
+		beatFastTicks = 12
+
+#The Awakening: at the top of its anger the entity seeks a player, and once it has
+#reached one it becomes the whole area around that player; the player escapes by leaving
+#the zone in time, or the ground swallows the player into the hollow
+[awakening]
+	#At the top of its anger (AWAKENING) the entity goes for the sounds it hears,
+	#faster than hunting, its anger held at the top; if it has reached nobody this long after
+	#it got there, it calms down to HUNTING (halfway between behavior.huntAt and awakenAt) and
+	#the anger decays again (seconds)
+	# Default: 35
+	# Range: 1 ~ 600
+	seekSeconds = 35
+	#The Awakening starts once the bump of the seeking entity is this close to a
+	#player in survival mode (blocks, horizontally, and at most 5 blocks above or below the
+	#feet); the zone is around that player
+	# Default: 8.0
+	# Range: 1.0 ~ 32.0
+	reachDistance = 8.0
+	#The seeking entity searches only this far around the last sound it heard
+	#(blocks; behavior.huntSearchRadius applies while hunting). So a player who makes a noise,
+	#then gets quietly a little more than searchRadius + reachDistance (12) blocks away from
+	#it before the entity is there, not toward the entity coming for it, and keeps still, is
+	#not found; with nothing to go for the entity roams away from the players
+	#(behavior.minWanderDistance)
+	# Default: 4.0
+	# Range: 0.0 ~ 64.0
+	searchRadius = 4.0
+	#Radius of the zone (blocks, horizontally) around where the player stood at the start
+	# Default: 32.0
+	# Range: 4.0 ~ 128.0
+	radius = 32.0
+	#Time to get out of the zone before it closes (seconds); the last third is dark
+	# Default: 7
+	# Range: 1 ~ 600
+	buildupSeconds = 7
+	#The ground grabs at the target's feet during the build-up: its movement speed and jump
+	#strength are cut by up to this share, growing from 0 at the start to it at the end
+	# Default: 0.6
+	# Range: 0.0 ~ 1.0
+	buildupDrag = 0.6
+	#How long the hill rises under the rooted player before the screen goes dark
+	#(ticks)
+	# Default: 50
+	# Range: 1 ~ 600
+	swallowTicks = 50
+	#After an Awakening the entity has gone deep: no natural spawn within
+	#spawn.spacing of it for this long (seconds)
+	# Default: 3600
+	# Range: 0 ~ 604800
+	cooldownSeconds = 3600
+	#After a victory: how long the hill at the swallow point rises (the first fifth)
+	#and settles again, letting the player out (the rest; ticks); in between it stands while
+	#the player is put into it and the screen comes back
+	# Default: 80
+	# Range: 1 ~ 600
+	emergeTicks = 80
+	#After a defeat, and after an escape through the edge of the hollow, a real
+	#crater opens where the player was swallowed: an irregular funnel with steep walls; its
+	#radius (blocks, the rim up to a quarter nearer or farther by direction, so it reaches up
+	#to 1.25 x the radius; 0 = no crater). It never takes blocks with a block entity, blocks of
+	##tremor:protected, unbreakable blocks or the spawn protection, nor lets a fluid in (the
+	#fluid is plugged where it touches the crater)
+	# Default: 12
+	# Range: 0 ~ 24
+	craterRadius = 12
+	#Depth of the crater at its middle (blocks). At the surface it also takes all that
+	#stands over it up to the top of the terrain (a hill, trees; 48 blocks over the swallow
+	#point at most); deep under a roof (a cave, a mine) it cuts this far up, under the rest
+	# Default: 20
+	# Range: 1 ~ 40
+	craterDepth = 20
+	#The crater caves in gradually, from the top down: at most this many blocks
+	#are changed per tick
+	# Default: 120
+	# Range: 1 ~ 10000
+	craterBlocksPerTick = 120
+	#Server time per tick for digging the craters, however many blocks that
+	#is (milliseconds)
+	# Default: 2.0
+	# Range: 0.1 ~ 50.0
+	craterBudgetMillis = 2.0
+	#A defeat kills the player, whose things are hidden on the bottom of the crater (in
+	#caches of rubble, some of them buried); false: the player comes out there alive,
+	#keeping everything, but badly weakened
+	lethal = true
+	#Whether the server's spawn protection (spawn-protection of server.properties, 16
+	#blocks in single player) is spared: no crater there, nothing taken there for what it builds,
+	#no leaves shaken down, no block broken by a stalactite (the tremor's or a stalactite
+	#crawler's). Off: a player who builds where they were born is not safe either
+	spawnProtection = false
+
+#The ambush: in ALERT or HUNTING, on a floor with at least four blocks of ground under it, the
+#entity may lie in wait for a player who is coming and does not see it: it stops, its bump
+#flat and wide, breathing; whoever steps onto it is pulled under into quicksand (the ground
+#turns into mud for a moment, and back), into a hollow of their own, and a mob sinks
+[ambush]
+	#Whether the entity lies in wait at all
+	enabled = true
+	#Chance that it lies in wait when it senses a player coming who does not see it; after
+	#a no it tries again 10 seconds later
+	# Default: 0.35
+	# Range: 0.0 ~ 1.0
+	chance = 0.35
+	#How far it senses a player coming (blocks, horizontally)
+	# Default: 20.0
+	# Range: 4.0 ~ 64.0
+	senseDistance = 20.0
+	#Stepping this near the middle of where it lies springs it (blocks,
+	#horizontally)
+	# Default: 3.5
+	# Range: 1.0 ~ 8.0
+	triggerRadius = 3.5
+	#It gives up lying in wait after this long without a catch (seconds)
+	# Default: 40
+	# Range: 5 ~ 600
+	lurkSeconds = 40
+	#After lying in wait (a catch or not) it does not again for this long (seconds)
+	# Default: 90
+	# Range: 0 ~ 3600
+	cooldownSeconds = 90
+	#How long the quicksand takes to pull a player under (seconds): slowly at
+	#first; the eyes are under the ground about 70% of the way, the whole player a little later
+	# Default: 5.0
+	# Range: 1.0 ~ 10.0
+	quicksandSeconds = 5.0
+	#For this long after stepping in a player may still get out of the quicksand
+	#onto firm ground (the mud holds: only one who sprints and jumps off at once makes it);
+	#then it holds the player (seconds)
+	# Default: 2.0
+	# Range: 0.0 ~ 5.0
+	escapeSeconds = 2.0
+
+#Stalactite crawlers: small creatures of their own on the ceilings of dark caves. Hearing a
+#player under them they creep along the ceiling to over them, crackle for a moment and drop
+#stalactites. Light keeps them off; breaking the block one is in kills it
+[stalactites]
+	#Whether they come by themselves near players underground (the command still makes them)
+	enabled = true
+	#Chance every 5 seconds that one comes near a player underground
+	# Default: 0.03
+	# Range: 0.0 ~ 1.0
+	spawnChance = 0.03
+	#No more come while this many are within 48 blocks of the player
+	# Default: 1
+	# Range: 0 ~ 16
+	maxNearPlayer = 1
+	#How far one hears (blocks)
+	# Default: 24.0
+	# Range: 4.0 ~ 64.0
+	hearingRange = 24.0
+	#How much better than a tremor one hears what reaches it
+	# Default: 2.0
+	# Range: 0.1 ~ 20.0
+	hearingFactor = 2.0
+	#How fast one creeps along the ceiling (blocks per second)
+	# Default: 2.0
+	# Range: 0.2 ~ 10.0
+	speed = 2.0
+	#How long one crackles over the sound before it drops (ticks, a little more by
+	#chance): the time to jump away
+	# Default: 16
+	# Range: 0 ~ 100
+	crackleTicks = 16
+	#After a drop one hangs there bulging, deaf, for this long (seconds)
+	# Default: 8
+	# Range: 0 ~ 120
+	cooldownSeconds = 8
+	#Light from this level on keeps them off: they never go there and sink away from it
+	# Default: 8
+	# Range: 1 ~ 15
+	lightLevel = 8
+	#Damage of a stalactite that falls on someone (scaled by the difficulty)
+	# Default: 6.0
+	# Range: 0.0 ~ 40.0
+	damage = 6.0
+
+#Listeners: small still mounds a tremor leaves where it lost the player it hunted. Hearing a player
+#near, one sends a signal along the ground to its tremor (wool or a carpet on the way soaks
+#it up); wool or a carpet over one deafens it, breaking its block kills it
+[listeners]
+	#Whether a tremor leaves listeners
+	enabled = true
+	#It leaves 1 to this many where it lost the player, and keeps at most this many
+	# Default: 3
+	# Range: 0 ~ 8
+	count = 3
+	#A listener sinks away after this long (seconds)
+	# Default: 240
+	# Range: 10 ~ 3600
+	lifetimeSeconds = 240
+	#How far a listener hears (blocks)
+	# Default: 12.0
+	# Range: 2.0 ~ 48.0
+	hearingRange = 12.0
+	#How much better than a tremor a listener hears what reaches it
+	# Default: 1.5
+	# Range: 0.1 ~ 20.0
+	hearingFactor = 1.5
+	#How fast the signal runs along the ground to the tremor (blocks per second): the
+	#time a player has to stop it
+	# Default: 7.0
+	# Range: 1.0 ~ 40.0
+	signalSpeed = 7.0
+
+#Echolocation: the ring a frozen tremor sends through the ground gives an echo back from whatever
+#stands on the ground where it passes, a rough fix (a player clearly, a mob faintly); not one
+#in the air just then (a jump), in water, or on wool or a carpet
+[echo]
+	#Whether the ring finds anyone
+	enabled = true
+	#How far its front runs (blocks); the ring is seen out to some 33
+	# Default: 32.0
+	# Range: 2.0 ~ 64.0
+	range = 32.0
+	#How fast its front runs (blocks per second): as the ring is seen by default
+	# Default: 6.0
+	# Range: 1.0 ~ 40.0
+	speed = 6.0
+	#Rings a tremor sends one after another while they find nobody and it hears nothing,
+	#drawing in before each
+	# Default: 3
+	# Range: 1 ~ 6
+	rings = 3
+
+#The marks: every time a tremor takes a player into the hollow they get a mark, and their hollow is
+#harder the more they have (the node farther, the walls faster, less time); a hushing charm
+#takes one off
+[marks]
+	#Whether marks are counted and make the hollow harder
+	enabled = true
+
+#Simple Voice Chat, if it is installed: the entity hears players speak, as a vibration in the
+#ground under them, the louder the voice the louder (it hears through the ground like a step)
+[voice]
+	#Whether it hears players speak at all
+	enabled = true
+	#How loud the loudest voice is (a sprinting step is 8, a walking one about 4)
+	# Default: 8.0
+	# Range: 0.0 ~ 100.0
+	loudness = 8.0
+	#A whisper (the voice chat's whisper mode) is this share of that
+	# Default: 0.3
+	# Range: 0.0 ~ 1.0
+	whisperFactor = 0.3
+	#A voice at this level or quieter is not heard (dBFS: 0 is the loudest a microphone
+	#gives)
+	# Default: -50.0
+	# Range: -100.0 ~ 0.0
+	quietDb = -50.0
+	#A voice at this level or louder is as loud as it gets (dBFS)
+	# Default: -15.0
+	# Range: -100.0 ~ 0.0
+	loudDb = -15.0

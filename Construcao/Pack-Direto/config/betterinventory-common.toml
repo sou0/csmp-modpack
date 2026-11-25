@@ -1,0 +1,91 @@
+[gameplay]
+	#Stop wear from making a tool worse than your bare hand.
+	#Durability mods subtract a flat amount of mining speed once a tool passes a wear
+	#threshold. That amount is the same for every tier, so it barely touches iron but
+	#halves wood - a half-worn wooden axe ends up slower than punching the block. With
+	#this on, a worn (not broken) tool never drops below the midpoint between its speed at
+	#full durability and bare-hand speed. Wear still costs up to half the tool's advantage.
+	#Broken tools are not affected - that penalty is left as the durability mod intends.
+	wornToolFloor = true
+	#Items the tool belt does not take: item ids (minecraft:iron_pickaxe) or item tags with a # in
+	#front (#c:tools/paxel). Empty by default, so every tool is allowed; a server that finds paxels
+	#too strong on the belt lists them here. Tools already on a belt stay there and keep working.
+	blockedBeltTools = []
+
+[tabs]
+	#Tabs need a backpack: one page tab per backpack level (five at level 5), and the three
+	#ability-upgrade slots with any backpack.
+	#Turn this off to have all of it without any backpack: every tab, the extra area and the
+	#upgrade slots are unlocked for everyone from the start, and what they hold is kept on the
+	#player instead of inside a backpack item. Backpacks still work as placeable storage.
+	#Changing this moves each player's stored items across the next time they are online -
+	#out of the backpack they have equipped when it is turned off, back into one when it is
+	#turned on again. Nothing is deleted either way.
+	requireBackpack = true
+	#Switching tabs also swaps the 27 main inventory slots, so every tab is a whole second
+	#inventory (how 1.x worked). Off by default: the main inventory stays the same on every
+	#tab, and tabs only page the 5x9 area above it.
+	#Changing this moves each player's items across the next time they are online. Nothing is
+	#dropped: what has no room yet is kept, and follows as soon as there is some.
+	pageMainInventory = false
+
+[features]
+	#Each of these switches one part of the inventory off for everyone on the server: its slots
+	#leave the inventory, its items do nothing and cannot be crafted. Whatever a player had in
+	#a part that is switched off comes back to their inventory as soon as there is room, the
+	#tool belt, armor pack and quiver with their contents inside them. Nothing is dropped.
+	#The tool belt row of the gear tab: tools used automatically, and the tool wheel.
+	toolBelt = true
+	#The armor pack row of the gear tab: the second armor set and the swap key.
+	armorPack = true
+	#The quiver's arrow slots in the gear tab (the offhand slots beside them stay).
+	quiver = true
+	#The Magnet upgrade.
+	magnetUpgrade = true
+	#The Feeding upgrade.
+	feedingUpgrade = true
+	#The Refill upgrade.
+	refillUpgrade = true
+	#The Void upgrade.
+	voidUpgrade = true
+	#The Pickup upgrade.
+	pickupUpgrade = true
+	#The stack upgrades and their slot. (Also off by themselves while another stack-size mod
+	#has the last word, see stackSizes in betterinventory-startup.toml.)
+	stackUpgrades = true
+	#The crafting upgrades and their slot: the crafting panel then stays a 2x2 grid.
+	craftingUpgrades = true
+	#The trash upgrade and its slot (left of the stack upgrade): the trash slot opens once one is in.
+	#Off: there is no trash upgrade, and the trash slot is open to everyone.
+	trashUpgrade = true
+	#The furnace upgrade and its slot (right of the crafting upgrade): with one in, a furnace in its
+	#own tab under the crafting tab. Off: there is no furnace upgrade and no furnace.
+	furnaceUpgrade = true
+	#The jukebox upgrade and its slot (under the quiver's): it holds music discs and plays them as you
+	#go, heard by you and by players near you, from a tab of its own under the furnace tab.
+	#Off: there is no jukebox upgrade; the discs in a worn one come back to the inventory, and the upgrade after them.
+	jukeboxUpgrade = true
+	#Hoppers and pipes reach into a placed backpack: they take from and put into every page its
+	#level opens, and a comparator reads how full it is. Off: a placed backpack is shut to them.
+	backpackHoppers = true
+
+[hotbar]
+	#A second hotbar: a second row behind your hotbar, standing up over its top edge so you
+	#see what is in it, and a row of its own above the hotbar in the inventory. Scrolling off
+	#either end of your hotbar moves on into it (the two rows trade places), and a key
+	#("Swap hotbars", X by default) trades them outright.
+	#Turning it off hands what it holds back to each player's inventory, as soon as there is room.
+	secondHotbar = false
+	#How many slots the second hotbar has, from the left: it swaps with that many of the
+	#hotbar's slots and leaves the rest where they are.
+	# Default: 9
+	# Range: 1 ~ 9
+	secondHotbarSize = 9
+
+[armor]
+	#The swap key between the worn armor and the Armor Pack's set (in the gear tab) swaps them
+	#piece by piece, and a piece facing an empty slot of the other set moves across as well.
+	#Turn this off to swap only the pieces that have one to change places with: a pack that
+	#holds nothing but boots then swaps the boots, and the worn helmet, chestplate and
+	#leggings stay on. Pressing the key again still puts everything back.
+	swapEmptySlots = true

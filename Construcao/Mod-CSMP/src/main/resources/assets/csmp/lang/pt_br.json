@@ -41,5 +41,13 @@
   "item.csmp.venda": "Venda",
   "block.csmp.chao_falso": "Chão Falso",
   "block.csmp.assoalho_falso": "Assoalho Falso",
-  "block.csmp.pedra_falsa": "Lajota Falsa"
+  "block.csmp.pedra_falsa": "Lajota Falsa",
+  "block.csmp.sigilo": "Símbolo do Ritual",
+  "block.csmp.folhas_carmesim": "Folhas Carmesim",
+  "gui.csmp.ritual.titulo": "Quem volta?",
+  "gui.csmp.ritual.reviver": "Reviver",
+  "gui.csmp.ritual.cancelar": "Cancelar",
+  "gui.csmp.ritual.insanidade": "Insanidade ao cair: %s%%",
+  "gui.csmp.ritual.modo_amuleto": "O amuleto será oferecido.",
+  "gui.csmp.ritual.modo_troca": "Sem amuleto: você toma o lugar de quem voltar."
 }

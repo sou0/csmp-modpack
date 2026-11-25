@@ -1,0 +1,15 @@
+#Strip curtain door
+[door]
+	#Swing of the strips when something walks through, as a share of the base swing
+	#(45 to 60 degrees, from the speed): 0.1 gives 4.5 to 6 degrees, 1 the full swing, 0 no swing
+	# Default: 0.1
+	# Range: 0.0 ~ 1.0
+	flapSwingFactor = 0.1
+
+#Vent
+[vent]
+	#Speed of the propeller of a vent that cools a room (rpm)
+	#0: the propeller stays still
+	# Default: 64
+	# Range: 0 ~ 256
+	ventPropellerRpm = 64

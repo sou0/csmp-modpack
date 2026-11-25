@@ -1,3 +1,6 @@
 {
-  "values": [ "csmp:folhas_negras" ]
+  "values": [
+    "csmp:folhas_negras",
+    "csmp:folhas_carmesim"
+  ]
 }

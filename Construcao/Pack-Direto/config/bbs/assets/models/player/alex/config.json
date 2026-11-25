@@ -1,0 +1,144 @@
+{
+    "items_off": [
+        {
+            "group": "left_arm_item"
+        }
+    ],
+    "culling": false,
+    "texture": "assets:models/player/alex/alex.png",
+    "cem_parents": {},
+    "fp_main": {
+        "transform": {
+            "r": [180.0, 0.0, -5.729],
+            "s": [1.0, 1.0, 1.0],
+            "t": [0.13875, 1.525, 0.0]
+        },
+        "group": "right_arm"
+    },
+    "ui_scale": 1.0,
+    "scale": [0.9375, 0.9375, 0.9375],
+    "procedural": true,
+    "look_at": {
+        "head": "head",
+        "head_limit": 45.0,
+        "pitch": true
+    },
+    "on_cpu": false,
+    "disabledBones": ["armor_right_boot", "left_arm_item", "torso", "armor_right_leg", "armor_helmet", "armor_chest", "body", "armor_left_leg", "right_arm_item", "armor_left_boot", "armor_leggings", "armor_right_arm", "armor_left_arm"],
+    "welds": [],
+    "items_main": [
+        {
+            "group": "right_arm_item"
+        }
+    ],
+    "default_pose": {
+        "pose": {}
+    },
+    "pose_group": "player/steve",
+    "anchor": "",
+    "sneaking_pose": {
+        "pose": {
+            "head": {
+                "r": [0.0, 0.0, 0.0],
+                "s": [1.0, 1.0, 1.0],
+                "visible": true,
+                "t": [0.0, -4.2, 0.0],
+                "fix": 0.0,
+                "color": -1,
+                "overlay": 16777215,
+                "lighting": 0.0
+            },
+            "left_leg": {
+                "r": [0.0, 0.0, 0.0],
+                "s": [1.0, 1.0, 1.0],
+                "visible": true,
+                "t": [0.0, -0.2, 4.0],
+                "fix": 0.0,
+                "color": -1,
+                "overlay": 16777215,
+                "lighting": 0.0
+            },
+            "right_arm": {
+                "r": [-0.39999452, 0.0, 0.0],
+                "s": [1.0, 1.0, 1.0],
+                "visible": true,
+                "t": [0.0, -3.2, 0.0],
+                "fix": 0.0,
+                "color": -1,
+                "overlay": 16777215,
+                "lighting": 0.0
+            },
+            "torso": {
+                "r": [-0.50000197, 0.0, 0.0],
+                "s": [1.0, 1.0, 1.0],
+                "visible": true,
+                "t": [0.0, -3.2, 0.0],
+                "fix": 0.0,
+                "color": -1,
+                "overlay": 16777215,
+                "lighting": 0.0
+            },
+            "right_leg": {
+                "r": [0.0, 0.0, 0.0],
+                "s": [1.0, 1.0, 1.0],
+                "visible": true,
+                "t": [0.0, -0.2, 4.0],
+                "fix": 0.0,
+                "color": -1,
+                "overlay": 16777215,
+                "lighting": 0.0
+            },
+            "left_arm": {
+                "r": [-0.39999452, 0.0, 0.0],
+                "s": [1.0, 1.0, 1.0],
+                "visible": true,
+                "t": [0.0, -3.2, 0.0],
+                "fix": 0.0,
+                "color": -1,
+                "overlay": 16777215,
+                "lighting": 0.0
+            }
+        }
+    },
+    "fp_offhand": {
+        "transform": {
+            "r": [180.0, 0.0, 5.729],
+            "s": [1.0, 1.0, 1.0],
+            "t": [-0.13875, 1.525, 0.0]
+        },
+        "group": "left_arm"
+    },
+    "cem_animation": true,
+    "armor_slots": {
+        "chest": {
+            "group": "armor_chest"
+        },
+        "right_arm": {
+            "group": "armor_right_arm"
+        },
+        "left_leg": {
+            "group": "armor_left_leg"
+        },
+        "left_arm": {
+            "group": "armor_left_arm"
+        },
+        "right_leg": {
+            "group": "armor_right_leg"
+        },
+        "left_boot": {
+            "group": "armor_left_boot"
+        },
+        "helmet": {
+            "group": "armor_helmet"
+        },
+        "right_boot": {
+            "group": "armor_right_boot"
+        },
+        "leggings": {
+            "group": "armor_leggings"
+        }
+    },
+    "picking_overrides": {
+        "torso": "low_body"
+    }
+}

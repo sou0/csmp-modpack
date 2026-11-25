@@ -41,5 +41,13 @@
   "item.csmp.venda": "Blindfold",
   "block.csmp.chao_falso": "False Floor",
   "block.csmp.assoalho_falso": "False Floorboards",
-  "block.csmp.pedra_falsa": "False Stone Tile"
+  "block.csmp.pedra_falsa": "False Stone Tile",
+  "block.csmp.sigilo": "Ritual Sigil",
+  "block.csmp.folhas_carmesim": "Crimson Leaves",
+  "gui.csmp.ritual.titulo": "Who returns?",
+  "gui.csmp.ritual.reviver": "Revive",
+  "gui.csmp.ritual.cancelar": "Cancel",
+  "gui.csmp.ritual.insanidade": "Insanity when fallen: %s%%",
+  "gui.csmp.ritual.modo_amuleto": "The amulet will be offered.",
+  "gui.csmp.ritual.modo_troca": "No amulet: you take the place of whoever returns."
 }

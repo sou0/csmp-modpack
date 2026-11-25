@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "ativo=false": {
+      "model": "csmp:block/sigilo"
+    },
+    "ativo=true": {
+      "model": "csmp:block/sigilo"
+    }
+  }
+}

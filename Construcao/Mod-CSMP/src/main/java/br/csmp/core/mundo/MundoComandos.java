@@ -27,6 +27,18 @@ public final class MundoComandos {
                                 .suggests((ctx, b) -> net.minecraft.commands.SharedSuggestionProvider.suggest(
                                         new String[] {"rua", "casa", "loja", "capela", "praca", "ruina", "estatua"}, b))
                                 .executes(ctx -> vazio(ctx.getSource(), com.mojang.brigadier.arguments.StringArgumentType.getString(ctx, "tipo")))))
+                .then(Commands.literal("ars")
+                        .then(Commands.literal("liberar").then(Commands.argument("jogador", EntityArgument.player())
+                                .executes(ctx -> ars(ctx.getSource(), EntityArgument.getPlayer(ctx, "jogador"), true))))
+                        .then(Commands.literal("bloquear").then(Commands.argument("jogador", EntityArgument.player())
+                                .executes(ctx -> ars(ctx.getSource(), EntityArgument.getPlayer(ctx, "jogador"), false)))))
+                .then(Commands.literal("libertar").then(Commands.argument("jogador", EntityArgument.player())
+                        .executes(ctx -> libertar(ctx.getSource(), EntityArgument.getPlayer(ctx, "jogador")))))
+                .then(Commands.literal("preso")
+                        .then(Commands.literal("marcar").then(Commands.argument("jogador", EntityArgument.player())
+                                .executes(ctx -> marcarPreso(ctx.getSource(), EntityArgument.getPlayer(ctx, "jogador"), true))))
+                        .then(Commands.literal("soltar").then(Commands.argument("jogador", EntityArgument.player())
+                                .executes(ctx -> marcarPreso(ctx.getSource(), EntityArgument.getPlayer(ctx, "jogador"), false)))))
                 .then(Commands.literal("insanidade")
                         .then(Commands.literal("ver")
                                 .then(Commands.argument("jogador", EntityArgument.player())
@@ -63,6 +75,41 @@ public final class MundoComandos {
             return 0;
         }
         fonte.sendSuccess(() -> Component.literal("Vazio, " + tipo + " mais perto: x=" + alvo[0] + " z=" + alvo[1]), false);
+        return 1;
+    }
+
+    /** Marca (ou solta) alguem como preso no Vazio: aura vermelha e aparece no menu de reviver. So para testes/admin. */
+    private static int marcarPreso(CommandSourceStack fonte, ServerPlayer jogador, boolean preso) {
+        jogador.getPersistentData().putBoolean(Sanidade.PRESO, preso);
+        if (preso) {
+            jogador.getPersistentData().putFloat(Sanidade.INSANIDADE_AO_CAIR, Sanidade.obter(jogador));
+        }
+        fonte.sendSuccess(() -> Component.literal(jogador.getName().getString() + (preso ? " agora conta como preso no Vazio." : " nao esta mais preso.")), true);
+        return 1;
+    }
+
+    /** Libera (ou volta a bloquear) a magia do Ars Nouveau para um jogador. */
+    private static int ars(CommandSourceStack fonte, ServerPlayer jogador, boolean liberar) {
+        jogador.getPersistentData().putBoolean(ArsRestricao.LIBERADO, liberar);
+        fonte.sendSuccess(() -> Component.literal("Magia do Ars Nouveau " + (liberar ? "liberada" : "bloqueada")
+                + " para " + jogador.getName().getString() + "."), true);
+        return 1;
+    }
+
+    /**
+     * Saida de emergencia dos admins: tira alguem do Vazio sem ritual (por exemplo, se todos ficarem presos) e o
+     * leva ao ponto de renascer do overworld.
+     */
+    private static int libertar(CommandSourceStack fonte, ServerPlayer jogador) {
+        net.minecraft.server.level.ServerLevel overworld = fonte.getServer().overworld();
+        net.minecraft.core.BlockPos spawn = overworld.getSharedSpawnPos();
+        jogador.getPersistentData().putBoolean(Sanidade.PRESO, false);
+        Sanidade.definir(jogador, Math.min(Sanidade.obter(jogador), 25.0F));
+        jogador.teleportTo(overworld, spawn.getX() + 0.5D, overworld.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                spawn.getX(), spawn.getZ()), spawn.getZ() + 0.5D, jogador.getYRot(), 0.0F);
+        jogador.sendSystemMessage(Component.literal("Uma forca de fora te puxa de volta.").withStyle(net.minecraft.ChatFormatting.GRAY,
+                net.minecraft.ChatFormatting.ITALIC));
+        fonte.sendSuccess(() -> Component.literal(jogador.getName().getString() + " foi tirado do Vazio."), true);
         return 1;
     }
 

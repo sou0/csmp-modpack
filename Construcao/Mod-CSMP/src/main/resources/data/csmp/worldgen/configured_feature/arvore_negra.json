@@ -29,7 +29,7 @@
     "foliage_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "csmp:folhas_negras",
+        "Name": "csmp:folhas_carmesim",
         "Properties": {
           "distance": "7",
           "persistent": "true",

@@ -9,6 +9,10 @@ import net.minecraft.server.level.ServerPlayer;
  */
 public final class Sanidade {
     public static final String CHAVE = "csmp_insanidade";
+    /** Morreu e caiu no Vazio (tem aura vermelha e so sai pelo ritual). */
+    public static final String PRESO = "csmp_preso";
+    /** Insanidade que a pessoa tinha quando caiu (aparece no menu da estatua). */
+    public static final String INSANIDADE_AO_CAIR = "csmp_insanidade_ao_cair";
 
     private Sanidade() {}
 

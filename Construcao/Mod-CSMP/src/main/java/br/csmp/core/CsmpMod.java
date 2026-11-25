@@ -83,6 +83,7 @@ public class CsmpMod {
             event.accept(CsmpRegistro.ITEM_TRONCO_NEGRO.get());
             event.accept(CsmpRegistro.ITEM_FOLHAS_NEGRAS.get());
             event.accept(CsmpRegistro.ITEM_BETULA_OLHO.get());
+            event.accept(CsmpRegistro.ITEM_FOLHAS_CARMESIM.get());
         }
     }
 }

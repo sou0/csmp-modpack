@@ -1,7 +1,7 @@
 package br.csmp.core;
 
-import com.createskys.config.SkyConfig;
-import com.createskys.config.SkySettings;
+import com.createsky.config.SkyConfig;
+import com.createsky.config.SkySettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

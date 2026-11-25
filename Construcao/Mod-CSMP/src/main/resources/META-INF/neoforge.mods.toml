@@ -8,7 +8,7 @@ version = "0.1.0"
 displayName = "CSMP Core"
 authors = "CSMP"
 description = '''
-Mod proprio do CSMP. Por enquanto: liga a cobertura de nuvens do Create: Skys ao Medidor de Caos.
+Mod proprio do CSMP: caos e sanidade, dimensao Vazio, estatua e ritual de reviver, Floresta das Betulas Indoceis.
 '''
 
 [[mixins]]
@@ -29,8 +29,22 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.csmp]]
-modId = "createskys"
+modId = "createsky"
 type = "optional"
 versionRange = "[0,)"
 ordering = "AFTER"
 side = "CLIENT"
+
+[[dependencies.csmp]]
+modId = "ars_nouveau"
+type = "optional"
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.csmp]]
+modId = "ars_additions"
+type = "optional"
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "BOTH"

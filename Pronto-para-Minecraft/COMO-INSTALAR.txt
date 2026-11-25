@@ -17,7 +17,7 @@ COMO INSTALAR
 4. Abra o jogo com o perfil do NeoForge e clique em "Entrar no CSMP".
 
 CONTEUDO
-- mods/           154 mods (.jar), incluindo o csmp-core (mod proprio: Medidor de Caos, clima, mobs)
+- mods/           158 mods (.jar), incluindo o csmp-core (mod proprio: Medidor de Caos, clima, mobs)
 - config/         configuracoes do pack (inclui o menu inicial personalizado)
 - resourcepacks/  resourcepacks incluidos neste pack
 

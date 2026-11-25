@@ -129,6 +129,26 @@ public final class CsmpRegistro {
             () -> new br.csmp.core.mundo.BetulaOlhoBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BIRCH_LOG)));
     public static final DeferredItem<BlockItem> ITEM_BETULA_OLHO = ITENS.registerSimpleBlockItem(BETULA_OLHO);
 
+    /** Simbolo no chao do Vazio: acende um farol quando ha estatua completa no overworld ao alcance. */
+    public static final DeferredBlock<br.csmp.core.santuario.SigiloBlock> SIGILO = BLOCOS.register("sigilo",
+            () -> new br.csmp.core.santuario.SigiloBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_RED)
+                    .strength(-1.0F, 3600000.0F)
+                    .sound(SoundType.DEEPSLATE_BRICKS)
+                    .lightLevel(estado -> estado.getValue(br.csmp.core.santuario.SigiloBlock.ATIVO) ? 15 : 5)
+                    .noLootTable()));
+    public static final DeferredItem<BlockItem> ITEM_SIGILO = ITENS.registerSimpleBlockItem(SIGILO);
+    public static final DeferredHolder<net.minecraft.world.level.block.entity.BlockEntityType<?>,
+            net.minecraft.world.level.block.entity.BlockEntityType<br.csmp.core.santuario.SigiloBE>> SIGILO_BE =
+            BLOCOS_ENTIDADE.register("sigilo", () -> net.minecraft.world.level.block.entity.BlockEntityType.Builder
+                    .of(br.csmp.core.santuario.SigiloBE::new, SIGILO.get()).build(null));
+
+    /** Folhas vermelho-escuras das arvores do Vazio (o tronco continua preto). */
+    public static final DeferredBlock<LeavesBlock> FOLHAS_CARMESIM = BLOCOS.register("folhas_carmesim",
+            () -> new LeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_LEAVES)
+                    .mapColor(MapColor.CRIMSON_STEM)));
+    public static final DeferredItem<BlockItem> ITEM_FOLHAS_CARMESIM = ITENS.registerSimpleBlockItem(FOLHAS_CARMESIM);
+
     /** Minerio sculk: carrega o artefato (so o item por enquanto; nasce nas cavernas com sculk). */
     public static final DeferredBlock<Block> MINERIO_SCULK = BLOCOS.registerSimpleBlock("minerio_sculk",
             BlockBehaviour.Properties.of()

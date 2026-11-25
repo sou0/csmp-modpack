@@ -1,0 +1,14 @@
+sauce:anima_essence	inventory_particles:anima_essence/fallback/standard_0	0	0	8	8
+sauce:anima_essence	inventory_particles:anima_essence/fallback/standard_1	8	0	8	8
+sauce:anima_essence	inventory_particles:anima_essence/fallback/standard_2	16	0	8	8
+sauce:anima_essence	inventory_particles:anima_essence/fallback/standard_3	24	0	8	8
+sauce:anima_essence	inventory_particles:anima_essence/fallback/standard_4	32	0	8	8
+sauce:anima_essence	inventory_particles:anima_essence/fallback/standard_5	40	0	8	8
+sauce:arcane_plinth	inventory_particles:arcane_plinth/glint/glint0_0	48	0	8	8
+sauce:arcane_plinth	inventory_particles:arcane_plinth/glint/glint0_1	56	0	8	8
+sauce:arcane_plinth	inventory_particles:arcane_plinth/glint/glint0_2	64	0	8	8
+sauce:arcane_plinth	inventory_particles:arcane_plinth/glint/glint0_3	72	0	8	8
+sauce:arcane_plinth	inventory_particles:arcane_plinth/glint/glint0_4	80	0	8	8
+sauce:source_fluid_bucket	inventory_particles:source_fluid_bucket/drip/liquid_drip_0	88	0	8	8
+sauce:source_fluid_bucket	inventory_particles:source_fluid_bucket/drip/liquid_drip_1	96	0	8	8
+sauce:source_fluid_bucket	inventory_particles:source_fluid_bucket/drip/liquid_drip_2	104	0	8	8

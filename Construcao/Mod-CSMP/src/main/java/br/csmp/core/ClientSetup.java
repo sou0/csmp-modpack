@@ -19,6 +19,11 @@ public final class ClientSetup {
     }
 
     @SubscribeEvent
+    public static void blocosComDesenho(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(CsmpRegistro.SIGILO_BE.get(), br.csmp.core.santuario.SigiloRenderer::new);
+    }
+
+    @SubscribeEvent
     public static void camadas(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(MonstroCorruptoModel.LAYER, MonstroCorruptoModel::createBodyLayer);
     }

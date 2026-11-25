@@ -197,7 +197,8 @@ public class EstatuaFeature extends Feature<EstatuaFeature.Config> {
                 n.setBlock(q, estado, 2);
             }
         }
-        n.setBlock(centro.below(), CsmpRegistro.BASE_ESTATUA.get().defaultBlockState(), 2);
+        n.setBlock(centro.below(), vazio ? CsmpRegistro.SIGILO.get().defaultBlockState()
+                : CsmpRegistro.BASE_ESTATUA.get().defaultBlockState(), 2);
 
         // 3) velas na ponta dos quatro raios diagonais
         for (int[] c : new int[][] {{3, 3}, {-3, 3}, {3, -3}, {-3, -3}}) {
@@ -264,7 +265,7 @@ public class EstatuaFeature extends Feature<EstatuaFeature.Config> {
         }
 
         // 7) a estatua em si (entidade): no Vazio inteira e brilhando; no overworld quebrada
-        EstatuaEntity estatua = CsmpRegistro.ESTATUA.get().create(n.getLevel());
+        EstatuaEntity estatua = vazio ? null : CsmpRegistro.ESTATUA.get().create(n.getLevel());
         if (estatua != null) {
             estatua.moveTo(centro.getX() + 0.5D, y, centro.getZ() + 0.5D, 180.0F, 0.0F);
             estatua.setYBodyRot(180.0F);

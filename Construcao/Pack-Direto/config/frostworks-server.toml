@@ -1,0 +1,299 @@
+#Cold rooms: how they are found, their temperature, and what their cold allows
+[rooms]
+
+	#Room detection
+	[rooms.detection]
+		#A search that finds more cells than this declares the room OPEN
+		# Default: 20000
+		# Range: 1 ~ 2000000
+		roomSearchCap = 20000
+		#Delay between a wall/vent/door change and the new search (ticks)
+		# Default: 10
+		# Range: 0 ~ 1200
+		rescanDelayTicks = 10
+		#Searches started at most per tick and per dimension
+		# Default: 4
+		# Range: 1 ~ 1000
+		maxRescansPerTick = 4
+		#Cells visited at most per tick and per dimension; a longer search goes on next tick
+		# Default: 50000
+		# Range: 100 ~ 10000000
+		maxCellsPerTick = 50000
+
+	#Room temperature (deg C)
+	[rooms.temperature]
+		# Default: 20.0
+		# Range: -100.0 ~ 100.0
+		ambient = 20.0
+		#At or below this, a player in the room slowly freezes (vanilla frost, never deadly)
+		# Default: -15.0
+		# Range: -273.0 ~ 100.0
+		coldExposureTemperature = -15.0
+		#deg C per second while COLD
+		# Default: 0.5
+		# Range: 0.0 ~ 1000.0
+		coolingRate = 0.5
+		#deg C per second otherwise
+		# Default: 0.5
+		# Range: 0.0 ~ 1000.0
+		warmingRate = 0.5
+
+	#Overspeed: in a COLD room, machines of the frostworks:overspeed_machines tag and the blocks of
+	#frostworks:overspeed_transmission may turn faster than Create's maxRotationSpeed, by overspeedBonusPercent.
+	[rooms.overspeed]
+		overspeedEnabled = true
+		#Speed bonus in a COLD room, in percent of Create's maxRotationSpeed:
+		#25 = 125 % of it, 320 rpm with Create's default 256
+		# Default: 25
+		# Range: 0 ~ 1000
+		overspeedBonusPercent = 25
+		#Speed bonus in a COLD room at -20 deg C or colder (its cold fluids: Frosium), in percent of
+		#Create's maxRotationSpeed: 50 = 150 % of it, 384 rpm with Create's default 256
+		# Default: 50
+		# Range: 0 ~ 1000
+		overspeedBonusPercentFrosium = 50
+		#After the room stops being COLD, overspeed stays allowed this long (s);
+		#then the overspeeding block breaks, like in plain Create
+		# Default: 30
+		# Range: 0 ~ 3600
+		overspeedGraceSeconds = 30
+
+#Blocks: each machine and building block of the mod
+[blocks]
+
+	#Compressor: a Create kinetic block that takes stress and outputs cold gas
+	[blocks.compressor]
+		#Lowest stress setting (su)
+		# Default: 256
+		# Range: 1 ~ 1000000
+		stressMin = 256
+		#Highest stress setting (su)
+		# Default: 32768
+		# Range: 1 ~ 1000000
+		stressMax = 32768
+		#Step of the value panel (su)
+		# Default: 256
+		# Range: 1 ~ 1000000
+		stressStep = 256
+		#Setting of a newly placed compressor (su)
+		# Default: 256
+		# Range: 1 ~ 1000000
+		stressDefault = 256
+		#TOTAL: the network sees exactly the setting (su), whatever the speed.
+		#PER_RPM: the setting is the impact per rpm, like a regular machine (network sees setting x rpm).
+		#Allowed Values: TOTAL, PER_RPM
+		stressMode = "TOTAL"
+		#Cold gas produced per second, per su actually applied (mB/s/su); the other rate of
+		#the stress loop is processing.energy.liquidPerEnergy.
+		#Default: 2048 su -> 153.6 mB/s, enough for 6 vents at 25 mB/s.
+		# Default: 0.075
+		# Range: 0.0 ~ 1000.0
+		gasPerStressUnit = 0.075
+		#Internal gas buffer of the compressor (mB)
+		# Default: 1000
+		# Range: 1 ~ 1000000
+		bufferCapacity = 1000
+		#Least speed the compressor works at; above it, only the stress taken counts (rpm)
+		# Default: 8
+		# Range: 1 ~ 256
+		compressorMinRpm = 8
+
+	#Cryogenic infuser
+	[blocks.infuser]
+		#Stress impact of the cryogenic infuser (su per rpm), Create's press by default
+		# Default: 8.0
+		# Range: 0.0 ~ 1000.0
+		infuserStressImpact = 8.0
+		#Cold gas tank of the cryogenic infuser (mB)
+		# Default: 1000
+		# Range: 1 ~ 1000000
+		infuserTankCapacity = 1000
+		#Time the infuser's arm stays down on the item before it is infused (ticks)
+		# Default: 40
+		# Range: 0 ~ 1200
+		infuserDwellTicks = 40
+		#Cold gas the infuser uses to freeze one ice in a basin of water (mB)
+		# Default: 250
+		# Range: 1 ~ 100000
+		infuserIceGas = 250
+		#Frosium tank of the cryogenic infuser, for the chilled ores (mB)
+		# Default: 1000
+		# Range: 1 ~ 1000000
+		infuserFrosiumTankCapacity = 1000
+
+	#Vent: diffuses a cold fluid into a room (consumption, coverage, target: the cold fluid recipes)
+	[blocks.vent]
+		#A vent stays active this long after it last had gas (ticks)
+		# Default: 20
+		# Range: 1 ~ 12000
+		activeWindowTicks = 20
+		#Internal gas buffer of a vent (mB)
+		# Default: 250
+		# Range: 1 ~ 100000
+		bufferCapacity = 250
+
+	#Insulated reservoir
+	[blocks.reservoir]
+		#Insulated reservoir: capacity per block (mB)
+		# Default: 8000
+		# Range: 1 ~ 1000000
+		reservoirCapacityPerBlock = 8000
+
+	#Expander: Frosium back into cold gas and stress
+	[blocks.expander]
+		#Liquid expanded per second by the expander while it has some (mB/s)
+		# Default: 20
+		# Range: 1 ~ 100000
+		expanderLiquidRate = 20
+		#Expander buffers: liquid in, cold gas out (mB)
+		# Default: 1000
+		# Range: 1 ~ 1000000
+		expanderBuffer = 1000
+
+	#Distillation tower: a 2 x 2 multiblock, a layer of column bases and up to towerMaxLayers - 1 layers of
+	#column segments. Cold gas +
+	#water + rotation -> Frosium. Energy as in processing.energy.
+	[blocks.tower]
+		#Layers of a tower, at most, base included (a layer = 4 blocks)
+		# Default: 8
+		# Range: 1 ~ 64
+		towerMaxLayers = 8
+		#Inner storage per block of the column, in mB (the bases hold nothing).
+		#The product takes its room first; the inputs of the recipe share what it leaves
+		# Default: 4000
+		# Range: 1 ~ 1000000
+		towerCapacityPerBlock = 4000
+		#For the Frosium recipe only (the energy yield): share of the inputs' room given to cold gas,
+		#the rest to its other inputs. Other distilling recipes use the shares written in their files
+		# Default: 0.5
+		# Range: 0.01 ~ 0.99
+		towerGasShare = 0.5
+		#Cold gas processed per second by each layer of the tower at towerReferenceRpm (mB/s)
+		# Default: 20
+		# Range: 1 ~ 100000
+		towerGasPerLayer = 20
+		#Speed at which the tower processes towerGasPerLayer; it goes as fast as it turns (rpm)
+		# Default: 64
+		# Range: 1 ~ 256
+		towerReferenceRpm = 64
+		#Stress drawn by each layer of the tower, per rpm (su): a round 3,
+		#as Create's machines (it was a share of the energy of the gas processed, 2.08 su per rpm)
+		# Default: 3.0
+		# Range: 0.0 ~ 1000.0
+		towerStressPerRpm = 3.0
+		#Water used per mB of liquid produced (lost, not counted as energy)
+		# Default: 0.5
+		# Range: 0.0 ~ 100.0
+		towerWaterPerLiquid = 0.5
+		#Cold gas used per mB of Frosium made. The tower still takes towerGasPerLayer a
+		#layer and its stress; it makes the Frosium this ratio allows, never more than the energy it gets
+		#(the gas beyond that energy is lost, as the water). Default: 1.75, so one Packed Ice makes 2000 mB
+		#of Frosium out of 3500 mB of cold gas and 1000 mB of water
+		# Default: 1.75
+		# Range: 0.01 ~ 1000.0
+		towerGasPerLiquid = 1.75
+		#Frosium made per packed ice used, the unit of the ice values (data map
+		#frostworks:ice_value; plain ice is worth 1/9 of it), in mB
+		# Default: 2000
+		# Range: 1 ~ 1000000
+		towerFrosiumPerPackedIce = 2000
+
+	#Strip curtain door
+	[blocks.door]
+		#Least real movement of an entity in the door that swings the strips (blocks per
+		#tick; walking is about 0.2, sneaking about 0.07). It stops counting as moving below half of it.
+		# Default: 0.02
+		# Range: 0.0 ~ 10.0
+		flapMinSpeed = 0.02
+
+	#Cold wall tint: a dye on a cold wall colours every cold wall joined to it face to face
+	[blocks.wall]
+		#Most cold walls one dye colours; a bigger structure is left as it is, and the
+		#player is told
+		# Default: 4096
+		# Range: 1 ~ 65536
+		wallTintMaxBlocks = 4096
+
+#Processing: the energy rates and the recipes worked out from the settings
+[processing]
+
+	#Stress loop. Energy unit: su.s (stress x seconds). One set of rates, used both ways:
+	#compressor: 1 su.s -> gasPerStressUnit mB of cold gas (blocks.compressor);
+	#liquid: 1 su.s <-> liquidPerEnergy mB of Frosium.
+	[processing.energy]
+		#kLiquide: mB of liquid per su.s of energy
+		# Default: 0.025
+		# Range: 1.0E-6 ~ 1000.0
+		liquidPerEnergy = 0.025
+
+	#Chilled ores: their infusion
+	[processing.chilledOres]
+		#Frosium the infuser uses to chill one ore (mB)
+		# Default: 100
+		# Range: 1 ~ 100000
+		chilledInfusionFrosium = 100
+
+	#Cold processing: the frostworks:cold_process recipes, which change what a machine gives in a closed
+	#cold room (data/<namespace>/recipe/...; the chilled ores' crushing is one of them)
+	[processing.coldProcessing]
+		#Off: every machine gives its normal recipe, whatever the room
+		coldProcessingEnabled = true
+
+#Integrations with other mods: each one does nothing when its mod is absent
+[integrations]
+
+	#Tough As Nails: a player in a closed cold room is colder by Tough As Nails' own rules (its
+	#armour, campfires and drinks work as usual). Never colder than COLD (never ICY), never warmer than
+	#the place already is, nothing where it is COLD or ICY already. Without Tough As Nails, nothing.
+	[integrations.toughAsNails]
+		toughAsNailsEnabled = true
+		#At or below this, the room makes the place one level colder (deg C)
+		# Default: 0.0
+		# Range: -273.0 ~ 100.0
+		toughAsNailsCoolerAt = 0.0
+		#At or below this, the room makes the place COLD, whatever the biome (deg C)
+		# Default: -15.0
+		# Range: -273.0 ~ 100.0
+		toughAsNailsColdAt = -15.0
+
+	#Cold Sweat: in a closed cold room, the world temperature of Cold Sweat is the room's, softened:
+	#below Cold Sweat's Minimum Habitable Temperature, threshold - (threshold - room) x coldSweatFactor; never
+	#warmer than it was. Cold Sweat's own rules apply: an unprotected player gets cold, then hurt, as in a
+	#cold biome, and its gear protects as usual. Without Cold Sweat, nothing.
+	[integrations.coldSweat]
+		coldSweatEnabled = true
+		#How much of the room's cold below the threshold Cold Sweat feels: 1 = all of it, 0 = none
+		# Default: 0.5
+		# Range: 0.0 ~ 1.0
+		coldSweatFactor = 0.5
+
+	#TerraFirmaCraft food preserving: the cryogenic infuser gives a food a preservation trait for good
+	#(frostworks:food_preserving recipes). Each value is the trait's decay modifier: 0.4 = lasts 2.5 times
+	#longer. It multiplies with the food's other traits, as every TFC trait does. Changing it changes the
+	#dates of the foods already preserved. Without TerraFirmaCraft, nothing.
+	[integrations.tfcFood]
+		#Cryo-preserved (cold gas), level 1
+		# Default: 0.4
+		# Range: 0.01 ~ 1.0
+		coldPreservedModifier = 0.4
+		#Cryo-preserved (Frosium), level 2
+		# Default: 0.25
+		# Range: 0.01 ~ 1.0
+		deepColdPreservedModifier = 0.25
+
+	#TFC Ambiental (TerraFirmaGreg's, Forge 1.20.1 only): in a closed cold room, the player's environment
+	#is the room's temperature, as TerraFirmaGreg's heat pump does (climate, time of day, rain, wind and indoor
+	#warmth replaced; clothes, effects and nearby blocks still count). A heat pump covering the player wins.
+	#Never warmer than the player would be without the room. Without TFC Ambiental, nothing.
+	[integrations.tfcAmbiental]
+		#How much of the room: 100 = the room's temperature (as a heat pump), 50 = halfway
+		#between the normal environment and the room, 0 = the room does nothing
+		# Default: 100
+		# Range: 0 ~ 100
+		tfcAmbientalRoomPercent = 100
+
+#Diagnostics
+[debug]
+	#Log every room found OPEN (or waiting for an unloaded chunk): bounding box of the
+	#search, reason (cell cap reached, left the world, unloaded chunk) and the cell farthest from the vent
+	roomLeaks = false

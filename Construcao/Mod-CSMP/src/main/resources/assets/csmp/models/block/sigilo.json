@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "csmp:block/sigilo",
+    "side": "csmp:block/terra_negra",
+    "bottom": "csmp:block/terra_negra"
+  }
+}

@@ -1,0 +1,77 @@
+[inventory]
+	#Open Minecraft's own inventory screen instead of this mod's one.
+	#The small button above the trash slot (same spot on either screen) flips this,
+	#so there is rarely a reason to edit it here.
+	useVanillaInventory = true
+	#Mark crafting cells your current crafting upgrade has not unlocked with an x,
+	#so it is obvious they are disabled. Turn off for a plain faint dim instead.
+	strongLockedSlots = true
+	#Show your active effects as a row of icons above the player view, with the name and
+	#the time left in each one's tooltip. Turn off to not show them on this screen.
+	showEffects = true
+	#The small button above the trash slot that switches to Minecraft's own inventory, and the
+	#one beside that inventory that switches back. Off: neither is drawn; the "Open the vanilla
+	#inventory" key still opens Minecraft's own screen.
+	swapButton = true
+	#The order the sort keys (and the sort key binding) lay items out in.
+	#TYPE: the game's own item order, so the same kinds of items end up side by side.
+	#COUNT: the item you have most of first.
+	#A right click on a sort key switches between the two, so there is rarely a reason
+	#to edit it here.
+	#Allowed Values: TYPE, COUNT
+	sortOrder = "TYPE"
+	#Bookkeeping, not a preference. Slate Building holds Left Alt for its block wheel, so
+	#with it installed the offhand carousel defaults to Right Alt, and a carousel key still
+	#on Left Alt from before is moved to Right Alt once. This records that the one-time
+	#move has happened, so a key you set back to Left Alt yourself stays there.
+	offhandKeyMigrated = false
+	#Bookkeeping, not a preference. 1.2.0 shipped the 'Open the vanilla inventory' key unbound;
+	#since 1.2.1 it defaults to Shift + E, and a key still unbound from 1.2.0 is bound to that
+	#once. This records that the one-time move has happened, so a key you unbind yourself
+	#stays unbound.
+	vanillaKeyDefaulted = true
+	#Pick Block (middle click on a block) also looks in the backpack's pages:
+	#when the block is nowhere in your inventory, a stack of it is brought from there into
+	#your hotbar. Turn off to have Pick Block look in the inventory only, as in vanilla.
+	pickBlockFromStorage = true
+
+[panel]
+	#The side tabs right of the inventory choose what the panel on its left shows; clicking
+	#the open one again closes the panel. Each of these takes one tab off entirely.
+	#The player view tab.
+	playerTab = true
+	#The crafting tab: the crafting grid, 2x2 or, with the crafting upgrades, 3x3.
+	craftingTab = true
+	#The furnace tab, under the crafting tab: the furnace of the Furnace Upgrade.
+	furnaceTab = true
+	#The jukebox tab, under the furnace tab: the discs of the Jukebox Upgrade and the keys that play them.
+	jukeboxTab = true
+	#The accessories tab: the slots of Curios, Cosmetic Armor, the Aether, Accessories or Trinkets,
+	#whichever are installed. It is never there without one of them.
+	accessoriesTab = true
+
+[zoom]
+	#The item zoom tab: the panel shows the item under the pointer enlarged.
+	#Turn off to take the tab away.
+	enabled = true
+	#How large the item in the zoom panel is drawn (4.5 fills the panel's width).
+	# Default: 4.0
+	# Range: 2.0 ~ 4.5
+	scale = 4.0
+
+[hud]
+	#Show the auto-selected tool in your first-person hand while it is being used.
+	showToolInHand = true
+	#How long (in ticks, 20 = 1 second) the auto-used tool keeps showing in the HUD slot
+	#after you stop using it, before the slot falls back to your held item.
+	# Default: 20
+	# Range: 0 ~ 200
+	toolLingerTicks = 20
+	#The offhand carousel (hold its key and scroll) goes the other way round: scrolling down
+	#picks the previous offhand slot instead of the next one.
+	invertOffhandScroll = false
+
+[backpack]
+	#Draw your highest equipped backpack on your back, in third person and on other players.
+	#Turn off if another mod already draws a pack there, or you would rather not see one.
+	showWornBackpack = true

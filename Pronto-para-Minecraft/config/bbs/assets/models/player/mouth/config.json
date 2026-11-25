@@ -1,0 +1,20 @@
+{
+    "culling": true,
+    "texture": "assets:models/player/mouth/texture.png",
+    "cem_parents": {},
+    "ui_scale": 1.0,
+    "scale": [1.0, 1.0, 1.0],
+    "procedural": false,
+    "on_cpu": false,
+    "disabledBones": [],
+    "welds": [],
+    "default_pose": {
+        "pose": {}
+    },
+    "pose_group": "",
+    "anchor": "",
+    "sneaking_pose": {
+        "pose": {}
+    },
+    "cem_animation": true
+}

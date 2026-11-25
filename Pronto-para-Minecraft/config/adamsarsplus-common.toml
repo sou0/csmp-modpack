@@ -1,0 +1,1117 @@
+["Configs for Adams Ars Plus"]
+	#does the domain glyph have a cooldown burnout?
+	doDomainBurnout = true
+	#does the spell efficiency glyph inflict mana exhaustion?
+	doDiscountBacklash = true
+	#maximum number of times spell efficiency can appear
+	# Default: 5
+	# Range: 0 ~ 10
+	maxDiscount = 5
+	#maximum number of entities a domain can target every spell cast
+	# Default: 10
+	# Range: 1 ~ 100
+	maxDomainEntities = 10
+	#include community spells for the mysterious mage entity?
+	doComMages = true
+	#access pool of possible mage spells from local device (true) or online file (false)?
+	doLocalMagePool = true
+	#Allow overworld mages that can mobgrief?
+	doMageGrief = true
+	#Have a cooldown on the leap glyph?
+	doLeapFatigue = false
+	#Dimensions where mages will not spawn. Ex: ["minecraft:overworld", "undergarden:undergarden"]. . Run /forge dimensions for a list.
+	dimensionBlacklist = []
+
+["Mage Summon Ritual"]
+	#Allow enough matching elemental eyes to bypass the nearby archmage structure requirement.
+	#When false, the matching structure is always required regardless of eye count.
+	allowStructureBypass = true
+	#Total matching elemental eyes consumed to bypass the structure requirement.
+	#Applies to Flame, Frost, Earth, Lightning, Holy and Void eyes. Different eye types do not combine.
+	# Default: 12
+	# Range: > 1
+	structureBypassEyes = 12
+
+["Armor Configs"]
+	#Frost Max Mana per tier
+	# Default: 40
+	# Range: 0 ~ 999
+	cadeMaxMana = 40
+	#Frost Mana Regen per tier
+	# Default: 2.0
+	# Range: 0.0 ~ 99.0
+	cadeManaRegen = 2.0
+	#Frost Spell Damage per tier
+	# Default: 1
+	# Range: 0 ~ 99
+	cadeSpellDamage = 1
+	#Frost Warding
+	# Default: 0
+	# Range: 0 ~ 99
+	cadeWarding = 0
+	#FLAME Max Mana per tier
+	# Default: 35
+	# Range: 0 ~ 999
+	RYANMaxMana = 35
+	#FLAME Mana Regen per tier
+	# Default: 1.5
+	# Range: 0.0 ~ 99.0
+	RYANManaRegen = 1.5
+	#FLAME Spell Damage per tier
+	# Default: 1
+	# Range: 0 ~ 99
+	RYANSpellDamage = 1
+	#FLAME Warding
+	# Default: 0
+	# Range: 0 ~ 99
+	RYANWarding = 0
+	#EARTH Max Mana per tier
+	# Default: 30
+	# Range: 0 ~ 999
+	NICKMaxMana = 30
+	#EARTH Mana Regen per tier
+	# Default: 1.0
+	# Range: 0.0 ~ 99.0
+	NICKManaRegen = 1.0
+	#EARTH Spell Damage per tier
+	# Default: 1
+	# Range: 0 ~ 99
+	NICKSpellDamage = 1
+	#EARTH Warding
+	# Default: 0
+	# Range: 0 ~ 99
+	NICKWarding = 0
+	#LIGHTNING Max Mana per tier
+	# Default: 38
+	# Range: 0 ~ 999
+	CAMMaxMana = 38
+	#LIGHTNING Mana Regen per tier
+	# Default: 2.5
+	# Range: 0.0 ~ 99.0
+	CAMManaRegen = 2.5
+	#LIGHTNING Spell Damage per tier
+	# Default: 1
+	# Range: 0 ~ 99
+	CAMSpellDamage = 1
+	#LIGHTNING Warding
+	# Default: 0
+	# Range: 0 ~ 99
+	CAMWarding = 0
+	#HOLY Max Mana per tier
+	# Default: 30
+	# Range: 0 ~ 999
+	MATTMaxMana = 30
+	#HOLY Mana Regen per tier
+	# Default: 1.0
+	# Range: 0.0 ~ 99.0
+	MATTManaRegen = 1.0
+	#HOLY Spell Damage per tier
+	# Default: 1
+	# Range: 0 ~ 99
+	MATTSpellDamage = 1
+	#HOLY Warding
+	# Default: 1
+	# Range: 0 ~ 99
+	MATTWarding = 1
+	#VOID Max Mana per tier
+	# Default: 50
+	# Range: 0 ~ 999
+	ADAMMaxMana = 50
+	#VOID Mana Regen per tier
+	# Default: 4.0
+	# Range: 0.0 ~ 99.0
+	ADAMManaRegen = 4.0
+	#VOID Spell Damage per tier
+	# Default: 1
+	# Range: 0 ~ 99
+	ADAMSpellDamage = 1
+	#VOID Warding
+	# Default: 1
+	# Range: 0 ~ 99
+	ADAMWarding = 1
+
+	#Minecraft base bonuses for normal and awakened armor. Restart the world/server after editing.
+	#Armor values are per piece. Toughness and knockback resistance are granted by EACH equipped piece.
+	#These do not scale with Ars perk tiers. Minecraft's total attribute caps still apply.
+	["Armor Configs"."Minecraft Attributes"]
+
+		["Armor Configs"."Minecraft Attributes".cade]
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 3
+			# Range: 0 ~ 30
+			helmet_armor = 3
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 6
+			# Range: 0 ~ 30
+			chestplate_armor = 6
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 5
+			# Range: 0 ~ 30
+			leggings_armor = 5
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 2
+			# Range: 0 ~ 30
+			boots_armor = 2
+			#Armor toughness per equipped piece.
+			# Default: 2.0
+			# Range: 0.0 ~ 20.0
+			armor_toughness = 2.0
+			#Knockback resistance per equipped piece. 0.1 = 10%; four pieces grant 40%.
+			# Default: 0.0
+			# Range: 0.0 ~ 1.0
+			knockback_resistance = 0.0
+
+		["Armor Configs"."Minecraft Attributes".ryan]
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 3
+			# Range: 0 ~ 30
+			helmet_armor = 3
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 8
+			# Range: 0 ~ 30
+			chestplate_armor = 8
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 6
+			# Range: 0 ~ 30
+			leggings_armor = 6
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 3
+			# Range: 0 ~ 30
+			boots_armor = 3
+			#Armor toughness per equipped piece.
+			# Default: 3.0
+			# Range: 0.0 ~ 20.0
+			armor_toughness = 3.0
+			#Knockback resistance per equipped piece. 0.1 = 10%; four pieces grant 40%.
+			# Default: 0.0
+			# Range: 0.0 ~ 1.0
+			knockback_resistance = 0.0
+
+		["Armor Configs"."Minecraft Attributes".nick]
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 4
+			# Range: 0 ~ 30
+			helmet_armor = 4
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 10
+			# Range: 0 ~ 30
+			chestplate_armor = 10
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 7
+			# Range: 0 ~ 30
+			leggings_armor = 7
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 3
+			# Range: 0 ~ 30
+			boots_armor = 3
+			#Armor toughness per equipped piece.
+			# Default: 4.0
+			# Range: 0.0 ~ 20.0
+			armor_toughness = 4.0
+			#Knockback resistance per equipped piece. 0.1 = 10%; four pieces grant 40%.
+			# Default: 0.05000000074505806
+			# Range: 0.0 ~ 1.0
+			knockback_resistance = 0.05000000074505806
+
+		["Armor Configs"."Minecraft Attributes".cam]
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 4
+			# Range: 0 ~ 30
+			helmet_armor = 4
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 10
+			# Range: 0 ~ 30
+			chestplate_armor = 10
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 7
+			# Range: 0 ~ 30
+			leggings_armor = 7
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 3
+			# Range: 0 ~ 30
+			boots_armor = 3
+			#Armor toughness per equipped piece.
+			# Default: 4.0
+			# Range: 0.0 ~ 20.0
+			armor_toughness = 4.0
+			#Knockback resistance per equipped piece. 0.1 = 10%; four pieces grant 40%.
+			# Default: 0.0
+			# Range: 0.0 ~ 1.0
+			knockback_resistance = 0.0
+
+		["Armor Configs"."Minecraft Attributes".matt]
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 6
+			# Range: 0 ~ 30
+			helmet_armor = 6
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 11
+			# Range: 0 ~ 30
+			chestplate_armor = 11
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 8
+			# Range: 0 ~ 30
+			leggings_armor = 8
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 5
+			# Range: 0 ~ 30
+			boots_armor = 5
+			#Armor toughness per equipped piece.
+			# Default: 5.0
+			# Range: 0.0 ~ 20.0
+			armor_toughness = 5.0
+			#Knockback resistance per equipped piece. 0.1 = 10%; four pieces grant 40%.
+			# Default: 0.10000000149011612
+			# Range: 0.0 ~ 1.0
+			knockback_resistance = 0.10000000149011612
+
+		["Armor Configs"."Minecraft Attributes".adam]
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 7
+			# Range: 0 ~ 30
+			helmet_armor = 7
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 12
+			# Range: 0 ~ 30
+			chestplate_armor = 12
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 9
+			# Range: 0 ~ 30
+			leggings_armor = 9
+			#Armor points from this piece (2 points = one armor icon).
+			# Default: 6
+			# Range: 0 ~ 30
+			boots_armor = 6
+			#Armor toughness per equipped piece.
+			# Default: 6.0
+			# Range: 0.0 ~ 20.0
+			armor_toughness = 6.0
+			#Knockback resistance per equipped piece. 0.1 = 10%; four pieces grant 40%.
+			# Default: 0.10000000149011612
+			# Range: 0.0 ~ 1.0
+			knockback_resistance = 0.10000000149011612
+
+#Per-boss base attributes. Applied on the server when a boss spawns or loads.
+#Restart the world/server after editing. Existing bosses retain their health percentage.
+#Equipment, effects, scripted AI and Minecraft attribute limits still apply.
+["Boss Configs"]
+
+	["Boss Configs".ryan]
+		#Maximum health in health points (2 = one heart). Minecraft or other mods may cap the effective value; vanilla caps at 1024.
+		# Default: 500.0
+		# Range: 1.0 ~ 1000000.0
+		max_health = 500.0
+		#Base armor, before equipment and effects.
+		# Default: 15.0
+		# Range: 0.0 ~ 30.0
+		armor = 15.0
+		#Base armor toughness.
+		# Default: 10.0
+		# Range: 0.0 ~ 20.0
+		armor_toughness = 10.0
+		#Base melee damage. Scripted attacks may apply their own multipliers.
+		# Default: 12.0
+		# Range: 0.0 ~ 2048.0
+		attack_damage = 12.0
+		#Melee attack knockback strength.
+		# Default: 0.699999988079071
+		# Range: 0.0 ~ 5.0
+		attack_knockback = 0.699999988079071
+		#Base ground movement speed; AI movement multipliers still apply.
+		# Default: 0.5
+		# Range: 0.0 ~ 1024.0
+		movement_speed = 0.5
+		#Base flying speed, where used by the movement controller.
+		# Default: 0.5
+		# Range: 0.0 ~ 1024.0
+		flying_speed = 0.5
+		#Target tracking range in blocks. Individual AI goals may impose additional limits.
+		# Default: 70.0
+		# Range: 0.0 ~ 2048.0
+		follow_range = 70.0
+		#Knockback resistance, from 0 to 1.
+		# Default: 1.0
+		# Range: 0.0 ~ 1.0
+		knockback_resistance = 1.0
+		#Maximum absorption; does not itself grant absorption hearts.
+		# Default: 0.0
+		# Range: 0.0 ~ 2048.0
+		max_absorption = 0.0
+		#Step height in blocks.
+		# Default: 0.6
+		# Range: 0.0 ~ 10.0
+		step_height = 0.6
+		#Entity size multiplier.
+		# Default: 1.0
+		# Range: 0.0625 ~ 16.0
+		scale = 1.0
+		#Gravity acceleration; ignored while the entity disables gravity.
+		# Default: 0.08
+		# Range: -1.0 ~ 1.0
+		gravity = 0.08
+		#Fall distance in blocks before fall damage.
+		# Default: 3.0
+		# Range: -1024.0 ~ 1024.0
+		safe_fall_distance = 3.0
+		#Fall damage multiplier, where the boss permits fall damage.
+		# Default: 1.0
+		# Range: 0.0 ~ 100.0
+		fall_damage_multiplier = 1.0
+		#Jump strength.
+		# Default: 0.41999998688697815
+		# Range: 0.0 ~ 32.0
+		jump_strength = 0.41999998688697815
+		#Underwater breathing bonus.
+		# Default: 0.0
+		# Range: 0.0 ~ 1024.0
+		oxygen_bonus = 0.0
+		#Burn duration multiplier; does not remove fire immunity.
+		# Default: 1.0
+		# Range: 0.0 ~ 1024.0
+		burning_time = 1.0
+		#Explosion knockback resistance, from 0 to 1.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		explosion_knockback_resistance = 0.0
+		#Water movement efficiency.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		water_movement_efficiency = 0.0
+		#Movement efficiency over slowing terrain.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		movement_efficiency = 0.0
+		#Swimming speed multiplier.
+		# Default: 1.0
+		# Range: 0.0 ~ 1024.0
+		swim_speed = 1.0
+		#Name tag visibility distance.
+		# Default: 64.0
+		# Range: 0.0 ~ 64.0
+		nametag_distance = 64.0
+		#Flat bonus to each Ars damage-glyph hit. Does not increase radius, duration, or amplification.
+		# Default: 0.0
+		# Range: 0.0 ~ 10000.0
+		spell_damage_bonus = 0.0
+		#Scales Ars spell damage after the flat bonus: 0.5 = half, 1 = unchanged, 2 = double.
+		#Only affects spell hits routed through Ars SpellDamageEvent; not melee, fire ticks, or summoned creatures.
+		# Default: 1.0
+		# Range: 0.0 ~ 1000.0
+		spell_damage_multiplier = 1.0
+
+	["Boss Configs".cade]
+		#Maximum health in health points (2 = one heart). Minecraft or other mods may cap the effective value; vanilla caps at 1024.
+		# Default: 325.0
+		# Range: 1.0 ~ 1000000.0
+		max_health = 325.0
+		#Base armor, before equipment and effects.
+		# Default: 12.0
+		# Range: 0.0 ~ 30.0
+		armor = 12.0
+		#Base armor toughness.
+		# Default: 5.0
+		# Range: 0.0 ~ 20.0
+		armor_toughness = 5.0
+		#Base melee damage. Scripted attacks may apply their own multipliers.
+		# Default: 6.0
+		# Range: 0.0 ~ 2048.0
+		attack_damage = 6.0
+		#Melee attack knockback strength.
+		# Default: 1.0
+		# Range: 0.0 ~ 5.0
+		attack_knockback = 1.0
+		#Base ground movement speed; AI movement multipliers still apply.
+		# Default: 0.5
+		# Range: 0.0 ~ 1024.0
+		movement_speed = 0.5
+		#Base flying speed, where used by the movement controller.
+		# Default: 0.20000000298023224
+		# Range: 0.0 ~ 1024.0
+		flying_speed = 0.20000000298023224
+		#Target tracking range in blocks. Individual AI goals may impose additional limits.
+		# Default: 70.0
+		# Range: 0.0 ~ 2048.0
+		follow_range = 70.0
+		#Knockback resistance, from 0 to 1.
+		# Default: 0.20000000298023224
+		# Range: 0.0 ~ 1.0
+		knockback_resistance = 0.20000000298023224
+		#Maximum absorption; does not itself grant absorption hearts.
+		# Default: 0.0
+		# Range: 0.0 ~ 2048.0
+		max_absorption = 0.0
+		#Step height in blocks.
+		# Default: 0.6
+		# Range: 0.0 ~ 10.0
+		step_height = 0.6
+		#Entity size multiplier.
+		# Default: 1.0
+		# Range: 0.0625 ~ 16.0
+		scale = 1.0
+		#Gravity acceleration; ignored while the entity disables gravity.
+		# Default: 0.08
+		# Range: -1.0 ~ 1.0
+		gravity = 0.08
+		#Fall distance in blocks before fall damage.
+		# Default: 3.0
+		# Range: -1024.0 ~ 1024.0
+		safe_fall_distance = 3.0
+		#Fall damage multiplier, where the boss permits fall damage.
+		# Default: 1.0
+		# Range: 0.0 ~ 100.0
+		fall_damage_multiplier = 1.0
+		#Jump strength.
+		# Default: 0.41999998688697815
+		# Range: 0.0 ~ 32.0
+		jump_strength = 0.41999998688697815
+		#Underwater breathing bonus.
+		# Default: 0.0
+		# Range: 0.0 ~ 1024.0
+		oxygen_bonus = 0.0
+		#Burn duration multiplier; does not remove fire immunity.
+		# Default: 1.0
+		# Range: 0.0 ~ 1024.0
+		burning_time = 1.0
+		#Explosion knockback resistance, from 0 to 1.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		explosion_knockback_resistance = 0.0
+		#Water movement efficiency.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		water_movement_efficiency = 0.0
+		#Movement efficiency over slowing terrain.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		movement_efficiency = 0.0
+		#Swimming speed multiplier.
+		# Default: 1.0
+		# Range: 0.0 ~ 1024.0
+		swim_speed = 1.0
+		#Name tag visibility distance.
+		# Default: 64.0
+		# Range: 0.0 ~ 64.0
+		nametag_distance = 64.0
+		#Flat bonus to each Ars damage-glyph hit. Does not increase radius, duration, or amplification.
+		# Default: 0.0
+		# Range: 0.0 ~ 10000.0
+		spell_damage_bonus = 0.0
+		#Scales Ars spell damage after the flat bonus: 0.5 = half, 1 = unchanged, 2 = double.
+		#Only affects spell hits routed through Ars SpellDamageEvent; not melee, fire ticks, or summoned creatures.
+		# Default: 1.0
+		# Range: 0.0 ~ 1000.0
+		spell_damage_multiplier = 1.0
+
+	["Boss Configs".nick]
+		#Maximum health in health points (2 = one heart). Minecraft or other mods may cap the effective value; vanilla caps at 1024.
+		# Default: 900.0
+		# Range: 1.0 ~ 1000000.0
+		max_health = 900.0
+		#Base armor, before equipment and effects.
+		# Default: 17.0
+		# Range: 0.0 ~ 30.0
+		armor = 17.0
+		#Base armor toughness.
+		# Default: 10.0
+		# Range: 0.0 ~ 20.0
+		armor_toughness = 10.0
+		#Base melee damage. Scripted attacks may apply their own multipliers.
+		# Default: 15.0
+		# Range: 0.0 ~ 2048.0
+		attack_damage = 15.0
+		#Melee attack knockback strength.
+		# Default: 1.0
+		# Range: 0.0 ~ 5.0
+		attack_knockback = 1.0
+		#Base ground movement speed; AI movement multipliers still apply.
+		# Default: 0.4000000059604645
+		# Range: 0.0 ~ 1024.0
+		movement_speed = 0.4000000059604645
+		#Base flying speed, where used by the movement controller.
+		# Default: 0.4000000059604645
+		# Range: 0.0 ~ 1024.0
+		flying_speed = 0.4000000059604645
+		#Target tracking range in blocks. Individual AI goals may impose additional limits.
+		# Default: 70.0
+		# Range: 0.0 ~ 2048.0
+		follow_range = 70.0
+		#Knockback resistance, from 0 to 1.
+		# Default: 0.8999999761581421
+		# Range: 0.0 ~ 1.0
+		knockback_resistance = 0.8999999761581421
+		#Maximum absorption; does not itself grant absorption hearts.
+		# Default: 0.0
+		# Range: 0.0 ~ 2048.0
+		max_absorption = 0.0
+		#Step height in blocks.
+		# Default: 0.6
+		# Range: 0.0 ~ 10.0
+		step_height = 0.6
+		#Entity size multiplier.
+		# Default: 1.0
+		# Range: 0.0625 ~ 16.0
+		scale = 1.0
+		#Gravity acceleration; ignored while the entity disables gravity.
+		# Default: 0.08
+		# Range: -1.0 ~ 1.0
+		gravity = 0.08
+		#Fall distance in blocks before fall damage.
+		# Default: 3.0
+		# Range: -1024.0 ~ 1024.0
+		safe_fall_distance = 3.0
+		#Fall damage multiplier, where the boss permits fall damage.
+		# Default: 1.0
+		# Range: 0.0 ~ 100.0
+		fall_damage_multiplier = 1.0
+		#Jump strength.
+		# Default: 0.41999998688697815
+		# Range: 0.0 ~ 32.0
+		jump_strength = 0.41999998688697815
+		#Underwater breathing bonus.
+		# Default: 0.0
+		# Range: 0.0 ~ 1024.0
+		oxygen_bonus = 0.0
+		#Burn duration multiplier; does not remove fire immunity.
+		# Default: 1.0
+		# Range: 0.0 ~ 1024.0
+		burning_time = 1.0
+		#Explosion knockback resistance, from 0 to 1.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		explosion_knockback_resistance = 0.0
+		#Water movement efficiency.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		water_movement_efficiency = 0.0
+		#Movement efficiency over slowing terrain.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		movement_efficiency = 0.0
+		#Swimming speed multiplier.
+		# Default: 1.0
+		# Range: 0.0 ~ 1024.0
+		swim_speed = 1.0
+		#Name tag visibility distance.
+		# Default: 64.0
+		# Range: 0.0 ~ 64.0
+		nametag_distance = 64.0
+		#Flat bonus to each Ars damage-glyph hit. Does not increase radius, duration, or amplification.
+		# Default: 0.0
+		# Range: 0.0 ~ 10000.0
+		spell_damage_bonus = 0.0
+		#Scales Ars spell damage after the flat bonus: 0.5 = half, 1 = unchanged, 2 = double.
+		#Only affects spell hits routed through Ars SpellDamageEvent; not melee, fire ticks, or summoned creatures.
+		# Default: 1.0
+		# Range: 0.0 ~ 1000.0
+		spell_damage_multiplier = 1.0
+
+	["Boss Configs".cam]
+		#Maximum health in health points (2 = one heart). Minecraft or other mods may cap the effective value; vanilla caps at 1024.
+		# Default: 925.0
+		# Range: 1.0 ~ 1000000.0
+		max_health = 925.0
+		#Base armor, before equipment and effects.
+		# Default: 20.0
+		# Range: 0.0 ~ 30.0
+		armor = 20.0
+		#Base armor toughness.
+		# Default: 12.0
+		# Range: 0.0 ~ 20.0
+		armor_toughness = 12.0
+		#Base melee damage. Scripted attacks may apply their own multipliers.
+		# Default: 15.0
+		# Range: 0.0 ~ 2048.0
+		attack_damage = 15.0
+		#Melee attack knockback strength.
+		# Default: 1.0
+		# Range: 0.0 ~ 5.0
+		attack_knockback = 1.0
+		#Base ground movement speed; AI movement multipliers still apply.
+		# Default: 0.75
+		# Range: 0.0 ~ 1024.0
+		movement_speed = 0.75
+		#Base flying speed, where used by the movement controller.
+		# Default: 0.75
+		# Range: 0.0 ~ 1024.0
+		flying_speed = 0.75
+		#Target tracking range in blocks. Individual AI goals may impose additional limits.
+		# Default: 70.0
+		# Range: 0.0 ~ 2048.0
+		follow_range = 70.0
+		#Knockback resistance, from 0 to 1.
+		# Default: 0.5
+		# Range: 0.0 ~ 1.0
+		knockback_resistance = 0.5
+		#Maximum absorption; does not itself grant absorption hearts.
+		# Default: 0.0
+		# Range: 0.0 ~ 2048.0
+		max_absorption = 0.0
+		#Step height in blocks.
+		# Default: 0.6
+		# Range: 0.0 ~ 10.0
+		step_height = 0.6
+		#Entity size multiplier.
+		# Default: 1.0
+		# Range: 0.0625 ~ 16.0
+		scale = 1.0
+		#Gravity acceleration; ignored while the entity disables gravity.
+		# Default: 0.08
+		# Range: -1.0 ~ 1.0
+		gravity = 0.08
+		#Fall distance in blocks before fall damage.
+		# Default: 3.0
+		# Range: -1024.0 ~ 1024.0
+		safe_fall_distance = 3.0
+		#Fall damage multiplier, where the boss permits fall damage.
+		# Default: 1.0
+		# Range: 0.0 ~ 100.0
+		fall_damage_multiplier = 1.0
+		#Jump strength.
+		# Default: 0.41999998688697815
+		# Range: 0.0 ~ 32.0
+		jump_strength = 0.41999998688697815
+		#Underwater breathing bonus.
+		# Default: 0.0
+		# Range: 0.0 ~ 1024.0
+		oxygen_bonus = 0.0
+		#Burn duration multiplier; does not remove fire immunity.
+		# Default: 1.0
+		# Range: 0.0 ~ 1024.0
+		burning_time = 1.0
+		#Explosion knockback resistance, from 0 to 1.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		explosion_knockback_resistance = 0.0
+		#Water movement efficiency.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		water_movement_efficiency = 0.0
+		#Movement efficiency over slowing terrain.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		movement_efficiency = 0.0
+		#Swimming speed multiplier.
+		# Default: 1.0
+		# Range: 0.0 ~ 1024.0
+		swim_speed = 1.0
+		#Name tag visibility distance.
+		# Default: 64.0
+		# Range: 0.0 ~ 64.0
+		nametag_distance = 64.0
+		#Flat bonus to each Ars damage-glyph hit. Does not increase radius, duration, or amplification.
+		# Default: 0.0
+		# Range: 0.0 ~ 10000.0
+		spell_damage_bonus = 0.0
+		#Scales Ars spell damage after the flat bonus: 0.5 = half, 1 = unchanged, 2 = double.
+		#Only affects spell hits routed through Ars SpellDamageEvent; not melee, fire ticks, or summoned creatures.
+		# Default: 1.0
+		# Range: 0.0 ~ 1000.0
+		spell_damage_multiplier = 1.0
+
+	["Boss Configs".matt]
+		#Maximum health in health points (2 = one heart). Minecraft or other mods may cap the effective value; vanilla caps at 1024.
+		# Default: 1225.0
+		# Range: 1.0 ~ 1000000.0
+		max_health = 1225.0
+		#Base armor, before equipment and effects.
+		# Default: 23.0
+		# Range: 0.0 ~ 30.0
+		armor = 23.0
+		#Base armor toughness.
+		# Default: 15.0
+		# Range: 0.0 ~ 20.0
+		armor_toughness = 15.0
+		#Base melee damage. Scripted attacks may apply their own multipliers.
+		# Default: 20.0
+		# Range: 0.0 ~ 2048.0
+		attack_damage = 20.0
+		#Melee attack knockback strength.
+		# Default: 1.5
+		# Range: 0.0 ~ 5.0
+		attack_knockback = 1.5
+		#Base ground movement speed; AI movement multipliers still apply.
+		# Default: 0.4000000059604645
+		# Range: 0.0 ~ 1024.0
+		movement_speed = 0.4000000059604645
+		#Base flying speed, where used by the movement controller.
+		# Default: 0.4000000059604645
+		# Range: 0.0 ~ 1024.0
+		flying_speed = 0.4000000059604645
+		#Target tracking range in blocks. Individual AI goals may impose additional limits.
+		# Default: 150.0
+		# Range: 0.0 ~ 2048.0
+		follow_range = 150.0
+		#Knockback resistance, from 0 to 1.
+		# Default: 0.800000011920929
+		# Range: 0.0 ~ 1.0
+		knockback_resistance = 0.800000011920929
+		#Maximum absorption; does not itself grant absorption hearts.
+		# Default: 0.0
+		# Range: 0.0 ~ 2048.0
+		max_absorption = 0.0
+		#Step height in blocks.
+		# Default: 0.6
+		# Range: 0.0 ~ 10.0
+		step_height = 0.6
+		#Entity size multiplier.
+		# Default: 1.0
+		# Range: 0.0625 ~ 16.0
+		scale = 1.0
+		#Gravity acceleration; ignored while the entity disables gravity.
+		# Default: 0.08
+		# Range: -1.0 ~ 1.0
+		gravity = 0.08
+		#Fall distance in blocks before fall damage.
+		# Default: 3.0
+		# Range: -1024.0 ~ 1024.0
+		safe_fall_distance = 3.0
+		#Fall damage multiplier, where the boss permits fall damage.
+		# Default: 1.0
+		# Range: 0.0 ~ 100.0
+		fall_damage_multiplier = 1.0
+		#Jump strength.
+		# Default: 0.41999998688697815
+		# Range: 0.0 ~ 32.0
+		jump_strength = 0.41999998688697815
+		#Underwater breathing bonus.
+		# Default: 0.0
+		# Range: 0.0 ~ 1024.0
+		oxygen_bonus = 0.0
+		#Burn duration multiplier; does not remove fire immunity.
+		# Default: 1.0
+		# Range: 0.0 ~ 1024.0
+		burning_time = 1.0
+		#Explosion knockback resistance, from 0 to 1.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		explosion_knockback_resistance = 0.0
+		#Water movement efficiency.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		water_movement_efficiency = 0.0
+		#Movement efficiency over slowing terrain.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		movement_efficiency = 0.0
+		#Swimming speed multiplier.
+		# Default: 1.0
+		# Range: 0.0 ~ 1024.0
+		swim_speed = 1.0
+		#Name tag visibility distance.
+		# Default: 64.0
+		# Range: 0.0 ~ 64.0
+		nametag_distance = 64.0
+		#Flat bonus to each Ars damage-glyph hit. Does not increase radius, duration, or amplification.
+		# Default: 0.0
+		# Range: 0.0 ~ 10000.0
+		spell_damage_bonus = 0.0
+		#Scales Ars spell damage after the flat bonus: 0.5 = half, 1 = unchanged, 2 = double.
+		#Only affects spell hits routed through Ars SpellDamageEvent; not melee, fire ticks, or summoned creatures.
+		# Default: 1.0
+		# Range: 0.0 ~ 1000.0
+		spell_damage_multiplier = 1.0
+
+	["Boss Configs".josh]
+		#Maximum health in health points (2 = one heart). Minecraft or other mods may cap the effective value; vanilla caps at 1024.
+		# Default: 1800.0
+		# Range: 1.0 ~ 1000000.0
+		max_health = 1800.0
+		#Base armor, before equipment and effects.
+		# Default: 23.0
+		# Range: 0.0 ~ 30.0
+		armor = 23.0
+		#Base armor toughness.
+		# Default: 15.0
+		# Range: 0.0 ~ 20.0
+		armor_toughness = 15.0
+		#Base melee damage. Scripted attacks may apply their own multipliers.
+		# Default: 20.0
+		# Range: 0.0 ~ 2048.0
+		attack_damage = 20.0
+		#Melee attack knockback strength.
+		# Default: 1.5
+		# Range: 0.0 ~ 5.0
+		attack_knockback = 1.5
+		#Base ground movement speed; AI movement multipliers still apply.
+		# Default: 0.4000000059604645
+		# Range: 0.0 ~ 1024.0
+		movement_speed = 0.4000000059604645
+		#Base flying speed, where used by the movement controller.
+		# Default: 0.30000001192092896
+		# Range: 0.0 ~ 1024.0
+		flying_speed = 0.30000001192092896
+		#Target tracking range in blocks. Individual AI goals may impose additional limits.
+		# Default: 150.0
+		# Range: 0.0 ~ 2048.0
+		follow_range = 150.0
+		#Knockback resistance, from 0 to 1.
+		# Default: 1.0
+		# Range: 0.0 ~ 1.0
+		knockback_resistance = 1.0
+		#Maximum absorption; does not itself grant absorption hearts.
+		# Default: 0.0
+		# Range: 0.0 ~ 2048.0
+		max_absorption = 0.0
+		#Step height in blocks.
+		# Default: 0.6
+		# Range: 0.0 ~ 10.0
+		step_height = 0.6
+		#Entity size multiplier.
+		# Default: 1.0
+		# Range: 0.0625 ~ 16.0
+		scale = 1.0
+		#Gravity acceleration; ignored while the entity disables gravity.
+		# Default: 0.08
+		# Range: -1.0 ~ 1.0
+		gravity = 0.08
+		#Fall distance in blocks before fall damage.
+		# Default: 3.0
+		# Range: -1024.0 ~ 1024.0
+		safe_fall_distance = 3.0
+		#Fall damage multiplier, where the boss permits fall damage.
+		# Default: 1.0
+		# Range: 0.0 ~ 100.0
+		fall_damage_multiplier = 1.0
+		#Jump strength.
+		# Default: 0.41999998688697815
+		# Range: 0.0 ~ 32.0
+		jump_strength = 0.41999998688697815
+		#Underwater breathing bonus.
+		# Default: 0.0
+		# Range: 0.0 ~ 1024.0
+		oxygen_bonus = 0.0
+		#Burn duration multiplier; does not remove fire immunity.
+		# Default: 1.0
+		# Range: 0.0 ~ 1024.0
+		burning_time = 1.0
+		#Explosion knockback resistance, from 0 to 1.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		explosion_knockback_resistance = 0.0
+		#Water movement efficiency.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		water_movement_efficiency = 0.0
+		#Movement efficiency over slowing terrain.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		movement_efficiency = 0.0
+		#Swimming speed multiplier.
+		# Default: 1.0
+		# Range: 0.0 ~ 1024.0
+		swim_speed = 1.0
+		#Name tag visibility distance.
+		# Default: 64.0
+		# Range: 0.0 ~ 64.0
+		nametag_distance = 64.0
+		#Flat bonus to each Ars damage-glyph hit. Does not increase radius, duration, or amplification.
+		# Default: 0.0
+		# Range: 0.0 ~ 10000.0
+		spell_damage_bonus = 0.0
+		#Scales Ars spell damage after the flat bonus: 0.5 = half, 1 = unchanged, 2 = double.
+		#Only affects spell hits routed through Ars SpellDamageEvent; not melee, fire ticks, or summoned creatures.
+		# Default: 1.0
+		# Range: 0.0 ~ 1000.0
+		spell_damage_multiplier = 1.0
+
+	["Boss Configs".adam]
+		#Maximum health in health points (2 = one heart). Minecraft or other mods may cap the effective value; vanilla caps at 1024.
+		# Default: 2000.0
+		# Range: 1.0 ~ 1000000.0
+		max_health = 2000.0
+		#Base armor, before equipment and effects.
+		# Default: 23.0
+		# Range: 0.0 ~ 30.0
+		armor = 23.0
+		#Base armor toughness.
+		# Default: 15.0
+		# Range: 0.0 ~ 20.0
+		armor_toughness = 15.0
+		#Base melee damage. Scripted attacks may apply their own multipliers.
+		# Default: 20.0
+		# Range: 0.0 ~ 2048.0
+		attack_damage = 20.0
+		#Melee attack knockback strength.
+		# Default: 1.5
+		# Range: 0.0 ~ 5.0
+		attack_knockback = 1.5
+		#Base ground movement speed; AI movement multipliers still apply.
+		# Default: 0.800000011920929
+		# Range: 0.0 ~ 1024.0
+		movement_speed = 0.800000011920929
+		#Base flying speed, where used by the movement controller.
+		# Default: 0.800000011920929
+		# Range: 0.0 ~ 1024.0
+		flying_speed = 0.800000011920929
+		#Target tracking range in blocks. Individual AI goals may impose additional limits.
+		# Default: 150.0
+		# Range: 0.0 ~ 2048.0
+		follow_range = 150.0
+		#Knockback resistance, from 0 to 1.
+		# Default: 0.800000011920929
+		# Range: 0.0 ~ 1.0
+		knockback_resistance = 0.800000011920929
+		#Maximum absorption; does not itself grant absorption hearts.
+		# Default: 0.0
+		# Range: 0.0 ~ 2048.0
+		max_absorption = 0.0
+		#Step height in blocks.
+		# Default: 0.6
+		# Range: 0.0 ~ 10.0
+		step_height = 0.6
+		#Entity size multiplier.
+		# Default: 1.0
+		# Range: 0.0625 ~ 16.0
+		scale = 1.0
+		#Gravity acceleration; ignored while the entity disables gravity.
+		# Default: 0.08
+		# Range: -1.0 ~ 1.0
+		gravity = 0.08
+		#Fall distance in blocks before fall damage.
+		# Default: 3.0
+		# Range: -1024.0 ~ 1024.0
+		safe_fall_distance = 3.0
+		#Fall damage multiplier, where the boss permits fall damage.
+		# Default: 1.0
+		# Range: 0.0 ~ 100.0
+		fall_damage_multiplier = 1.0
+		#Jump strength.
+		# Default: 0.41999998688697815
+		# Range: 0.0 ~ 32.0
+		jump_strength = 0.41999998688697815
+		#Underwater breathing bonus.
+		# Default: 0.0
+		# Range: 0.0 ~ 1024.0
+		oxygen_bonus = 0.0
+		#Burn duration multiplier; does not remove fire immunity.
+		# Default: 1.0
+		# Range: 0.0 ~ 1024.0
+		burning_time = 1.0
+		#Explosion knockback resistance, from 0 to 1.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		explosion_knockback_resistance = 0.0
+		#Water movement efficiency.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		water_movement_efficiency = 0.0
+		#Movement efficiency over slowing terrain.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		movement_efficiency = 0.0
+		#Swimming speed multiplier.
+		# Default: 1.0
+		# Range: 0.0 ~ 1024.0
+		swim_speed = 1.0
+		#Name tag visibility distance.
+		# Default: 64.0
+		# Range: 0.0 ~ 64.0
+		nametag_distance = 64.0
+		#Flat bonus to each Ars damage-glyph hit. Does not increase radius, duration, or amplification.
+		# Default: 0.0
+		# Range: 0.0 ~ 10000.0
+		spell_damage_bonus = 0.0
+		#Scales Ars spell damage after the flat bonus: 0.5 = half, 1 = unchanged, 2 = double.
+		#Only affects spell hits routed through Ars SpellDamageEvent; not melee, fire ticks, or summoned creatures.
+		# Default: 1.0
+		# Range: 0.0 ~ 1000.0
+		spell_damage_multiplier = 1.0
+
+	["Boss Configs".mahoraga]
+		#Maximum health in health points (2 = one heart). Minecraft or other mods may cap the effective value; vanilla caps at 1024.
+		# Default: 500.0
+		# Range: 1.0 ~ 1000000.0
+		max_health = 500.0
+		#Base armor, before equipment and effects.
+		# Default: 20.0
+		# Range: 0.0 ~ 30.0
+		armor = 20.0
+		#Base armor toughness.
+		# Default: 8.0
+		# Range: 0.0 ~ 20.0
+		armor_toughness = 8.0
+		#Base melee damage. Scripted attacks may apply their own multipliers.
+		# Default: 10.0
+		# Range: 0.0 ~ 2048.0
+		attack_damage = 10.0
+		#Melee attack knockback strength.
+		# Default: 1.0
+		# Range: 0.0 ~ 5.0
+		attack_knockback = 1.0
+		#Base ground movement speed; AI movement multipliers still apply.
+		# Default: 0.3499999940395355
+		# Range: 0.0 ~ 1024.0
+		movement_speed = 0.3499999940395355
+		#Target tracking range in blocks. Individual AI goals may impose additional limits.
+		# Default: 90.0
+		# Range: 0.0 ~ 2048.0
+		follow_range = 90.0
+		#Knockback resistance, from 0 to 1.
+		# Default: 0.7
+		# Range: 0.0 ~ 1.0
+		knockback_resistance = 0.7
+		#Maximum absorption; does not itself grant absorption hearts.
+		# Default: 0.0
+		# Range: 0.0 ~ 2048.0
+		max_absorption = 0.0
+		#Step height in blocks.
+		# Default: 0.6
+		# Range: 0.0 ~ 10.0
+		step_height = 0.6
+		#Entity size multiplier.
+		# Default: 1.0
+		# Range: 0.0625 ~ 16.0
+		scale = 1.0
+		#Gravity acceleration; ignored while the entity disables gravity.
+		# Default: 0.08
+		# Range: -1.0 ~ 1.0
+		gravity = 0.08
+		#Fall distance in blocks before fall damage.
+		# Default: 3.0
+		# Range: -1024.0 ~ 1024.0
+		safe_fall_distance = 3.0
+		#Fall damage multiplier, where the boss permits fall damage.
+		# Default: 1.0
+		# Range: 0.0 ~ 100.0
+		fall_damage_multiplier = 1.0
+		#Jump strength.
+		# Default: 0.41999998688697815
+		# Range: 0.0 ~ 32.0
+		jump_strength = 0.41999998688697815
+		#Underwater breathing bonus.
+		# Default: 0.0
+		# Range: 0.0 ~ 1024.0
+		oxygen_bonus = 0.0
+		#Burn duration multiplier; does not remove fire immunity.
+		# Default: 1.0
+		# Range: 0.0 ~ 1024.0
+		burning_time = 1.0
+		#Explosion knockback resistance, from 0 to 1.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		explosion_knockback_resistance = 0.0
+		#Water movement efficiency.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		water_movement_efficiency = 0.0
+		#Movement efficiency over slowing terrain.
+		# Default: 0.0
+		# Range: 0.0 ~ 1.0
+		movement_efficiency = 0.0
+		#Swimming speed multiplier.
+		# Default: 1.0
+		# Range: 0.0 ~ 1024.0
+		swim_speed = 1.0
+		#Name tag visibility distance.
+		# Default: 64.0
+		# Range: 0.0 ~ 64.0
+		nametag_distance = 64.0
+		#Flat bonus to each Ars damage-glyph hit. Does not increase radius, duration, or amplification.
+		# Default: 0.0
+		# Range: 0.0 ~ 10000.0
+		spell_damage_bonus = 0.0
+		#Scales Ars spell damage after the flat bonus: 0.5 = half, 1 = unchanged, 2 = double.
+		#Only affects spell hits routed through Ars SpellDamageEvent; not melee, fire ticks, or summoned creatures.
+		# Default: 1.0
+		# Range: 0.0 ~ 1000.0
+		spell_damage_multiplier = 1.0

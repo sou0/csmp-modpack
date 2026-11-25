@@ -34,7 +34,7 @@ public final class ClientCaos {
 
     @SubscribeEvent
     public static void onTick(ClientTickEvent.Post event) {
-        if (caos < 0 || !ModList.get().isLoaded("createskys")) return;
+        if (caos < 0 || !ModList.get().isLoaded("createsky")) return;
         if (++contador % 10 != 0) return; // 2x por segundo
         if (Double.isNaN(atual)) {
             original = SkysBridge.coverage();
@@ -49,7 +49,7 @@ public final class ClientCaos {
     @SubscribeEvent
     public static void onLogout(ClientPlayerNetworkEvent.LoggingOut event) {
         caos = -1;
-        if (!Double.isNaN(original) && ModList.get().isLoaded("createskys")) {
+        if (!Double.isNaN(original) && ModList.get().isLoaded("createsky")) {
             SkysBridge.setCoverage(original);
         }
         atual = Double.NaN;

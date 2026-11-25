@@ -73,6 +73,7 @@ function Teste([string]$nome, [bool]$ok, [string]$detalhe = '') {
 
 if ($pronto) {
     Say "[3/4] Servidor carregou em ${tempoCarga}s. Testando datapack do Caos..."
+    Start-Sleep -Seconds 20   # com muitos mods, o servidor ainda termina de recarregar (Patchouli etc.) logo apos o Done
     $null = Cmd ''   # linha de descarte: absorve o caractere invisivel (BOM) que o Windows coloca no 1o comando
     $null = Cmd 'function csmp_caos:admin/config_segundos {valor:9999}'   # congela a queda durante o teste
     $r = Cmd 'scoreboard players get #caos csmp_caos'
@@ -118,8 +119,12 @@ NivelClima 0  0 'Clima 0% -> normal'
     # Dimensao Vazio: gera o chao proprio e aceita a arvore preta gigante
     $null = Cmd 'execute in csmp:vazio run forceload add 0 0 95 95'
     Start-Sleep -Seconds 10
-    $r = Cmd 'execute in csmp:vazio if block 0 3 0 csmp:chao_vazio'
-    Teste 'Dimensao Vazio gera o chao (csmp:chao_vazio)' ($r -match 'Test passed') $r.Trim()
+    # o chao pode estar coberto por rua ou casa num ponto qualquer; procura numa area de 33x33
+    $chao = $false
+    foreach ($px in -12, 0, 12) { foreach ($pz in -12, 0, 12) {
+        if (-not $chao -and (Cmd "execute in csmp:vazio if block $px 3 $pz csmp:chao_vazio") -match 'Test passed') { $chao = $true }
+    } }
+    Teste 'Dimensao Vazio gera o chao (csmp:chao_vazio)' $chao 'procurado em 9 pontos perto de 0,0'
     $r = Cmd 'execute in csmp:vazio if block 0 0 0 minecraft:bedrock'
     Teste 'Dimensao Vazio tem bedrock embaixo' ($r -match 'Test passed') $r.Trim()
     # limpa o espaco (arvores geradas sozinhas podem estar no caminho) e coloca uma arvore
@@ -142,11 +147,13 @@ NivelClima 0  0 'Clima 0% -> normal'
     $r = Cmd 'execute in csmp:vazio run fill 22 4 0 40 40 20 minecraft:glass replace csmp:folhas_negras'
     Teste 'Ponto de sculk deixa uma copa rala de folhas negras' ($r -match 'Successfully filled') $r.Trim()
     # Sculk em pontos aleatorios: o sculk so se espalha em pedra/terra, entao usa um quadrado de pedra
+    $null = Cmd 'execute in csmp:vazio run fill 40 4 40 56 30 56 minecraft:air'
     $null = Cmd 'execute in csmp:vazio run fill 40 3 40 56 3 56 minecraft:stone'
     $r = Cmd 'execute in csmp:vazio run place feature csmp:sculk_superficie 48 4 48'
     Teste 'Sculk de superficie (csmp:sculk_superficie) e colocado' ($r -match 'Placed') $r.Trim()
     $r = Cmd 'execute in csmp:vazio run fill 36 3 36 60 6 60 minecraft:glass replace minecraft:sculk'
     Teste 'Sculk de superficie realmente espalha blocos de sculk' ($r -match 'Successfully filled') $r.Trim()
+    $null = Cmd 'execute in csmp:vazio run fill 70 4 70 86 30 86 minecraft:air'
     $null = Cmd 'execute in csmp:vazio run fill 70 3 70 86 3 86 minecraft:stone'
     $r = Cmd 'execute in csmp:vazio run place feature csmp:sculk_caverna 78 4 78'
     Teste 'Sculk de caverna (csmp:sculk_caverna) e colocado' ($r -match 'Placed') $r.Trim()
@@ -213,11 +220,11 @@ NivelClima 0  0 'Clima 0% -> normal'
     $null = Cmd 'execute in minecraft:overworld run forceload add 176 176 239 239'
     Start-Sleep -Seconds 12
     $r = Cmd 'execute in csmp:vazio run place feature csmp:estatua_vazio_direto 208 4 208'
-    Teste 'Estatua do Vazio (cemiterio) e colocada' ($r -match 'Placed') $r.Trim()
-    $r = Cmd 'execute in csmp:vazio if block 208 3 208 csmp:base_estatua'
-    Teste 'Base da estatua existe no Vazio' ($r -match 'Test passed') $r.Trim()
-    $r = Cmd 'execute in csmp:vazio if entity @e[type=csmp:estatua,x=208,y=4,z=208,distance=..3,nbt={Brilha:1b,Partes:15}]'
-    Teste 'Estatua do Vazio ja nasce inteira e brilhando' ($r -match 'Test passed') $r.Trim()
+    Teste 'Circulo do ritual do Vazio e colocado' ($r -match 'Placed') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio if block 208 3 208 csmp:sigilo[ativo=false]'
+    Teste 'Simbolo do ritual no chao do Vazio (apagado)' ($r -match 'Test passed') $r.Trim()
+    $r = Cmd 'execute in csmp:vazio if entity @e[type=csmp:estatua,x=208,y=4,z=208,distance=..6]'
+    Teste 'No Vazio nao ha mais estatua (so o simbolo)' ($r -match 'Test failed') $r.Trim()
     $r = Cmd 'execute in minecraft:overworld positioned 208 64 208 positioned over world_surface run place feature csmp:estatua_superficie_direto ~ ~ ~'
     Teste 'Estatua do overworld (cemiterio) e colocada' ($r -match 'Placed') $r.Trim()
     $r = Cmd 'execute in minecraft:overworld positioned 208 64 208 positioned over world_surface if entity @e[type=csmp:estatua,distance=..4,nbt={Partes:0}]'
@@ -261,6 +268,16 @@ NivelClima 0  0 'Clima 0% -> normal'
         }
         Teste "Bosque: ha troncos de betula com olho ($olhos de 18 caixas)" ($olhos -ge 1) "$olhos caixas"
     } else { Teste 'Comando /csmp bosque informa o centro' $false $r.Trim() }
+    # --- Ars Nouveau: as construcoes do mod nao nascem mais; e o minerio sculk existe na geracao
+    foreach ($est in 'ars_nouveau:hunter_wilden_den', 'ars_additions:arcane_library') {
+        $r = Cmd "execute in minecraft:overworld run locate structure $est"
+        Teste "Construcao do Ars '$est' nao nasce mais" ($r -notmatch 'The nearest') $r.Trim()
+    }
+    $null = Cmd 'execute in minecraft:overworld run forceload add 0 0 15 15'
+    Start-Sleep -Seconds 4
+    $null = Cmd 'execute in minecraft:overworld run fill 0 -40 0 15 -38 15 minecraft:stone'
+    $r = Cmd 'execute in minecraft:overworld run place feature csmp:minerio_sculk 8 -39 8'
+    Teste 'Minerio sculk (csmp:minerio_sculk) e colocado' ($r -match 'Placed') $r.Trim()
 # Persistencia: grava 42, desliga, religa o MESMO mundo e confere se o caos continua 42
     $null = Cmd 'function csmp_caos:admin/definir {valor:42}'
     $null = Cmd 'function csmp_caos:admin/config_ganho {valor:7}'

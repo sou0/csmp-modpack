@@ -25,11 +25,11 @@ neoForge {
 
 dependencies {
     // Create: Skys so para compilar (nao e empacotado no nosso jar)
-    compileOnly files('../Pack-Direto/mods/createskys-0.1.0.jar')
+    compileOnly files('../Pack-Direto/mods/createsky-0.1.2.jar')
     // Simple Voice Chat: so a API (esta dentro do jar do mod) para compilar; nao e empacotada no nosso jar
     compileOnly files('../Pack-Direto/mods/voicechat-neoforge-1.21.1-2.6.27.jar')
     // Create: Atmospherics (MIT): so para avisar o cache da costa quando um bloco muda
-    compileOnly files('../Pack-Direto/mods/create_atmospherics-2.0.0-oceans-e638ce3.jar')
+    compileOnly files('../Pack-Direto/mods/create_atmospherics-2.1.0.jar')
 }
 
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }

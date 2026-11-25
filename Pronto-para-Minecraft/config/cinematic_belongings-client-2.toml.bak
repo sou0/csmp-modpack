@@ -1,0 +1,102 @@
+[interactions]
+	#Reach for your belt pouch when the player inventory opens.
+	inventory = true
+	#Swing a worn or held backpack (Sophisticated Backpacks, Better Inventory) round to open it.
+	wornBackpack = true
+	#Lean over a placed backpack (Sophisticated Backpacks, Better Inventory) to open it.
+	placedBackpack = true
+	#Open chests, ender chests and barrels in 3D: lean in, lift the lid, and move things between its compartments and your bag. Off in the WINDOW style.
+	chests = true
+	#In Creative mode, open the standard inventory (with the Creative tabs), chests and workstation strips, with no bag: the bag is for Survival.
+	vanillaInCreative = true
+
+#Experimental: how the inventory is shown. Press C while the bag is open to cycle styles, Tab for the full window.
+[bag]
+	#WINDOW: pouch + normal window. FULL_3D: items lie in the bag in 3D. SEMI_3D: the panel lies flat in the bag. HYBRID: normal window beside the bag.
+	#Allowed Values: WINDOW, FULL_3D, SEMI_3D, HYBRID
+	inventoryStyle = "FULL_3D"
+	#Size of the bag on screen in the 3D styles.
+	# Default: 1.0
+	# Range: 0.7 ~ 1.5
+	bagSize = 1.0
+	#Size of the items lying in the bag (FULL_3D and HYBRID).
+	# Default: 1.0
+	# Range: 0.6 ~ 1.4
+	itemSize = 1.0
+	#How steeply you look down into the bag, in degrees.
+	# Default: 50.0
+	# Range: 30.0 ~ 75.0
+	lookAngle = 50.0
+	#Which side of the window the bag is held on in the HYBRID style.
+	#Allowed Values: LEFT, RIGHT
+	hybridSide = "RIGHT"
+	#Show stack counts next to items in the 3D styles.
+	countLabels = true
+	#Show a short key hint under the bag for the first few seconds.
+	hints = true
+	#Hide the hotbar and status bars while the bag is open (the bag shows your hotbar itself).
+	hideHud = true
+	#At Cinematic Interactions workstations (furnace, crafting table, anvil...), hold your bag open beside you and grab items from it, instead of the inventory strip at the top of the screen. Off in the WINDOW style.
+	workstationBag = true
+	#Which side the bag is held on at workstations.
+	#Allowed Values: LEFT, RIGHT
+	workstationSide = "LEFT"
+	#PULL_OUT: the bag waits at the edge of the view; move the mouse to that edge to bring it into frame, move away to put it back. HELD: one hand holds the bag open at your side the whole time. SET_DOWN: the bag is set down on the ground beside the station (on that side), out of the station's way, and both hands are free.
+	#Allowed Values: PULL_OUT, HELD, SET_DOWN
+	workstationPlacement = "PULL_OUT"
+	#Middle-click the bag to sort it. AUTO uses an installed sort mod (Quark) when the server has it, otherwise the built-in sort.
+	#Allowed Values: AUTO, BUILT_IN, OFF
+	sorting = "AUTO"
+	#PILES: fuller stacks lie as a small pile, and the number appears in the item's name when you point at it (hold Alt to see every number). NUMBERS: a number badge on every pocket.
+	#Allowed Values: PILES, NUMBERS
+	countStyle = "PILES"
+	#Items in the bag and in chests are lit at least this much (0-15), so you can see them in the dark.
+	# Default: 10
+	# Range: 0 ~ 15
+	minimumLight = 10
+
+[motion]
+	#Animation speed. 1.0 opens the inventory in about half a second.
+	# Default: 1.0
+	# Range: 0.5 ~ 2.5
+	speed = 1.0
+	#How far the camera moves. 0 keeps it still.
+	# Default: 1.0
+	# Range: 0.0 ~ 1.5
+	cameraIntensity = 1.0
+	#How much the hands lift, hover and sway.
+	# Default: 1.0
+	# Range: 0.0 ~ 1.5
+	handIntensity = 1.0
+	#Subtle breathing and hand sway while a window is open.
+	idleAnimations = true
+	#Animate putting things away. Off: the camera returns at once.
+	smoothClosing = true
+	#Reduced motion: keeps the hands but almost stills the camera and turns off sway.
+	reducedMotion = false
+	#What to do when a window opens in a third-person view (including Shoulder Surfing).
+	#Allowed Values: SWITCH_TO_FIRST_PERSON, SKIP_ANIMATION
+	thirdPerson = "SWITCH_TO_FIRST_PERSON"
+	#How the arms are drawn when Cinematic Interactions is not installed. With it installed, its own arm style is used.
+	#Allowed Values: STRAIGHT, BENT, FLOATING
+	armStyle = "STRAIGHT"
+
+[presentation]
+	#Volume of the cloth, leather and buckle sounds.
+	# Default: 1.0
+	# Range: 0.0 ~ 2.0
+	soundVolume = 1.0
+	#How much an animated window darkens the world behind it (vanilla is 1.0).
+	# Default: 0.55
+	# Range: 0.0 ~ 1.0
+	backgroundDim = 0.55
+
+[compatibility]
+	#If a renderer or an integration fails, keep the window working and fall back to a simpler animation.
+	compatibilityFallback = true
+	#Open windows instantly while in combat.
+	skipInCombat = false
+	#Seconds after dealing or taking a hit that count as combat.
+	# Default: 5
+	# Range: 1 ~ 30
+	combatSeconds = 5

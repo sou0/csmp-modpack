@@ -80,8 +80,8 @@ final class Ritual {
         if (overworld == null || vazio == null) {
             return null;
         }
-        int yOv = acharBase(overworld, ox, oz);
-        int yVz = acharBase(vazio, vx, vz);
+        int yOv = acharBase(overworld, ox, oz, CsmpRegistro.BASE_ESTATUA.get());
+        int yVz = acharBase(vazio, vx, vz, CsmpRegistro.SIGILO.get());
         if (yOv < 0 || yVz < 0) {
             return null;
         }
@@ -96,12 +96,12 @@ final class Ritual {
         return yVazio;
     }
 
-    private static int acharBase(ServerLevel nivel, int x, int z) {
+    private static int acharBase(ServerLevel nivel, int x, int z, net.minecraft.world.level.block.Block bloco) {
         if (!nivel.hasChunk(x >> 4, z >> 4)) {
             return -1;
         }
         for (int y = nivel.getMaxBuildHeight() - 1; y >= nivel.getMinBuildHeight(); y--) {
-            if (nivel.getBlockState(new BlockPos(x, y, z)).is(CsmpRegistro.BASE_ESTATUA.get())) {
+            if (nivel.getBlockState(new BlockPos(x, y, z)).is(bloco)) {
                 return y;
             }
         }
@@ -295,6 +295,7 @@ final class Ritual {
             preso.teleportTo(this.overworld, destino.getX() + 0.5D, destino.getY(), destino.getZ() + 0.5D, preso.getYRot(), 0.0F);
             preso.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 200, 0, false, false, false));
             Sanidade.definir(preso, 25.0F);
+            preso.getPersistentData().putBoolean(Sanidade.PRESO, false);
             preso.sendSystemMessage(Component.literal("Voce sente o chao de verdade sob os pes. Voce voltou.")
                     .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
         }
@@ -303,6 +304,8 @@ final class Ritual {
             BlockPos destino = lugarSeguro(this.vazio, this.vx, this.vz, this.yVazio);
             troca.removeEffect(MobEffects.DARKNESS);
             troca.removeEffect(MobEffects.CONFUSION);
+            troca.getPersistentData().putBoolean(Sanidade.PRESO, true);
+            troca.getPersistentData().putFloat(Sanidade.INSANIDADE_AO_CAIR, Sanidade.obter(troca));
             troca.teleportTo(this.vazio, destino.getX() + 0.5D, destino.getY(), destino.getZ() + 0.5D, troca.getYRot(), 0.0F);
             troca.sendSystemMessage(Component.literal("Sem nada de valor para oferecer, voce tomou o lugar de quem estava preso.")
                     .withStyle(ChatFormatting.DARK_RED, ChatFormatting.ITALIC));

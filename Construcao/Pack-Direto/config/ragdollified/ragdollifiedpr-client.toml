@@ -1,0 +1,26 @@
+#Client-side downed presentation
+[downedView]
+	#Hide the HUD, chat and your hand while downed, leaving only the eyelid overlay.
+	hideHudWhenDowned = true
+	#Push the downed camera out of blocks so terrain does not show through the screen.
+	#Turn off if the view jumps around while your body is being dragged.
+	cameraAvoidBlocks = true
+	#Show the "Hold to give up..." text and hold bars while downed.
+	#Holding jump still gives up when this is hidden.
+	showDownedPrompt = true
+	#Show the "Reviving: n%" readout while reviving someone. Reviving works the same when hidden.
+	showRevivePrompt = true
+	#Show the "Being revived" readout and bar while somebody is picking you up.
+	#Without it a downed player has no way to tell a revive has started.
+	showBeingRevivedPrompt = true
+	#Show how much damage your downed body can still take before it is finished off.
+	showDownedHealth = true
+	#Float a slowly spinning marker over every other downed player's body,
+	#so a knocked teammate can be picked out of the scenery. Never drawn over your own body.
+	#Only shown when InteractAPI is installed.
+	showDownedMarker = true
+	#Blocks above the downed body's torso to float that marker at.
+	#The body lies prone, so its torso is near the floor and this is measured from there.
+	# Default: 0.7
+	# Range: 0.0 ~ 4.0
+	downedMarkerHeight = 0.7

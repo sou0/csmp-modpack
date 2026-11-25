@@ -1,0 +1,10 @@
+#Better Darkness client configuration
+[darkness]
+	#Darkness intensity used when useGamerule=false, or as the fallback if no world is loaded (0 = no effect, 100 = pitch black).
+	#When useGamerule=true (default), this value is overridden per-world by '/gamerule darknessLevel <value>'.
+	# Default: 80
+	# Range: 0 ~ 100
+	defaultDarknessLevel = 80
+	#If true, reads the 'darknessLevel' gamerule from the loaded world and uses it instead of
+	#defaultDarknessLevel. Set to false to ignore the gamerule and always use the config value.
+	useGamerule = true
