@@ -1,14 +1,10 @@
 // CSMP - instalador e atualizador do modpack.
-// Compilado com o csc do .NET Framework 4 (vem no Windows), por compilar-instalador.ps1. C# 5: sem $"", sem ?. e sem =>.
+// Compilado com o csc do .NET Framework 4 (vem no Windows) por compilar-instalador.ps1. C# 5: sem $"", sem ?. e sem =>.
 //
-// O que faz, toda vez que abre:
-//  1. baixa o manifesto do pack no GitHub (lista de arquivos com tamanho e SHA-1);
-//  2. se houver versao nova deste programa, se atualiza e reabre;
-//  3. na primeira vez, acha a pasta do Minecraft e pergunta se e ela;
-//  4. instala o NeoForge certo se ainda nao estiver instalado (instalador oficial, modo --install-client);
-//  5. baixa so os arquivos que mudaram (mods, config, resourcepacks) e apaga os que sairam do pack;
-//  6. abre o launcher (TLauncher ou o oficial).
-// Configs que o jogador mudou nao sao sobrescritas. Mods que nao sao do pack podem ser movidos para outra pasta.
+// Primeira vez: mostra a tela de boas-vindas com a pasta do jogo encontrada (o jogador pode trocar) e o que vai ser
+// instalado; nada e feito antes de clicar em Instalar. Depois: a cada abertura confere o manifesto no GitHub, instala o
+// NeoForge se faltar, baixa so os arquivos que mudaram, apaga os que sairam do pack e abre o launcher.
+// Configs que o jogador mudou nao sao sobrescritas; mods de fora so sao movidos se o jogador deixar.
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +13,7 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -24,8 +21,12 @@ using System.Web.Script.Serialization;
 using System.Windows.Forms;
 
 [assembly: AssemblyTitle("CSMP")]
-[assembly: AssemblyProduct("CSMP - instalador e atualizador")]
+[assembly: AssemblyDescription("Instalador e atualizador do modpack CSMP")]
+[assembly: AssemblyCompany("CSMP")]
+[assembly: AssemblyProduct("CSMP")]
+[assembly: AssemblyCopyright("CSMP")]
 [assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
 
 namespace Csmp
 {
@@ -37,9 +38,13 @@ namespace Csmp
         public const string PACK = "Pronto-para-Minecraft/";
         public const string EXE_NO_REPO = "Instalador/CSMP.exe";
 
+        [DllImport("user32.dll")]
+        private static extern bool SetProcessDPIAware();
+
         [STAThread]
         public static void Main(string[] args)
         {
+            try { SetProcessDPIAware(); } catch { }
             ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072; // TLS 1.2
             ServicePointManager.DefaultConnectionLimit = 8;
             Application.EnableVisualStyles();
@@ -64,20 +69,67 @@ namespace Csmp
 
     public class Janela : Form
     {
-        private readonly Label titulo = new Label();
-        private readonly Label status = new Label();
+        // cores
+        private static readonly Color Escuro = Color.FromArgb(28, 24, 26);
+        private static readonly Color Destaque = Color.FromArgb(150, 28, 34);
+        private static readonly Color DestaqueClaro = Color.FromArgb(178, 44, 50);
+        private static readonly Color Texto = Color.FromArgb(32, 32, 32);
+        private static readonly Color TextoFraco = Color.FromArgb(105, 105, 105);
+        private static readonly Color Rodape = Color.FromArgb(243, 243, 243);
+        private static readonly Color Ok = Color.FromArgb(34, 139, 70);
+
+        private readonly Font fonteTitulo = new Font("Segoe UI Semibold", 14F);
+        private readonly Font fonteNormal = new Font("Segoe UI", 9.5F);
+        private readonly Font fonteNegrito = new Font("Segoe UI Semibold", 9.5F);
+        private readonly Font fontePequena = new Font("Segoe UI", 8.5F);
+        private readonly Font fonteIcone = new Font("Segoe UI Symbol", 11F);
+
+        // telas
+        private readonly Panel telaBoasVindas = new Panel();
+        private readonly Panel telaProgresso = new Panel();
+        private readonly Panel telaFim = new Panel();
+
+        // boas-vindas
+        private readonly TextBox campoPasta = new TextBox();
+        private readonly Label itemNeoForge = new Label();
+        private readonly Label itemArquivos = new Label();
+        private readonly CheckBox moverDeFora = new CheckBox();
+
+        // progresso
+        private readonly Label tituloProgresso = new Label();
+        private readonly Label[] passoIcone = new Label[3];
+        private readonly Label[] passoTexto = new Label[3];
+        private readonly int[] situacaoPasso = new int[3];
+        private readonly Label detalhe = new Label();
         private readonly ProgressBar barra = new ProgressBar();
+        private readonly LinkLabel mostrarLog = new LinkLabel();
         private readonly TextBox log = new TextBox();
-        private readonly Button jogar = new Button();
-        private readonly Button trocar = new Button();
+
+        // fim
+        private readonly Label tituloFim = new Label();
+        private readonly Label textoFim = new Label();
         private readonly CheckBox abrirSozinho = new CheckBox();
+
+        // rodape
+        private readonly Button botaoSecundario = new Button();
+        private readonly Button botaoPrincipal = new Button();
+        private readonly Label versaoRodape = new Label();
 
         private readonly string pastaApp = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CSMP");
         private Dictionary<string, string> cfg = new Dictionary<string, string>();
         private string pastaJogo;
-        private bool pronto;
+        private bool primeiraInstalacao;
+        private bool deuCerto;
         /// <summary>--teste PASTA: instala nessa pasta sem perguntar, sem atalho e sem launcher, grava o log e fecha.</summary>
         private readonly string pastaTeste;
+
+        // dados do manifesto
+        private string versaoPack = "";
+        private string versaoNeoForge = "";
+        private List<Entrada> arquivos = new List<Entrada>();
+
+        private EventHandler acaoPrincipal;
+        private EventHandler acaoSecundaria;
 
         public Janela(string[] args)
         {
@@ -86,119 +138,262 @@ namespace Csmp
                 if (args[a] == "--teste") pastaTeste = args[a + 1];
             }
             Text = "CSMP";
-            ClientSize = new Size(560, 360);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            ClientSize = new Size(640, 460);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
-            BackColor = Color.FromArgb(18, 14, 16);
-            ForeColor = Color.FromArgb(230, 222, 222);
-            Font = new Font("Segoe UI", 9F);
+            BackColor = Color.White;
+            ForeColor = Texto;
+            Font = fonteNormal;
             try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } catch { }
 
-            titulo.Text = "CSMP";
-            titulo.Font = new Font("Segoe UI Semibold", 20F);
-            titulo.ForeColor = Color.FromArgb(200, 40, 40);
-            titulo.SetBounds(16, 10, 300, 40);
-
-            status.Text = "Preparando...";
-            status.SetBounds(18, 54, 524, 20);
-
-            barra.SetBounds(18, 78, 524, 16);
-
-            log.Multiline = true;
-            log.ReadOnly = true;
-            log.ScrollBars = ScrollBars.Vertical;
-            log.BackColor = Color.FromArgb(28, 22, 24);
-            log.ForeColor = Color.FromArgb(200, 190, 190);
-            log.BorderStyle = BorderStyle.FixedSingle;
-            log.Font = new Font("Consolas", 8.5F);
-            log.SetBounds(18, 102, 524, 196);
-
-            abrirSozinho.Text = "Abrir o launcher sozinho quando terminar";
-            abrirSozinho.SetBounds(18, 312, 280, 24);
-
-            trocar.Text = "Trocar pasta";
-            trocar.SetBounds(308, 308, 110, 32);
-            trocar.FlatStyle = FlatStyle.Flat;
-            trocar.Click += delegate { TrocarPasta(); };
-
-            jogar.Text = "Jogar";
-            jogar.SetBounds(428, 308, 114, 32);
-            jogar.FlatStyle = FlatStyle.Flat;
-            jogar.BackColor = Color.FromArgb(120, 20, 24);
-            jogar.Enabled = false;
-            jogar.Click += delegate { AbrirLauncher(true); };
-
-            Controls.AddRange(new Control[] { titulo, status, barra, log, abrirSozinho, trocar, jogar });
+            MontarCabecalho();
+            MontarRodape();
+            MontarBoasVindas();
+            MontarProgresso();
+            MontarFim();
             Shown += delegate { Comecar(); };
         }
 
-        // ------------------------------------------------------------------ fluxo principal
+        // ------------------------------------------------------------------ montagem da janela
+
+        private void MontarCabecalho()
+        {
+            Panel topo = new Panel();
+            topo.SetBounds(0, 0, 640, 76);
+            topo.BackColor = Escuro;
+            PictureBox logo = new PictureBox();
+            logo.SetBounds(22, 14, 48, 48);
+            logo.SizeMode = PictureBoxSizeMode.Zoom;
+            try { logo.Image = new Icon(Icon, 48, 48).ToBitmap(); } catch { }
+            Label nome = new Label();
+            nome.Text = "CSMP";
+            nome.Font = new Font("Segoe UI Semibold", 17F);
+            nome.ForeColor = Color.White;
+            nome.SetBounds(80, 10, 300, 34);
+            Label sub = new Label();
+            sub.Text = "Instalador e atualizador do modpack";
+            sub.ForeColor = Color.FromArgb(190, 182, 184);
+            sub.SetBounds(82, 44, 400, 20);
+            topo.Controls.AddRange(new Control[] { logo, nome, sub });
+            Panel linha = new Panel();
+            linha.SetBounds(0, 76, 640, 3);
+            linha.BackColor = Destaque;
+            Controls.Add(topo);
+            Controls.Add(linha);
+        }
+
+        private void MontarRodape()
+        {
+            Panel rodape = new Panel();
+            rodape.SetBounds(0, 396, 640, 64);
+            rodape.BackColor = Rodape;
+            Panel borda = new Panel();
+            borda.SetBounds(0, 0, 640, 1);
+            borda.BackColor = Color.FromArgb(222, 222, 222);
+            versaoRodape.Text = "Versão " + Programa.VERSAO;
+            versaoRodape.ForeColor = TextoFraco;
+            versaoRodape.Font = fontePequena;
+            versaoRodape.SetBounds(22, 24, 200, 18);
+            Estilizar(botaoSecundario, false);
+            botaoSecundario.SetBounds(372, 14, 120, 36);
+            Estilizar(botaoPrincipal, true);
+            botaoPrincipal.SetBounds(502, 14, 118, 36);
+            botaoPrincipal.Click += delegate(object s, EventArgs e) { if (acaoPrincipal != null) acaoPrincipal(s, e); };
+            botaoSecundario.Click += delegate(object s, EventArgs e) { if (acaoSecundaria != null) acaoSecundaria(s, e); };
+            rodape.Controls.AddRange(new Control[] { borda, versaoRodape, botaoSecundario, botaoPrincipal });
+            Controls.Add(rodape);
+        }
+
+        private void Estilizar(Button b, bool principal)
+        {
+            b.FlatStyle = FlatStyle.Flat;
+            b.Font = principal ? fonteNegrito : fonteNormal;
+            b.Cursor = Cursors.Hand;
+            if (principal)
+            {
+                b.BackColor = Destaque;
+                b.ForeColor = Color.White;
+                b.FlatAppearance.BorderSize = 0;
+                b.FlatAppearance.MouseOverBackColor = DestaqueClaro;
+            }
+            else
+            {
+                b.BackColor = Color.White;
+                b.ForeColor = Texto;
+                b.FlatAppearance.BorderColor = Color.FromArgb(200, 200, 200);
+                b.FlatAppearance.MouseOverBackColor = Color.FromArgb(235, 235, 235);
+            }
+        }
+
+        private Panel NovaTela(Panel p)
+        {
+            p.SetBounds(0, 79, 640, 317);
+            p.BackColor = Color.White;
+            p.Visible = false;
+            Controls.Add(p);
+            return p;
+        }
+
+        private Label Rotulo(Panel p, string texto, Font fonte, Color cor, int x, int y, int w, int h)
+        {
+            Label l = new Label();
+            l.Text = texto;
+            l.Font = fonte;
+            l.ForeColor = cor;
+            l.SetBounds(x, y, w, h);
+            p.Controls.Add(l);
+            return l;
+        }
+
+        private void MontarBoasVindas()
+        {
+            Panel p = NovaTela(telaBoasVindas);
+            Rotulo(p, "Bem-vindo ao CSMP", fonteTitulo, Texto, 26, 18, 580, 30);
+            Rotulo(p, "Este programa prepara o seu Minecraft para jogar no servidor do CSMP e o mantém atualizado. " +
+                    "Nada é alterado antes de você clicar em Instalar.", fonteNormal, TextoFraco, 28, 52, 584, 40);
+
+            Rotulo(p, "Pasta do jogo", fonteNegrito, Texto, 28, 100, 300, 20);
+            campoPasta.ReadOnly = true;
+            campoPasta.BackColor = Color.White;
+            campoPasta.SetBounds(28, 122, 470, 26);
+            p.Controls.Add(campoPasta);
+            Button alterar = new Button();
+            Estilizar(alterar, false);
+            alterar.Text = "Alterar…";
+            alterar.SetBounds(506, 120, 106, 30);
+            alterar.Click += delegate { AlterarPasta(); };
+            p.Controls.Add(alterar);
+            Rotulo(p, "É a pasta onde ficam saves, options.txt e a pasta mods (normalmente .minecraft).",
+                    fontePequena, TextoFraco, 28, 152, 584, 18);
+
+            Rotulo(p, "O que será feito", fonteNegrito, Texto, 28, 184, 300, 20);
+            itemNeoForge.SetBounds(40, 208, 572, 20);
+            itemArquivos.SetBounds(40, 230, 572, 20);
+            Label atalho = Rotulo(p, "•  Atalho \"CSMP\" na área de trabalho, que atualiza o pack e abre o jogo", fonteNormal, Texto, 40, 252, 572, 20);
+            atalho.AutoEllipsis = true;
+            p.Controls.Add(itemNeoForge);
+            p.Controls.Add(itemArquivos);
+
+            moverDeFora.SetBounds(28, 280, 590, 24);
+            moverDeFora.Checked = true;
+            p.Controls.Add(moverDeFora);
+        }
+
+        private void MontarProgresso()
+        {
+            Panel p = NovaTela(telaProgresso);
+            tituloProgresso.Font = fonteTitulo;
+            tituloProgresso.SetBounds(26, 18, 580, 30);
+            p.Controls.Add(tituloProgresso);
+            string[] nomes = { "Procurando atualizações", "Minecraft 1.21.1 e NeoForge", "Mods, configurações e resourcepacks" };
+            for (int i = 0; i < 3; i++)
+            {
+                passoIcone[i] = Rotulo(p, "○", fonteIcone, TextoFraco, 30, 62 + i * 30, 26, 26);
+                passoTexto[i] = Rotulo(p, nomes[i], fonteNormal, TextoFraco, 58, 65 + i * 30, 540, 22);
+            }
+            detalhe.ForeColor = TextoFraco;
+            detalhe.AutoEllipsis = true;
+            detalhe.SetBounds(28, 162, 584, 20);
+            p.Controls.Add(detalhe);
+            barra.Style = ProgressBarStyle.Continuous;
+            barra.SetBounds(28, 186, 584, 14);
+            p.Controls.Add(barra);
+            mostrarLog.Text = "Mostrar detalhes";
+            mostrarLog.LinkColor = Destaque;
+            mostrarLog.ActiveLinkColor = DestaqueClaro;
+            mostrarLog.SetBounds(28, 208, 200, 20);
+            mostrarLog.LinkClicked += delegate
+            {
+                log.Visible = !log.Visible;
+                mostrarLog.Text = log.Visible ? "Esconder detalhes" : "Mostrar detalhes";
+            };
+            p.Controls.Add(mostrarLog);
+            log.Multiline = true;
+            log.ReadOnly = true;
+            log.ScrollBars = ScrollBars.Vertical;
+            log.BackColor = Color.FromArgb(248, 248, 248);
+            log.Font = new Font("Consolas", 8.5F);
+            log.SetBounds(28, 230, 584, 80);
+            log.Visible = false;
+            p.Controls.Add(log);
+        }
+
+        private void MontarFim()
+        {
+            Panel p = NovaTela(telaFim);
+            tituloFim.Font = fonteTitulo;
+            tituloFim.SetBounds(26, 18, 580, 30);
+            p.Controls.Add(tituloFim);
+            textoFim.SetBounds(28, 56, 584, 150);
+            p.Controls.Add(textoFim);
+            abrirSozinho.Text = "Abrir o launcher automaticamente nas próximas vezes";
+            abrirSozinho.SetBounds(28, 270, 584, 24);
+            abrirSozinho.CheckedChanged += delegate { cfg["abrir"] = abrirSozinho.Checked ? "sim" : "nao"; SalvarConfig(); };
+            p.Controls.Add(abrirSozinho);
+        }
+
+        private void Mostrar(Panel tela)
+        {
+            telaBoasVindas.Visible = tela == telaBoasVindas;
+            telaProgresso.Visible = tela == telaProgresso;
+            telaFim.Visible = tela == telaFim;
+        }
+
+        private void Botoes(string principal, EventHandler acao1, string secundario, EventHandler acao2)
+        {
+            botaoPrincipal.Text = principal ?? "";
+            botaoPrincipal.Visible = principal != null;
+            botaoPrincipal.Enabled = true;
+            acaoPrincipal = acao1;
+            botaoSecundario.Text = secundario ?? "";
+            botaoSecundario.Visible = secundario != null;
+            acaoSecundaria = acao2;
+        }
+
+        private void Passo(int i, int situacao)
+        {
+            // 0 = esperando, 1 = fazendo, 2 = feito, 3 = erro
+            situacaoPasso[i] = situacao;
+            Ui(delegate
+            {
+                passoIcone[i].Text = situacao == 2 ? "✔" : situacao == 3 ? "✖" : situacao == 1 ? "●" : "○";
+                passoIcone[i].ForeColor = situacao == 2 ? Ok : situacao == 3 ? Destaque : situacao == 1 ? Destaque : TextoFraco;
+                passoTexto[i].ForeColor = situacao == 0 ? TextoFraco : Texto;
+                passoTexto[i].Font = situacao == 1 ? fonteNegrito : fonteNormal;
+            });
+        }
+
+        // ------------------------------------------------------------------ fluxo
 
         private void Comecar()
         {
             Directory.CreateDirectory(pastaApp);
             LerConfig();
-            abrirSozinho.Checked = Cfg("abrir", "sim") == "sim";
-            abrirSozinho.CheckedChanged += delegate { cfg["abrir"] = abrirSozinho.Checked ? "sim" : "nao"; SalvarConfig(); };
             LimparVersaoVelha();
-            if (pastaTeste != null)
-            {
-                pastaJogo = pastaTeste;
-                abrirSozinho.Checked = false;
-                Log("MODO TESTE: " + pastaJogo);
-                new Thread(Trabalhar) { IsBackground = true }.Start();
-                return;
-            }
-            InstalarNoComputador();
+            abrirSozinho.Checked = Cfg("abrir", "sim") == "sim";
+            pastaJogo = pastaTeste ?? Cfg("pasta", null);
+            primeiraInstalacao = pastaTeste == null && (pastaJogo == null || !Directory.Exists(pastaJogo));
 
-            pastaJogo = Cfg("pasta", null);
-            if (pastaJogo == null || !Directory.Exists(pastaJogo))
-            {
-                pastaJogo = EscolherPasta();
-                if (pastaJogo == null) { Close(); return; }
-                cfg["pasta"] = pastaJogo;
-                SalvarConfig();
-            }
-            Log("Pasta do jogo: " + pastaJogo);
-            new Thread(Trabalhar) { IsBackground = true }.Start();
+            tituloProgresso.Text = primeiraInstalacao ? "Preparando a instalação" : "Atualizando o CSMP";
+            Mostrar(telaProgresso);
+            Botoes(null, null, "Cancelar", delegate { Close(); });
+            Passo(0, 1);
+            Detalhe("Conferindo a versão mais recente no GitHub…");
+            new Thread(BuscarManifesto) { IsBackground = true }.Start();
         }
 
-        private void Trabalhar()
+        private void BuscarManifesto()
         {
             try
             {
-                Status("Procurando atualizacao...");
-                Dictionary<string, object> manifesto;
-                try
-                {
-                    manifesto = BaixarManifesto();
-                }
-                catch (Exception e)
-                {
-                    Log("Nao consegui falar com o GitHub: " + e.Message);
-                    bool jaInstalado = File.Exists(Path.Combine(pastaJogo, "csmp-estado.txt"));
-                    Status(jaInstalado ? "Sem internet: usando a versao que ja esta instalada." : "Sem internet e o pack ainda nao foi instalado.");
-                    Terminar(jaInstalado);
-                    return;
-                }
-                Log("Versao do pack no GitHub: " + manifesto["versao"]);
-
-                int versaoExe = Convert.ToInt32(manifesto["instalador"]);
-                if (versaoExe > Programa.VERSAO && pastaTeste == null && AtualizarEsteExe())
-                {
-                    return;
-                }
-
-                string neoforge = (string)manifesto["neoforge"];
-                if (!InstalarNeoForge(neoforge))
-                {
-                    Terminar(false);
-                    return;
-                }
-
-                List<Entrada> arquivos = new List<Entrada>();
-                foreach (object o in (ArrayList)manifesto["arquivos"])
+                Dictionary<string, object> m = BaixarManifesto();
+                versaoPack = Convert.ToString(m["versao"]);
+                versaoNeoForge = Convert.ToString(m["neoforge"]);
+                arquivos = new List<Entrada>();
+                foreach (object o in (ArrayList)m["arquivos"])
                 {
                     Dictionary<string, object> d = (Dictionary<string, object>)o;
                     Entrada e = new Entrada();
@@ -207,40 +402,173 @@ namespace Csmp
                     e.Hash = (string)d["h"];
                     arquivos.Add(e);
                 }
-                Sincronizar(arquivos);
+                Log("Pack no GitHub: " + versaoPack + " (" + arquivos.Count + " arquivos)");
+                if (Convert.ToInt32(m["instalador"]) > Programa.VERSAO && pastaTeste == null && AtualizarEsteExe())
+                {
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+                Log("Sem resposta do GitHub: " + e.Message);
+                Passo(0, 3);
+                bool instalado = !primeiraInstalacao && File.Exists(Path.Combine(pastaJogo, "csmp-estado.txt"));
+                Concluir(instalado, instalado ? "Sem conexão" : "Sem conexão com a internet",
+                        instalado ? "Não foi possível procurar atualizações agora. Você pode jogar com a versão que já está instalada."
+                                  : "É preciso internet para instalar o CSMP. Confira a conexão e abra o programa de novo.");
+                return;
+            }
+            Passo(0, 2);
+            if (primeiraInstalacao)
+            {
+                Ui(MostrarBoasVindas);
+            }
+            else
+            {
+                Instalar();
+            }
+        }
+
+        private void MostrarBoasVindas()
+        {
+            string padrao = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft");
+            pastaJogo = Directory.Exists(padrao) ? padrao : null;
+            Mostrar(telaBoasVindas);
+            Botoes("Instalar", delegate { ConfirmarInstalacao(); }, "Cancelar", delegate { Close(); });
+            AtualizarResumo();
+            if (pastaJogo == null)
+            {
+                MessageBox.Show(this, "Não encontrei a pasta .minecraft. Escolha a pasta do jogo em \"Alterar…\".", "CSMP",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void AtualizarResumo()
+        {
+            campoPasta.Text = pastaJogo ?? "(escolha a pasta)";
+            botaoPrincipal.Enabled = pastaJogo != null;
+            long total = 0;
+            int mods = 0;
+            HashSet<string> doPack = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (Entrada e in arquivos)
+            {
+                total += e.Tamanho;
+                doPack.Add(e.Caminho);
+                if (e.Caminho.StartsWith("mods/") && e.Caminho.EndsWith(".jar")) mods++;
+            }
+            bool temNeo = pastaJogo != null && NeoForgeInstalado(versaoNeoForge);
+            itemNeoForge.Text = "•  Minecraft 1.21.1 com NeoForge " + versaoNeoForge + (temNeo ? "  (já instalado)" : "");
+            itemArquivos.Text = "•  " + mods + " mods, configurações e resourcepacks (" + Mb(total) + " para baixar)";
+            int fora = pastaJogo == null ? 0 : ModsDeFora(doPack).Count;
+            moverDeFora.Visible = fora > 0;
+            moverDeFora.Text = "Mover para \"mods-fora-do-csmp\" os " + fora + " mod(s) que não são do CSMP (nada é apagado)";
+        }
+
+        private void AlterarPasta()
+        {
+            using (FolderBrowserDialog f = new FolderBrowserDialog())
+            {
+                f.Description = "Escolha a pasta do jogo (a que tem saves, options.txt e a pasta mods)";
+                if (pastaJogo != null) f.SelectedPath = pastaJogo;
+                if (f.ShowDialog(this) != DialogResult.OK) return;
+                string p = f.SelectedPath;
+                if (string.Equals(Path.GetFileName(p), "mods", StringComparison.OrdinalIgnoreCase))
+                {
+                    p = Path.GetDirectoryName(p); // escolheu a propria pasta mods: o jogo e a de cima
+                }
+                pastaJogo = p;
+                AtualizarResumo();
+            }
+        }
+
+        private void ConfirmarInstalacao()
+        {
+            if (pastaJogo == null) return;
+            cfg["pasta"] = pastaJogo;
+            SalvarConfig();
+            InstalarNoComputador();
+            tituloProgresso.Text = "Instalando o CSMP";
+            Mostrar(telaProgresso);
+            Botoes(null, null, "Cancelar", delegate { Close(); });
+            bool mover = moverDeFora.Visible && moverDeFora.Checked;
+            new Thread(delegate() { Instalar(mover); }) { IsBackground = true }.Start();
+        }
+
+        private void Instalar()
+        {
+            Instalar(false);
+        }
+
+        private void Instalar(bool moverMods)
+        {
+            Log("Pasta do jogo: " + pastaJogo);
+            try
+            {
+                Passo(1, 1);
+                if (!InstalarNeoForge(versaoNeoForge))
+                {
+                    Passo(1, 3);
+                    return;
+                }
+                Passo(1, 2);
+                Passo(2, 1);
+                Sincronizar(moverMods);
+                Passo(2, 2);
                 if (pastaTeste == null)
                 {
-                    cfg["versao"] = (string)manifesto["versao"];
-                    cfg["neoforge"] = neoforge;
+                    cfg["versao"] = versaoPack;
+                    cfg["neoforge"] = versaoNeoForge;
                     SalvarConfig();
                 }
-                Status("Tudo pronto! Pack de " + manifesto["versao"] + ". No launcher, use a versao neoforge-" + neoforge + ".");
-                Terminar(true);
+                Concluir(true, "Tudo pronto", null);
             }
             catch (Exception e)
             {
                 Log("ERRO: " + e);
-                Status("Deu erro. Veja o texto acima (e mande um print para o pessoal do CSMP).");
-                Terminar(File.Exists(Path.Combine(pastaJogo, "csmp-estado.txt")));
+                for (int i = 1; i < 3; i++) { if (situacaoPasso[i] == 1) Passo(i, 3); }
+                Concluir(File.Exists(Path.Combine(pastaJogo, "csmp-estado.txt")) && !primeiraInstalacao, "Não foi possível concluir",
+                        "Algo deu errado: " + e.Message + "\n\nTente de novo. Se continuar, mande um print dos detalhes para o pessoal do CSMP.");
             }
         }
 
-        private void Terminar(bool podeJogar)
+        private void Concluir(bool podeJogar, string titulo, string texto)
         {
+            deuCerto = podeJogar;
             Ui(delegate
             {
-                barra.Value = barra.Maximum;
-                jogar.Enabled = podeJogar;
-                pronto = podeJogar;
                 if (pastaTeste != null)
                 {
-                    File.WriteAllText(Path.Combine(pastaTeste, "csmp-teste-log.txt"), status.Text + Environment.NewLine + log.Text);
+                    File.WriteAllText(Path.Combine(pastaTeste, "csmp-teste-log.txt"), titulo + Environment.NewLine + (texto ?? "") +
+                            Environment.NewLine + log.Text);
                     Close();
                     return;
                 }
-                if (podeJogar && abrirSozinho.Checked)
+                if (podeJogar && texto == null && !primeiraInstalacao && abrirSozinho.Checked)
                 {
-                    AbrirLauncher(false);
+                    AbrirLauncher(); // atualizacao normal: abre o jogo direto
+                    return;
+                }
+                tituloFim.Text = titulo;
+                tituloFim.ForeColor = podeJogar ? Texto : Destaque;
+                textoFim.Text = texto ?? ("O CSMP está instalado e atualizado (pack de " + versaoPack + ").\n\n" +
+                        "No launcher, escolha a versão \"neoforge-" + versaoNeoForge + "\" (no launcher oficial, o perfil NeoForge) " +
+                        "e reserve pelo menos 6 GB de memória nas configurações dele.\n\n" +
+                        "Da próxima vez, é só abrir o atalho CSMP na área de trabalho: ele confere se tem atualização e abre o jogo.");
+                abrirSozinho.Visible = podeJogar;
+                Mostrar(telaFim);
+                if (podeJogar)
+                {
+                    Botoes("Jogar", delegate { AbrirLauncher(); }, "Abrir pasta", delegate { Process.Start("explorer.exe", "\"" + pastaJogo + "\""); });
+                }
+                else
+                {
+                    Botoes("Tentar de novo", delegate { Process.Start(Application.ExecutablePath); Close(); }, "Detalhes", delegate
+                    {
+                        Mostrar(telaProgresso);
+                        log.Visible = true;
+                        mostrarLog.Text = "Esconder detalhes";
+                        Botoes("Fechar", delegate { Close(); }, null, null);
+                    });
                 }
             });
         }
@@ -264,7 +592,7 @@ namespace Csmp
         {
             try
             {
-                Status("Atualizando o instalador...");
+                Detalhe("Atualizando o próprio instalador…");
                 string atual = Application.ExecutablePath;
                 string novo = atual + ".novo";
                 using (WebClient w = Cliente())
@@ -281,7 +609,7 @@ namespace Csmp
             }
             catch (Exception e)
             {
-                Log("Nao consegui atualizar o instalador (" + e.Message + "), seguindo com este.");
+                Log("Não consegui atualizar o instalador (" + e.Message + "), seguindo com este.");
                 return false;
             }
         }
@@ -291,7 +619,7 @@ namespace Csmp
             try { File.Delete(Application.ExecutablePath + ".velho"); } catch { }
         }
 
-        /// <summary>Na primeira vez copia o exe para %AppData%\CSMP e cria o atalho "CSMP" na area de trabalho.</summary>
+        /// <summary>Copia o exe para %AppData%\CSMP e cria o atalho "CSMP" na area de trabalho.</summary>
         private void InstalarNoComputador()
         {
             string destino = Path.Combine(pastaApp, "CSMP.exe");
@@ -303,85 +631,44 @@ namespace Csmp
                     File.Copy(atual, destino, true);
                 }
                 string atalho = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "CSMP.lnk");
-                if (!File.Exists(atalho))
-                {
-                    object shell = Activator.CreateInstance(Type.GetTypeFromProgID("WScript.Shell"));
-                    object lnk = shell.GetType().InvokeMember("CreateShortcut", BindingFlags.InvokeMethod, null, shell, new object[] { atalho });
-                    lnk.GetType().InvokeMember("TargetPath", BindingFlags.SetProperty, null, lnk, new object[] { destino });
-                    lnk.GetType().InvokeMember("WorkingDirectory", BindingFlags.SetProperty, null, lnk, new object[] { pastaApp });
-                    lnk.GetType().InvokeMember("Description", BindingFlags.SetProperty, null, lnk, new object[] { "Atualiza e abre o CSMP" });
-                    lnk.GetType().InvokeMember("Save", BindingFlags.InvokeMethod, null, lnk, null);
-                    Log("Atalho \"CSMP\" criado na area de trabalho. Use ele para jogar: ele sempre atualiza antes.");
-                }
+                object shell = Activator.CreateInstance(Type.GetTypeFromProgID("WScript.Shell"));
+                object lnk = shell.GetType().InvokeMember("CreateShortcut", BindingFlags.InvokeMethod, null, shell, new object[] { atalho });
+                lnk.GetType().InvokeMember("TargetPath", BindingFlags.SetProperty, null, lnk, new object[] { destino });
+                lnk.GetType().InvokeMember("WorkingDirectory", BindingFlags.SetProperty, null, lnk, new object[] { pastaApp });
+                lnk.GetType().InvokeMember("Description", BindingFlags.SetProperty, null, lnk, new object[] { "Atualiza e abre o CSMP" });
+                lnk.GetType().InvokeMember("Save", BindingFlags.InvokeMethod, null, lnk, null);
+                Log("Atalho CSMP criado na área de trabalho.");
             }
             catch (Exception e)
             {
-                Log("Aviso: nao consegui criar o atalho (" + e.Message + ").");
+                Log("Aviso: não consegui criar o atalho (" + e.Message + ").");
             }
-        }
-
-        // ------------------------------------------------------------------ pasta do jogo
-
-        private string EscolherPasta()
-        {
-            string padrao = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft");
-            if (Directory.Exists(padrao))
-            {
-                string extra = Directory.Exists(Path.Combine(padrao, "mods")) ? "\n\nEla ja tem uma pasta mods." : "";
-                DialogResult r = MessageBox.Show(this,
-                        "Encontrei a pasta do Minecraft:\n\n" + padrao + extra + "\n\nE nessa pasta que voce quer colocar o CSMP?\n" +
-                        "(Sim = usar essa; Nao = escolher outra)",
-                        "CSMP - pasta do jogo", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                if (r == DialogResult.Yes) return padrao;
-                if (r == DialogResult.Cancel) return null;
-            }
-            else
-            {
-                MessageBox.Show(this, "Nao achei a pasta .minecraft. Escolha a pasta do jogo (a que tem ou vai ter a pasta mods).",
-                        "CSMP - pasta do jogo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            using (FolderBrowserDialog f = new FolderBrowserDialog())
-            {
-                f.Description = "Escolha a pasta do jogo (a que tem saves, options.txt e a pasta mods)";
-                if (Directory.Exists(padrao)) f.SelectedPath = padrao;
-                if (f.ShowDialog(this) != DialogResult.OK) return null;
-                string p = f.SelectedPath;
-                if (string.Equals(Path.GetFileName(p), "mods", StringComparison.OrdinalIgnoreCase))
-                {
-                    p = Path.GetDirectoryName(p); // escolheu a pasta mods: o jogo e a de cima
-                }
-                return p;
-            }
-        }
-
-        private void TrocarPasta()
-        {
-            string nova = EscolherPasta();
-            if (nova == null) return;
-            cfg["pasta"] = nova;
-            SalvarConfig();
-            MessageBox.Show(this, "Pasta trocada. O CSMP vai reabrir para instalar nela.", "CSMP");
-            Process.Start(Application.ExecutablePath);
-            Close();
         }
 
         // ------------------------------------------------------------------ NeoForge
 
+        private bool NeoForgeInstalado(string versao)
+        {
+            string nome = "neoforge-" + versao;
+            return File.Exists(Path.Combine(pastaJogo, "versions", nome, nome + ".json"));
+        }
+
         private bool InstalarNeoForge(string versao)
         {
             string nome = "neoforge-" + versao;
-            if (File.Exists(Path.Combine(pastaJogo, "versions", nome, nome + ".json")))
+            if (NeoForgeInstalado(versao))
             {
-                Log("NeoForge " + versao + " ja instalado.");
+                Log("NeoForge " + versao + " já instalado.");
                 return true;
             }
-            Status("Instalando o NeoForge " + versao + "...");
+            Detalhe("Procurando o Java…");
             string java = AcharJava();
             if (java == null)
             {
-                Log("Nao achei o Java 21. Ele vem junto com o launcher oficial e com o TLauncher (abra o Minecraft 1.21.1 uma vez),");
-                Log("ou instale o Java 21 em https://adoptium.net/temurin/releases/?version=21 e abra o CSMP de novo.");
-                Status("Falta o Java 21 para instalar o NeoForge.");
+                Concluir(false, "Falta o Java 21",
+                        "Para instalar o NeoForge é preciso o Java 21. Ele vem junto com o launcher oficial e com o TLauncher: " +
+                        "abra o Minecraft 1.21.1 uma vez por eles e depois abra o CSMP de novo.\n\n" +
+                        "Ou instale o Java 21 (Temurin) em adoptium.net e tente de novo.");
                 return false;
             }
             Log("Java: " + java);
@@ -393,18 +680,17 @@ namespace Csmp
             }
             string instalador = Path.Combine(Path.GetTempPath(), nome + "-installer.jar");
             string url = "https://maven.neoforged.net/releases/net/neoforged/neoforge/" + versao + "/" + nome + "-installer.jar";
-            Log("Baixando o instalador oficial do NeoForge...");
+            Detalhe("Baixando o instalador oficial do NeoForge…");
             using (WebClient w = Cliente())
             {
                 w.DownloadFile(url, instalador);
                 string esperado = w.DownloadString(url + ".sha1").Trim().ToLowerInvariant();
                 if (esperado.Length >= 40 && Sha1(instalador) != esperado.Substring(0, 40))
                 {
-                    Log("O instalador do NeoForge veio corrompido. Tente de novo.");
-                    return false;
+                    throw new IOException("o instalador do NeoForge veio corrompido");
                 }
             }
-            Log("Rodando o instalador do NeoForge (baixa o Minecraft 1.21.1 e as bibliotecas, pode demorar)...");
+            Detalhe("Instalando o NeoForge (baixa o Minecraft 1.21.1 e as bibliotecas, pode levar alguns minutos)…");
             ProcessStartInfo psi = new ProcessStartInfo(java, "-jar \"" + instalador + "\" --install-client \"" + pastaJogo + "\"");
             psi.UseShellExecute = false;
             psi.CreateNoWindow = true;
@@ -414,24 +700,21 @@ namespace Csmp
             using (Process p = new Process())
             {
                 p.StartInfo = psi;
-                int linhas = 0;
                 DataReceivedEventHandler saida = delegate(object s, DataReceivedEventArgs a)
                 {
-                    if (a.Data == null) return;
-                    linhas++;
-                    if (linhas % 25 == 0) Status("Instalando o NeoForge... (" + linhas + ")");
-                    if (a.Data.IndexOf("rror", StringComparison.Ordinal) >= 0 || a.Data.StartsWith("Successfully")) Log("  " + a.Data);
+                    if (a.Data != null && a.Data.Trim().Length > 0) Log("  " + a.Data);
                 };
                 p.OutputDataReceived += saida;
                 p.ErrorDataReceived += saida;
+                Ui(delegate { barra.Style = ProgressBarStyle.Marquee; });
                 p.Start();
                 p.BeginOutputReadLine();
                 p.BeginErrorReadLine();
                 p.WaitForExit();
-                if (p.ExitCode != 0 || !File.Exists(Path.Combine(pastaJogo, "versions", nome, nome + ".json")))
+                Ui(delegate { barra.Style = ProgressBarStyle.Continuous; });
+                if (p.ExitCode != 0 || !NeoForgeInstalado(versao))
                 {
-                    Log("O instalador do NeoForge falhou (codigo " + p.ExitCode + "). O log dele fica em " + instalador + ".log");
-                    return false;
+                    throw new IOException("o instalador do NeoForge falhou (código " + p.ExitCode + ")");
                 }
             }
             try { File.Delete(instalador); } catch { }
@@ -446,7 +729,7 @@ namespace Csmp
             List<string> candidatos = new List<string>();
             string jh = Environment.GetEnvironmentVariable("JAVA_HOME");
             if (!string.IsNullOrEmpty(jh)) candidatos.Add(Path.Combine(jh, "bin", "java.exe"));
-            string[] runtimes = {
+            string[] lugares = {
                 Path.Combine(pastaJogo, "runtime"),
                 Path.Combine(ad, ".minecraft", "runtime"),
                 Path.Combine(la, "Packages", "Microsoft.4297127D64EC6_8wekyb3d8bbwe", "LocalCache", "Local", "runtime"),
@@ -456,7 +739,7 @@ namespace Csmp
                 @"C:\Program Files\Microsoft",
                 @"C:\Program Files (x86)\Minecraft Launcher\runtime",
             };
-            foreach (string r in runtimes) Procurar(r, 0, candidatos);
+            foreach (string r in lugares) Procurar(r, 0, candidatos);
             candidatos.Add("java");
             string melhor = null;
             int melhorVersao = 0;
@@ -509,21 +792,20 @@ namespace Csmp
 
         // ------------------------------------------------------------------ arquivos do pack
 
-        private void Sincronizar(List<Entrada> arquivos)
+        private void Sincronizar(bool moverMods)
         {
             string arqEstado = Path.Combine(pastaJogo, "csmp-estado.txt");
             Dictionary<string, Estado> estado = LerEstado(arqEstado);
-            bool primeiraVez = estado.Count == 0;
             HashSet<string> doPack = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (Entrada e in arquivos) doPack.Add(e.Caminho);
 
-            if (primeiraVez) MoverModsDeFora(doPack);
+            if (moverMods) MoverModsDeFora(doPack);
 
-            Status("Conferindo os arquivos...");
+            Detalhe("Conferindo os arquivos que você já tem…");
             List<Entrada> baixar = new List<Entrada>();
             long totalBaixar = 0;
             int mantidos = 0;
-            Ui(delegate { barra.Maximum = arquivos.Count; barra.Value = 0; });
+            Ui(delegate { barra.Maximum = Math.Max(1, arquivos.Count); barra.Value = 0; });
             int i = 0;
             foreach (Entrada e in arquivos)
             {
@@ -565,36 +847,69 @@ namespace Csmp
                         apagados++;
                     }
                 }
-                catch (Exception ex) { Log("Nao consegui apagar " + c + ": " + ex.Message); }
+                catch (Exception ex) { Log("Não consegui apagar " + c + ": " + ex.Message); }
                 estado.Remove(c);
             }
 
-            if (mantidos > 0) Log(mantidos + " config(s) que voce mudou foram mantidas.");
-            if (apagados > 0) Log(apagados + " arquivo(s) que sairam do pack foram apagados.");
+            if (mantidos > 0) Log(mantidos + " configuração(ões) que você mudou foram mantidas.");
+            if (apagados > 0) Log(apagados + " arquivo(s) que saíram do pack foram apagados.");
             if (baixar.Count == 0)
             {
-                Log("Nada para baixar: o pack ja esta atualizado.");
+                Log("Nada para baixar: o pack já está atualizado.");
                 SalvarEstado(arqEstado, estado);
                 return;
             }
 
-            Log("Baixando " + baixar.Count + " arquivo(s), " + Mb(totalBaixar) + "...");
+            Log("Baixando " + baixar.Count + " arquivo(s), " + Mb(totalBaixar) + ".");
             Ui(delegate { barra.Maximum = 1000; barra.Value = 0; });
+            // varios downloads ao mesmo tempo: o pack tem centenas de configs pequenas
+            Queue<Entrada> fila = new Queue<Entrada>(baixar);
+            object trava = new object();
             long feito = 0;
-            int n = 0;
-            foreach (Entrada e in baixar)
+            int prontos = 0;
+            Exception falha = null;
+            List<Thread> trabalhadores = new List<Thread>();
+            for (int t = 0; t < 6; t++)
             {
-                n++;
-                Status("Baixando " + n + "/" + baixar.Count + " (" + Mb(feito) + " de " + Mb(totalBaixar) + "): " + Path.GetFileName(e.Caminho));
-                BaixarArquivo(e);
-                estado[e.Caminho] = Marcar(e, Local(e.Caminho));
-                feito += e.Tamanho;
-                long f = feito;
-                long t = Math.Max(1, totalBaixar);
-                Ui(delegate { barra.Value = (int)Math.Min(1000, f * 1000 / t); });
-                if (n % 20 == 0) SalvarEstado(arqEstado, estado); // se cair no meio, nao recomeca do zero
+                Thread th = new Thread(delegate()
+                {
+                    while (true)
+                    {
+                        Entrada e;
+                        lock (trava)
+                        {
+                            if (falha != null || fila.Count == 0) return;
+                            e = fila.Dequeue();
+                        }
+                        try
+                        {
+                            BaixarArquivo(e);
+                        }
+                        catch (Exception ex)
+                        {
+                            lock (trava) { if (falha == null) falha = ex; }
+                            return;
+                        }
+                        lock (trava)
+                        {
+                            estado[e.Caminho] = Marcar(e, Local(e.Caminho));
+                            feito += e.Tamanho;
+                            prontos++;
+                            if (prontos % 25 == 0) SalvarEstado(arqEstado, estado); // se cair no meio, nao recomeca do zero
+                            long f = feito;
+                            long tot = Math.Max(1, totalBaixar);
+                            Detalhe("Baixando " + prontos + " de " + baixar.Count + "  ·  " + Mb(feito) + " de " + Mb(totalBaixar));
+                            Ui(delegate { barra.Value = (int)Math.Min(1000, f * 1000 / tot); });
+                        }
+                    }
+                });
+                th.IsBackground = true;
+                th.Start();
+                trabalhadores.Add(th);
             }
-            SalvarEstado(arqEstado, estado);
+            foreach (Thread th in trabalhadores) th.Join();
+            lock (trava) { SalvarEstado(arqEstado, estado); }
+            if (falha != null) throw falha;
             Log("Download terminado.");
         }
 
@@ -613,7 +928,7 @@ namespace Csmp
                         // a partir da 2a tentativa pula o cache do GitHub, que pode estar com a versao anterior
                         w.DownloadFile(tentativa == 1 ? url : url + "?t=" + DateTime.UtcNow.Ticks, temp);
                     }
-                    if (Sha1(temp) != e.Hash) throw new IOException("arquivo veio diferente do esperado");
+                    if (Sha1(temp) != e.Hash) throw new IOException("o arquivo veio diferente do esperado");
                     if (File.Exists(local)) File.Delete(local);
                     File.Move(temp, local);
                     return;
@@ -628,29 +943,22 @@ namespace Csmp
             }
         }
 
-        /// <summary>Primeira instalacao: mods que nao sao do pack podem quebrar o jogo; pergunta se pode tira-los.</summary>
-        private void MoverModsDeFora(HashSet<string> doPack)
+        private List<string> ModsDeFora(HashSet<string> doPack)
         {
-            string mods = Path.Combine(pastaJogo, "mods");
-            if (!Directory.Exists(mods)) return;
             List<string> fora = new List<string>();
+            string mods = Path.Combine(pastaJogo, "mods");
+            if (!Directory.Exists(mods)) return fora;
             foreach (string f in Directory.GetFiles(mods, "*.jar"))
             {
                 if (!doPack.Contains("mods/" + Path.GetFileName(f))) fora.Add(f);
             }
+            return fora;
+        }
+
+        private void MoverModsDeFora(HashSet<string> doPack)
+        {
+            List<string> fora = ModsDeFora(doPack);
             if (fora.Count == 0) return;
-            DialogResult r = DialogResult.No;
-            Ui(delegate
-            {
-                r = MessageBox.Show(this, "A pasta mods tem " + fora.Count + " mod(s) que nao sao do CSMP.\n\n" +
-                        "Posso move-los para a pasta \"mods-fora-do-csmp\" (nada e apagado)? Misturar mods costuma quebrar o jogo.",
-                        "CSMP", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            });
-            if (r != DialogResult.Yes)
-            {
-                Log("Mods de fora deixados na pasta mods (" + fora.Count + ").");
-                return;
-            }
             string destino = Path.Combine(pastaJogo, "mods-fora-do-csmp");
             Directory.CreateDirectory(destino);
             foreach (string f in fora)
@@ -716,46 +1024,38 @@ namespace Csmp
 
         // ------------------------------------------------------------------ launcher
 
-        private void AbrirLauncher(bool clicou)
+        private void AbrirLauncher()
         {
-            if (!pronto && !clicou) return;
+            if (!deuCerto) return;
             string exe = Cfg("launcher", null);
-            if (exe == null || !File.Exists(exe))
-            {
-                exe = AcharLauncher();
-            }
+            if (exe == null || !File.Exists(exe)) exe = AcharLauncher();
             if (exe == null)
             {
+                MessageBox.Show(this, "Não encontrei o seu launcher. Na próxima janela, escolha o TLauncher.exe ou o Minecraft Launcher.",
+                        "CSMP", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 using (OpenFileDialog f = new OpenFileDialog())
                 {
-                    f.Title = "Onde esta o seu launcher? (TLauncher.exe ou Minecraft Launcher)";
+                    f.Title = "Escolha o seu launcher do Minecraft";
                     f.Filter = "Programas (*.exe)|*.exe";
                     if (f.ShowDialog(this) != DialogResult.OK) return;
                     exe = f.FileName;
                 }
             }
-            cfg["launcher"] = exe;
-            SalvarConfig();
             try
             {
                 ProcessStartInfo psi = new ProcessStartInfo(exe);
                 psi.WorkingDirectory = Path.GetDirectoryName(exe);
                 Process.Start(psi);
-                if (Cfg("avisou", "nao") != "sim")
-                {
-                    cfg["avisou"] = "sim";
-                    SalvarConfig();
-                    MessageBox.Show(this, "No launcher, escolha a versao \"neoforge-" + Cfg("neoforge", "") + "\" (no oficial, o perfil NeoForge)\n" +
-                            "e coloque pelo menos 6 GB de RAM nas configuracoes dele.\n\nDa proxima vez e so abrir o atalho CSMP.",
-                            "CSMP", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                cfg["launcher"] = exe;
+                SalvarConfig();
                 Close();
             }
             catch (Exception e)
             {
                 cfg.Remove("launcher");
                 SalvarConfig();
-                MessageBox.Show(this, "Nao consegui abrir o launcher: " + e.Message, "CSMP");
+                MessageBox.Show(this, "Não consegui abrir o launcher: " + e.Message, "CSMP", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (!telaFim.Visible) Concluir(true, "Tudo pronto", null);
             }
         }
 
@@ -822,14 +1122,15 @@ namespace Csmp
 
         private void SalvarConfig()
         {
+            if (pastaTeste != null) return;
             StringBuilder sb = new StringBuilder();
             foreach (KeyValuePair<string, string> kv in cfg) sb.Append(kv.Key).Append('=').Append(kv.Value).Append('\n');
             File.WriteAllText(Path.Combine(pastaApp, "config.txt"), sb.ToString(), new UTF8Encoding(false));
         }
 
-        private void Status(string texto)
+        private void Detalhe(string texto)
         {
-            Ui(delegate { status.Text = texto; });
+            Ui(delegate { detalhe.Text = texto; });
         }
 
         private void Log(string texto)

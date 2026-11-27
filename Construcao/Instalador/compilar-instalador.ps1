@@ -10,7 +10,7 @@ $csc = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
 $ver = (Get-Content "$aqui\versao.txt" | Select-Object -First 1).Trim()
 $codigo = Get-Content "$aqui\CSMP.cs" -Raw
 if ($codigo -notmatch "VERSAO = $ver;") { throw "versao.txt ($ver) e Programa.VERSAO no CSMP.cs estao diferentes" }
-& $csc /nologo /target:winexe /optimize+ /win32icon:"$aqui\csmp.ico" /out:"$saida\CSMP.exe" `
+& $csc /nologo /codepage:65001 /target:winexe /optimize+ /win32icon:"$aqui\csmp.ico" /out:"$saida\CSMP.exe" `
     /r:System.Web.Extensions.dll /r:System.Windows.Forms.dll /r:System.Drawing.dll "$aqui\CSMP.cs"
 if ($LASTEXITCODE -ne 0) { throw "csc falhou" }
 Write-Host "Instalador compilado: $saida\CSMP.exe (versao $ver)"
