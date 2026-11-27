@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
@@ -25,15 +26,15 @@ using System.Windows.Forms;
 [assembly: AssemblyCompany("CSMP")]
 [assembly: AssemblyProduct("CSMP")]
 [assembly: AssemblyCopyright("CSMP")]
-[assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.0.0.0")]
+[assembly: AssemblyVersion("3.0.0.0")]
+[assembly: AssemblyFileVersion("3.0.0.0")]
 
 namespace Csmp
 {
     public static class Programa
     {
         /// <summary>Sobe junto com Construcao/Instalador/versao.txt quando este programa muda.</summary>
-        public const int VERSAO = 2;
+        public const int VERSAO = 3;
         public const string REPO = "https://raw.githubusercontent.com/sou0/csmp-modpack/main/";
         public const string PACK = "Pronto-para-Minecraft/";
         public const string EXE_NO_REPO = "Instalador/CSMP.exe";
@@ -212,6 +213,9 @@ namespace Csmp
         private readonly Label itemNeoForge = new Label();
         private readonly Label itemArquivos = new Label();
         private readonly CheckBox moverDeFora = new CheckBox();
+        private readonly CheckBox versoesSeparadas = new CheckBox();
+        private readonly Label avisoVersao = new Label();
+        private bool mexendoNaOpcao;
 
         // progresso
         private readonly Label tituloProgresso = new Label();
@@ -365,13 +369,19 @@ namespace Csmp
             alterar.SetBounds(506, 120, 106, 30);
             alterar.Click += delegate { AlterarPasta(); };
             p.Controls.Add(alterar);
-            Rotulo(p, "É a pasta onde ficam saves, options.txt e a pasta mods (normalmente .minecraft).",
-                    fontePequena, TextoFraco, 28, 152, 584, 18);
+            avisoVersao.Font = fontePequena;
+            avisoVersao.ForeColor = TextoFraco;
+            avisoVersao.SetBounds(28, 150, 584, 18);
+            p.Controls.Add(avisoVersao);
+            versoesSeparadas.Text = "Versões separadas (TLauncher com uma pasta para cada versão em versions)";
+            versoesSeparadas.SetBounds(28, 170, 584, 22);
+            versoesSeparadas.CheckedChanged += delegate { TrocarModoVersoes(); };
+            p.Controls.Add(versoesSeparadas);
 
-            Rotulo(p, "O que será feito", fonteNegrito, Texto, 28, 184, 300, 20);
-            itemNeoForge.SetBounds(40, 208, 572, 20);
-            itemArquivos.SetBounds(40, 230, 572, 20);
-            Label atalho = Rotulo(p, "•  Atalho \"CSMP\" na área de trabalho, que atualiza o pack e abre o jogo", fonteNormal, Texto, 40, 252, 572, 20);
+            Rotulo(p, "O que será feito", fonteNegrito, Texto, 28, 196, 300, 20);
+            itemNeoForge.SetBounds(40, 218, 572, 20);
+            itemArquivos.SetBounds(40, 238, 572, 20);
+            Label atalho = Rotulo(p, "•  Atalho \"CSMP\" na área de trabalho, que atualiza o pack e abre o jogo", fonteNormal, Texto, 40, 258, 572, 20);
             atalho.AutoEllipsis = true;
             p.Controls.Add(itemNeoForge);
             p.Controls.Add(itemArquivos);
@@ -556,7 +566,15 @@ namespace Csmp
                 if (e.Caminho.StartsWith("mods/") && e.Caminho.EndsWith(".jar")) mods++;
             }
             bool temNeo = pastaJogo != null && NeoForgeInstalado(versaoNeoForge);
-            itemNeoForge.Text = "•  Minecraft 1.21.1 com NeoForge " + versaoNeoForge + (temNeo ? "  (já instalado)" : "");
+            string propria = pastaJogo == null ? null : VersaoPropriaCompativel();
+            itemNeoForge.Text = "•  Minecraft 1.21.1 com NeoForge " + versaoNeoForge +
+                    (propria != null ? "  (já instalado na versão \"" + propria + "\")" : temNeo ? "  (já instalado)" : "");
+            mexendoNaOpcao = true;
+            versoesSeparadas.Checked = pastaJogo != null && EhPastaDeVersao(pastaJogo);
+            mexendoNaOpcao = false;
+            avisoVersao.Text = pastaJogo != null && EhPastaDeVersao(pastaJogo)
+                    ? "Os mods vão para a pasta desta versão. No launcher, abra a versão \"" + Path.GetFileName(pastaJogo) + "\"."
+                    : "É a pasta onde ficam saves, options.txt e a pasta mods (normalmente .minecraft).";
             itemArquivos.Text = "•  " + mods + " mods, configurações e resourcepacks (" + Mb(total) + " para baixar)";
             int fora = pastaJogo == null ? 0 : ModsDeFora(doPack).Count;
             moverDeFora.Visible = fora > 0;
@@ -576,13 +594,101 @@ namespace Csmp
                     p = Path.GetDirectoryName(p); // escolheu a propria pasta mods: o jogo e a de cima
                 }
                 pastaJogo = p;
+                if (EhPastaDeVersao(p) && VersaoPropriaCompativel() == null && !NomeDaVersaoNossa(p))
+                {
+                    string tem = NeoForgeDaVersao(p);
+                    DialogResult r = MessageBox.Show(this, "A versão \"" + Path.GetFileName(p) + "\" " +
+                            (tem == null ? "não usa NeoForge" : "usa o NeoForge " + tem) + ", e o CSMP precisa do NeoForge " +
+                            versaoNeoForge + " ou mais novo.\n\nPosso instalar a versão \"neoforge-" + versaoNeoForge +
+                            "\" e colocar os mods na pasta dela?", "CSMP", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (r == DialogResult.Yes) pastaJogo = PastaDaNossaVersao(RaizDoLauncher(p));
+                }
                 AtualizarResumo();
             }
+        }
+
+        private void TrocarModoVersoes()
+        {
+            if (mexendoNaOpcao || pastaJogo == null) return;
+            string raiz = RaizDoLauncher(pastaJogo);
+            pastaJogo = versoesSeparadas.Checked ? PastaDaNossaVersao(raiz) : raiz;
+            AtualizarResumo();
+        }
+
+        // ------------------------------------------------------------------ pasta do launcher x pasta do jogo
+        // Com "versoes separadas" (TLauncher), cada versao usa .minecraft\versions\<nome> como pasta do jogo (mods, config),
+        // mas o NeoForge, as bibliotecas e as versoes continuam na raiz (.minecraft).
+
+        private static bool EhPastaDeVersao(string pasta)
+        {
+            string pai = Path.GetDirectoryName(pasta.TrimEnd('\\', '/'));
+            return pai != null && string.Equals(Path.GetFileName(pai), "versions", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static string RaizDoLauncher(string pasta)
+        {
+            if (!EhPastaDeVersao(pasta)) return pasta;
+            return Path.GetDirectoryName(Path.GetDirectoryName(pasta.TrimEnd('\\', '/')));
+        }
+
+        private string PastaDaNossaVersao(string raiz)
+        {
+            return Path.Combine(raiz, "versions", "neoforge-" + versaoNeoForge);
+        }
+
+        private bool NomeDaVersaoNossa(string pasta)
+        {
+            return string.Equals(Path.GetFileName(pasta.TrimEnd('\\', '/')), "neoforge-" + versaoNeoForge, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>Versao do NeoForge que o json da pasta de versao usa (ou null).</summary>
+        private static string NeoForgeDaVersao(string pasta)
+        {
+            try
+            {
+                string nome = Path.GetFileName(pasta.TrimEnd('\\', '/'));
+                string json = Path.Combine(pasta, nome + ".json");
+                if (!File.Exists(json))
+                {
+                    string[] outros = Directory.GetFiles(pasta, "*.json");
+                    if (outros.Length == 0) return null;
+                    json = outros[0];
+                }
+                string texto = File.ReadAllText(json);
+                int i = texto.IndexOf("fml.neoForgeVersion", StringComparison.Ordinal);
+                if (i >= 0)
+                {
+                    Match m = Regex.Match(texto.Substring(i, Math.Min(300, texto.Length - i)), "(\\d+\\.\\d+\\.\\d+)");
+                    if (m.Success) return m.Groups[1].Value;
+                }
+                Match n = Regex.Match(texto, "neoforge-(\\d+\\.\\d+\\.\\d+)");
+                return n.Success ? n.Groups[1].Value : null;
+            }
+            catch { return null; }
+        }
+
+        /// <summary>Se a pasta escolhida e de uma versao com NeoForge compativel, o nome dela; senao null.</summary>
+        private string VersaoPropriaCompativel()
+        {
+            if (pastaJogo == null || !EhPastaDeVersao(pastaJogo) || NomeDaVersaoNossa(pastaJogo)) return null;
+            string tem = NeoForgeDaVersao(pastaJogo);
+            return tem != null && Compativel(tem, versaoNeoForge) ? Path.GetFileName(pastaJogo.TrimEnd('\\', '/')) : null;
+        }
+
+        /// <summary>Mesmo 21.1.x e patch igual ou maior.</summary>
+        private static bool Compativel(string tem, string precisa)
+        {
+            string[] a = tem.Split('.');
+            string[] b = precisa.Split('.');
+            if (a.Length < 3 || b.Length < 3 || a[0] != b[0] || a[1] != b[1]) return false;
+            int x, y;
+            return int.TryParse(a[2], out x) && int.TryParse(b[2], out y) && x >= y;
         }
 
         private void ConfirmarInstalacao()
         {
             if (pastaJogo == null) return;
+            Directory.CreateDirectory(pastaJogo);
             cfg["pasta"] = pastaJogo;
             SalvarConfig();
             InstalarNoComputador();
@@ -591,6 +697,12 @@ namespace Csmp
             Botoes(null, null, "Cancelar", delegate { Close(); });
             bool mover = moverDeFora.Visible && moverDeFora.Checked;
             new Thread(delegate() { Instalar(mover); }) { IsBackground = true }.Start();
+        }
+
+        private string VersaoParaAbrir()
+        {
+            string propria = VersaoPropriaCompativel();
+            return propria ?? "neoforge-" + versaoNeoForge;
         }
 
         private void Instalar()
@@ -650,7 +762,7 @@ namespace Csmp
                 tituloFim.Text = titulo;
                 tituloFim.ForeColor = podeJogar ? Texto : Erro;
                 textoFim.Text = texto ?? ("O CSMP está instalado e atualizado (pack de " + versaoPack + ").\n\n" +
-                        "No launcher, escolha a versão \"neoforge-" + versaoNeoForge + "\" (no launcher oficial, o perfil NeoForge) " +
+                        "No launcher, escolha a versão \"" + VersaoParaAbrir() + "\" (no launcher oficial, o perfil NeoForge) " +
                         "e reserve pelo menos 6 GB de memória nas configurações dele.\n\n" +
                         "Da próxima vez, é só abrir o atalho CSMP na área de trabalho: ele confere se tem atualização e abre o jogo.");
                 abrirSozinho.Visible = podeJogar;
@@ -750,7 +862,7 @@ namespace Csmp
         private bool NeoForgeInstalado(string versao)
         {
             string nome = "neoforge-" + versao;
-            return File.Exists(Path.Combine(pastaJogo, "versions", nome, nome + ".json"));
+            return File.Exists(Path.Combine(RaizDoLauncher(pastaJogo), "versions", nome, nome + ".json"));
         }
 
         private bool InstalarNeoForge(string versao)
@@ -761,6 +873,13 @@ namespace Csmp
                 Log("NeoForge " + versao + " já instalado.");
                 return true;
             }
+            string propria = VersaoPropriaCompativel();
+            if (propria != null)
+            {
+                Log("Usando a versão \"" + propria + "\", que já tem um NeoForge compatível.");
+                return true;
+            }
+            string raiz = RaizDoLauncher(pastaJogo);
             Detalhe("Procurando o Java…");
             string java = AcharJava();
             if (java == null)
@@ -772,10 +891,10 @@ namespace Csmp
                 return false;
             }
             Log("Java: " + java);
-            string perfis = Path.Combine(pastaJogo, "launcher_profiles.json");
+            string perfis = Path.Combine(raiz, "launcher_profiles.json");
             if (!File.Exists(perfis))
             {
-                Directory.CreateDirectory(pastaJogo);
+                Directory.CreateDirectory(raiz);
                 File.WriteAllText(perfis, "{\n  \"profiles\": {},\n  \"version\": 3\n}\n");
             }
             string instalador = Path.Combine(Path.GetTempPath(), nome + "-installer.jar");
@@ -791,7 +910,7 @@ namespace Csmp
                 }
             }
             Detalhe("Instalando o NeoForge (baixa o Minecraft 1.21.1 e as bibliotecas, pode levar alguns minutos)…");
-            ProcessStartInfo psi = new ProcessStartInfo(java, "-jar \"" + instalador + "\" --install-client \"" + pastaJogo + "\"");
+            ProcessStartInfo psi = new ProcessStartInfo(java, "-jar \"" + instalador + "\" --install-client \"" + raiz + "\"");
             psi.UseShellExecute = false;
             psi.CreateNoWindow = true;
             psi.RedirectStandardOutput = true;
@@ -830,7 +949,7 @@ namespace Csmp
             string jh = Environment.GetEnvironmentVariable("JAVA_HOME");
             if (!string.IsNullOrEmpty(jh)) candidatos.Add(Path.Combine(jh, "bin", "java.exe"));
             string[] lugares = {
-                Path.Combine(pastaJogo, "runtime"),
+                Path.Combine(RaizDoLauncher(pastaJogo), "runtime"),
                 Path.Combine(ad, ".minecraft", "runtime"),
                 Path.Combine(la, "Packages", "Microsoft.4297127D64EC6_8wekyb3d8bbwe", "LocalCache", "Local", "runtime"),
                 Path.Combine(ad, ".tlauncher"),
@@ -1164,7 +1283,7 @@ namespace Csmp
             string ad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string pf86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
             string[] lugares = {
-                Path.Combine(pastaJogo, "TLauncher.exe"),
+                Path.Combine(RaizDoLauncher(pastaJogo), "TLauncher.exe"),
                 Path.Combine(ad, ".minecraft", "TLauncher.exe"),
                 Path.Combine(pf86, "Minecraft Launcher", "MinecraftLauncher.exe"),
                 @"C:\XboxGames\Minecraft Launcher\Content\Minecraft.exe",

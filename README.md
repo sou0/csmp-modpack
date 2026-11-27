@@ -6,7 +6,8 @@ Modpack NeoForge 1.21.1 do servidor CSMP (jogadores com e sem conta original).
 
 Baixe **[CSMP.exe](https://github.com/sou0/csmp-modpack/raw/main/Instalador/CSMP.exe)** e abra.
 Ele mostra a pasta do Minecraft que encontrou (dá para trocar), instala o NeoForge certo e o pack,
-e cria o atalho **CSMP** na área de trabalho. Abra sempre por esse atalho: ele baixa as atualizações
+e cria o atalho **CSMP** na área de trabalho. Quem usa versões separadas no TLauncher marca a opção
+"Versões separadas" (ou escolhe a pasta da versão em `.minecraftersions`): os mods vão para a pasta da versão. Abra sempre por esse atalho: ele baixa as atualizações
 do pack antes de abrir o launcher. Configs que você mudar não são sobrescritas.
 
 O Windows pode avisar que o programa é de um "editor desconhecido" (ele não tem assinatura digital paga):
