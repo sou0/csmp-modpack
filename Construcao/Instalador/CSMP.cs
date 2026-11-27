@@ -26,15 +26,15 @@ using System.Windows.Forms;
 [assembly: AssemblyCompany("CSMP")]
 [assembly: AssemblyProduct("CSMP")]
 [assembly: AssemblyCopyright("CSMP")]
-[assembly: AssemblyVersion("3.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.0.0")]
+[assembly: AssemblyVersion("4.0.0.0")]
+[assembly: AssemblyFileVersion("4.0.0.0")]
 
 namespace Csmp
 {
     public static class Programa
     {
         /// <summary>Sobe junto com Construcao/Instalador/versao.txt quando este programa muda.</summary>
-        public const int VERSAO = 3;
+        public const int VERSAO = 4;
         public const string REPO = "https://raw.githubusercontent.com/sou0/csmp-modpack/main/";
         public const string PACK = "Pronto-para-Minecraft/";
         public const string EXE_NO_REPO = "Instalador/CSMP.exe";
@@ -212,8 +212,15 @@ namespace Csmp
         private readonly TextBox campoPasta = new TextBox();
         private readonly Label itemNeoForge = new Label();
         private readonly Label itemArquivos = new Label();
+        private readonly Label itemAtalho = new Label();
         private readonly CheckBox moverDeFora = new CheckBox();
         private readonly CheckBox versoesSeparadas = new CheckBox();
+        private readonly RadioButton radioOficial = new RadioButton();
+        private readonly RadioButton radioAlternativo = new RadioButton();
+        private readonly RadioButton radioInstancia = new RadioButton();
+        /// <summary>"oficial", "alternativo" (TLauncher e parecidos) ou "instancia" (Prism, MultiMC, CurseForge...).</summary>
+        private string tipo = "alternativo";
+        private static string MINECRAFT = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft");
         private readonly Label avisoVersao = new Label();
         private bool mexendoNaOpcao;
 
@@ -244,6 +251,7 @@ namespace Csmp
         private bool deuCerto;
         /// <summary>--teste PASTA: instala nessa pasta sem perguntar, sem atalho e sem launcher, grava o log e fecha.</summary>
         private readonly string pastaTeste;
+        private readonly string tipoTeste;
 
         // dados do manifesto
         private string versaoPack = "";
@@ -258,11 +266,13 @@ namespace Csmp
             for (int a = 0; a + 1 < args.Length; a++)
             {
                 if (args[a] == "--teste") pastaTeste = args[a + 1];
+                if (args[a] == "--tipo") tipoTeste = args[a + 1];          // so para testes
+                if (args[a] == "--minecraft") MINECRAFT = args[a + 1];     // so para testes
             }
             Text = "CSMP";
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoScaleDimensions = new SizeF(96F, 96F);
-            ClientSize = new Size(640, 460);
+            ClientSize = new Size(640, 540);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
@@ -291,7 +301,7 @@ namespace Csmp
         private void MontarRodape()
         {
             Panel rodape = new Panel();
-            rodape.SetBounds(0, 396, 640, 64);
+            rodape.SetBounds(0, 476, 640, 64);
             rodape.BackColor = Rodape;
             Panel borda = new Panel();
             borda.SetBounds(0, 0, 640, 1);
@@ -333,7 +343,7 @@ namespace Csmp
 
         private Panel NovaTela(Panel p)
         {
-            p.SetBounds(0, 92, 640, 304);
+            p.SetBounds(0, 92, 640, 384);
             p.BackColor = Color.White;
             p.Visible = false;
             Controls.Add(p);
@@ -354,39 +364,53 @@ namespace Csmp
         private void MontarBoasVindas()
         {
             Panel p = NovaTela(telaBoasVindas);
-            Rotulo(p, "Bem-vindo ao CSMP", fonteTitulo, Texto, 26, 18, 580, 30);
+            Rotulo(p, "Bem-vindo ao CSMP", fonteTitulo, Texto, 26, 14, 580, 30);
             Rotulo(p, "Este programa prepara o seu Minecraft para jogar no servidor do CSMP e o mantém atualizado. " +
-                    "Nada é alterado antes de você clicar em Instalar.", fonteNormal, TextoFraco, 28, 52, 584, 40);
+                    "Nada é alterado antes de você clicar em Instalar.", fonteNormal, TextoFraco, 28, 46, 584, 38);
 
-            Rotulo(p, "Pasta do jogo", fonteNegrito, Texto, 28, 100, 300, 20);
+            Rotulo(p, "Qual launcher você usa?", fonteNegrito, Texto, 28, 86, 400, 20);
+            radioOficial.Text = "Launcher oficial (Mojang / Microsoft)";
+            radioAlternativo.Text = "TLauncher ou outro alternativo que usa a pasta .minecraft (SKLauncher, Legacy…)";
+            radioInstancia.Text = "Prism, MultiMC, CurseForge ou ATLauncher (cada pack numa instância)";
+            int y = 108;
+            foreach (RadioButton r in new RadioButton[] { radioOficial, radioAlternativo, radioInstancia })
+            {
+                r.SetBounds(30, y, 582, 22);
+                r.CheckedChanged += delegate(object s, EventArgs e) { if (((RadioButton)s).Checked) AplicarTipo(); };
+                p.Controls.Add(r);
+                y += 22;
+            }
+
+            Rotulo(p, "Pasta do jogo", fonteNegrito, Texto, 28, 184, 300, 20);
             campoPasta.ReadOnly = true;
             campoPasta.BackColor = Color.White;
-            campoPasta.SetBounds(28, 122, 470, 26);
+            campoPasta.SetBounds(28, 206, 470, 26);
             p.Controls.Add(campoPasta);
             Button alterar = new Button();
             Estilizar(alterar, false);
             alterar.Text = "Alterar…";
-            alterar.SetBounds(506, 120, 106, 30);
+            alterar.SetBounds(506, 204, 106, 30);
             alterar.Click += delegate { AlterarPasta(); };
             p.Controls.Add(alterar);
             avisoVersao.Font = fontePequena;
             avisoVersao.ForeColor = TextoFraco;
-            avisoVersao.SetBounds(28, 150, 584, 18);
+            avisoVersao.SetBounds(28, 236, 584, 18);
             p.Controls.Add(avisoVersao);
-            versoesSeparadas.Text = "Versões separadas (TLauncher com uma pasta para cada versão em versions)";
-            versoesSeparadas.SetBounds(28, 170, 584, 22);
+            versoesSeparadas.Text = "Versões separadas (o TLauncher usa uma pasta para cada versão, dentro de versions)";
+            versoesSeparadas.SetBounds(28, 256, 584, 22);
             versoesSeparadas.CheckedChanged += delegate { TrocarModoVersoes(); };
             p.Controls.Add(versoesSeparadas);
 
-            Rotulo(p, "O que será feito", fonteNegrito, Texto, 28, 196, 300, 20);
-            itemNeoForge.SetBounds(40, 218, 572, 20);
-            itemArquivos.SetBounds(40, 238, 572, 20);
-            Label atalho = Rotulo(p, "•  Atalho \"CSMP\" na área de trabalho, que atualiza o pack e abre o jogo", fonteNormal, Texto, 40, 258, 572, 20);
-            atalho.AutoEllipsis = true;
+            Rotulo(p, "O que será feito", fonteNegrito, Texto, 28, 284, 300, 20);
+            itemNeoForge.SetBounds(40, 304, 572, 18);
+            itemArquivos.SetBounds(40, 322, 572, 18);
+            itemAtalho.SetBounds(40, 340, 572, 18);
+            itemAtalho.AutoEllipsis = true;
             p.Controls.Add(itemNeoForge);
             p.Controls.Add(itemArquivos);
+            p.Controls.Add(itemAtalho);
 
-            moverDeFora.SetBounds(28, 280, 590, 24);
+            moverDeFora.SetBounds(28, 360, 590, 22);
             moverDeFora.Checked = true;
             p.Controls.Add(moverDeFora);
         }
@@ -483,6 +507,7 @@ namespace Csmp
             LerConfig();
             LimparVersaoVelha();
             abrirSozinho.Checked = Cfg("abrir", "sim") == "sim";
+            tipo = pastaTeste != null ? (tipoTeste ?? "alternativo") : Cfg("tipo", "alternativo");
             pastaJogo = pastaTeste ?? Cfg("pasta", null);
             primeiraInstalacao = pastaTeste == null && (pastaJogo == null || !Directory.Exists(pastaJogo));
 
@@ -540,21 +565,55 @@ namespace Csmp
 
         private void MostrarBoasVindas()
         {
-            string padrao = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft");
-            pastaJogo = Directory.Exists(padrao) ? padrao : null;
             Mostrar(telaBoasVindas);
             Botoes("Instalar", delegate { ConfirmarInstalacao(); }, "Cancelar", delegate { Close(); });
-            AtualizarResumo();
-            if (pastaJogo == null)
+            // sugere o launcher que achar no computador; o jogador confirma ou troca
+            if (File.Exists(Path.Combine(MINECRAFT, "TLauncher.exe")) || Directory.Exists(Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".tlauncher")))
             {
-                MessageBox.Show(this, "Não encontrei a pasta .minecraft. Escolha a pasta do jogo em \"Alterar…\".", "CSMP",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                radioAlternativo.Checked = true;
             }
+            else if (AcharLauncherOficial() != null)
+            {
+                radioOficial.Checked = true;
+            }
+            else if (AcharLauncherDeInstancias() != null)
+            {
+                radioInstancia.Checked = true;
+            }
+            else
+            {
+                radioAlternativo.Checked = true;
+            }
+            AplicarTipo();
+        }
+
+        /// <summary>Escolheu o tipo de launcher: ajusta a pasta sugerida e o que aparece na tela.</summary>
+        private void AplicarTipo()
+        {
+            tipo = radioOficial.Checked ? "oficial" : radioInstancia.Checked ? "instancia" : "alternativo";
+            versoesSeparadas.Visible = tipo == "alternativo";
+            if (tipo == "oficial")
+            {
+                pastaJogo = Path.Combine(MINECRAFT, "csmp");
+            }
+            else if (tipo == "alternativo")
+            {
+                pastaJogo = Directory.Exists(MINECRAFT) ? MINECRAFT : null;
+                mexendoNaOpcao = true;
+                versoesSeparadas.Checked = false;
+                mexendoNaOpcao = false;
+            }
+            else
+            {
+                pastaJogo = null; // cada instancia tem a sua: o jogador escolhe
+            }
+            AtualizarResumo();
         }
 
         private void AtualizarResumo()
         {
-            campoPasta.Text = pastaJogo ?? "(escolha a pasta)";
+            campoPasta.Text = pastaJogo ?? (tipo == "instancia" ? "(clique em Alterar e escolha a pasta da instância)" : "(escolha a pasta)");
             botaoPrincipal.Enabled = pastaJogo != null;
             long total = 0;
             int mods = 0;
@@ -567,14 +626,24 @@ namespace Csmp
             }
             bool temNeo = pastaJogo != null && NeoForgeInstalado(versaoNeoForge);
             string propria = pastaJogo == null ? null : VersaoPropriaCompativel();
-            itemNeoForge.Text = "•  Minecraft 1.21.1 com NeoForge " + versaoNeoForge +
-                    (propria != null ? "  (já instalado na versão \"" + propria + "\")" : temNeo ? "  (já instalado)" : "");
+            itemNeoForge.Text = tipo == "instancia"
+                    ? "•  NeoForge " + versaoNeoForge + ": você escolhe na instância (o instalador mostra como no final)"
+                    : "•  Minecraft 1.21.1 com NeoForge " + versaoNeoForge +
+                      (propria != null ? "  (já instalado na versão \"" + propria + "\")" : temNeo ? "  (já instalado)" : "");
+            itemAtalho.Text = tipo == "oficial"
+                    ? "•  Instalação \"CSMP\" no launcher oficial (pasta própria, 6 GB de memória) e atalho CSMP"
+                    : "•  Atalho \"CSMP\" na área de trabalho, que atualiza o pack e abre o jogo";
             mexendoNaOpcao = true;
-            versoesSeparadas.Checked = pastaJogo != null && EhPastaDeVersao(pastaJogo);
+            if (tipo == "alternativo") versoesSeparadas.Checked = pastaJogo != null && EhPastaDeVersao(pastaJogo);
             mexendoNaOpcao = false;
-            avisoVersao.Text = pastaJogo != null && EhPastaDeVersao(pastaJogo)
-                    ? "Os mods vão para a pasta desta versão. No launcher, abra a versão \"" + Path.GetFileName(pastaJogo) + "\"."
-                    : "É a pasta onde ficam saves, options.txt e a pasta mods (normalmente .minecraft).";
+            if (tipo == "oficial")
+                avisoVersao.Text = "Uma pasta só do CSMP, para não misturar com os seus outros mundos e mods.";
+            else if (tipo == "instancia")
+                avisoVersao.Text = "Crie antes uma instância Minecraft 1.21.1 no seu launcher e escolha a pasta dela aqui.";
+            else if (pastaJogo != null && EhPastaDeVersao(pastaJogo))
+                avisoVersao.Text = "Os mods vão para a pasta desta versão. No launcher, abra a versão \"" + Path.GetFileName(pastaJogo) + "\".";
+            else
+                avisoVersao.Text = "É a pasta onde ficam saves, options.txt e a pasta mods (normalmente .minecraft).";
             itemArquivos.Text = "•  " + mods + " mods, configurações e resourcepacks (" + Mb(total) + " para baixar)";
             int fora = pastaJogo == null ? 0 : ModsDeFora(doPack).Count;
             moverDeFora.Visible = fora > 0;
@@ -593,8 +662,15 @@ namespace Csmp
                 {
                     p = Path.GetDirectoryName(p); // escolheu a propria pasta mods: o jogo e a de cima
                 }
+                if (tipo == "instancia")
+                {
+                    foreach (string sub in new string[] { "minecraft", ".minecraft" })
+                    {
+                        if (Directory.Exists(Path.Combine(p, sub))) { p = Path.Combine(p, sub); break; }
+                    }
+                }
                 pastaJogo = p;
-                if (EhPastaDeVersao(p) && VersaoPropriaCompativel() == null && !NomeDaVersaoNossa(p))
+                if (tipo == "alternativo" && EhPastaDeVersao(p) && VersaoPropriaCompativel() == null && !NomeDaVersaoNossa(p))
                 {
                     string tem = NeoForgeDaVersao(p);
                     DialogResult r = MessageBox.Show(this, "A versão \"" + Path.GetFileName(p) + "\" " +
@@ -629,6 +705,13 @@ namespace Csmp
         {
             if (!EhPastaDeVersao(pasta)) return pasta;
             return Path.GetDirectoryName(Path.GetDirectoryName(pasta.TrimEnd('\\', '/')));
+        }
+
+        /// <summary>Onde ficam versions/libraries (onde o NeoForge e instalado).</summary>
+        private string RaizAtual()
+        {
+            if (tipo == "oficial") return MINECRAFT;
+            return RaizDoLauncher(pastaJogo);
         }
 
         private string PastaDaNossaVersao(string raiz)
@@ -689,6 +772,8 @@ namespace Csmp
         {
             if (pastaJogo == null) return;
             Directory.CreateDirectory(pastaJogo);
+            if (Cfg("tipo", "") != tipo) cfg.Remove("launcher"); // trocou de launcher: procura o exe de novo
+            cfg["tipo"] = tipo;
             cfg["pasta"] = pastaJogo;
             SalvarConfig();
             InstalarNoComputador();
@@ -701,13 +786,78 @@ namespace Csmp
 
         private string VersaoParaAbrir()
         {
-            string propria = VersaoPropriaCompativel();
+            string propria = tipo == "alternativo" ? VersaoPropriaCompativel() : null;
             return propria ?? "neoforge-" + versaoNeoForge;
         }
 
         private void Instalar()
         {
             Instalar(false);
+        }
+
+        /// <summary>
+        /// Cria (ou atualiza) a instalacao "CSMP" no launcher oficial: versao do NeoForge, pasta propria e 6 GB de memoria.
+        /// Mexe so nesse perfil; guarda uma copia do arquivo original na primeira vez.
+        /// </summary>
+        private void CriarPerfilOficial()
+        {
+            string[] arquivosDePerfil = { "launcher_profiles.json", "launcher_profiles_microsoft_store.json" };
+            bool algum = false;
+            foreach (string nomeArq in arquivosDePerfil)
+            {
+                string arq = Path.Combine(MINECRAFT, nomeArq);
+                if (!File.Exists(arq) && (nomeArq != "launcher_profiles.json" || algum)) continue;
+                try
+                {
+                    JavaScriptSerializer js = new JavaScriptSerializer();
+                    js.MaxJsonLength = int.MaxValue;
+                    Dictionary<string, object> raiz = File.Exists(arq)
+                            ? js.Deserialize<Dictionary<string, object>>(File.ReadAllText(arq, Encoding.UTF8))
+                            : new Dictionary<string, object>();
+                    if (raiz == null) raiz = new Dictionary<string, object>();
+                    if (File.Exists(arq) && !File.Exists(arq + ".antes-do-csmp")) File.Copy(arq, arq + ".antes-do-csmp");
+                    object o;
+                    Dictionary<string, object> perfis = raiz.TryGetValue("profiles", out o) ? o as Dictionary<string, object> : null;
+                    if (perfis == null) { perfis = new Dictionary<string, object>(); raiz["profiles"] = perfis; }
+                    Dictionary<string, object> perfil = perfis.TryGetValue("csmp", out o) ? o as Dictionary<string, object> : null;
+                    string agora = DateTime.UtcNow.ToString("yyyy-MM-dd'T'HH:mm:ss.fff'Z'");
+                    if (perfil == null)
+                    {
+                        perfil = new Dictionary<string, object>();
+                        perfil["created"] = agora;
+                        perfil["javaArgs"] = "-Xmx6G -Xms2G -XX:+UseG1GC";
+                        perfis["csmp"] = perfil;
+                    }
+                    perfil["name"] = "CSMP";
+                    perfil["type"] = "custom";
+                    perfil["lastVersionId"] = "neoforge-" + versaoNeoForge;
+                    perfil["gameDir"] = pastaJogo;
+                    perfil["lastUsed"] = agora;
+                    perfil["icon"] = IconeDoPerfil();
+                    if (!raiz.ContainsKey("version")) raiz["version"] = 3;
+                    File.WriteAllText(arq, js.Serialize(raiz), new UTF8Encoding(false));
+                    algum = true;
+                    Log("Instalação \"CSMP\" criada no launcher oficial (" + nomeArq + ").");
+                }
+                catch (Exception e)
+                {
+                    Log("Aviso: não consegui criar a instalação no launcher oficial (" + e.Message + ").");
+                }
+            }
+        }
+
+        /// <summary>A logo em PNG 128x128 como data URL, que o launcher oficial aceita como icone do perfil.</summary>
+        private static string IconeDoPerfil()
+        {
+            using (Bitmap b = new Bitmap(128, 128))
+            {
+                using (Graphics g = Graphics.FromImage(b)) Ceu.DesenharLogo(g, 0, 0, 8);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    b.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    return "data:image/png;base64," + Convert.ToBase64String(ms.ToArray());
+                }
+            }
         }
 
         private void Instalar(bool moverMods)
@@ -721,6 +871,7 @@ namespace Csmp
                     Passo(1, 3);
                     return;
                 }
+                if (tipo == "oficial") CriarPerfilOficial();
                 Passo(1, 2);
                 Passo(2, 1);
                 Sincronizar(moverMods);
@@ -742,6 +893,17 @@ namespace Csmp
             }
         }
 
+        private string ComoJogar()
+        {
+            if (tipo == "oficial")
+                return "No launcher oficial, escolha a instalação \"CSMP\" ao lado do botão Jogar. Ela já usa o NeoForge " +
+                        versaoNeoForge + ", a pasta própria do CSMP e 6 GB de memória.";
+            if (tipo == "instancia")
+                return "Na instância, coloque o NeoForge " + versaoNeoForge + " (Editar > Versão > Instalar NeoForge, no Prism e no MultiMC) " +
+                        "e reserve pelo menos 6 GB de memória nas configurações dela.";
+            return "No launcher, escolha a versão \"" + VersaoParaAbrir() + "\" e reserve pelo menos 6 GB de memória nas configurações dele.";
+        }
+
         private void Concluir(bool podeJogar, string titulo, string texto)
         {
             deuCerto = podeJogar;
@@ -761,10 +923,8 @@ namespace Csmp
                 }
                 tituloFim.Text = titulo;
                 tituloFim.ForeColor = podeJogar ? Texto : Erro;
-                textoFim.Text = texto ?? ("O CSMP está instalado e atualizado (pack de " + versaoPack + ").\n\n" +
-                        "No launcher, escolha a versão \"" + VersaoParaAbrir() + "\" (no launcher oficial, o perfil NeoForge) " +
-                        "e reserve pelo menos 6 GB de memória nas configurações dele.\n\n" +
-                        "Da próxima vez, é só abrir o atalho CSMP na área de trabalho: ele confere se tem atualização e abre o jogo.");
+                textoFim.Text = texto ?? ("O CSMP está instalado e atualizado (pack de " + versaoPack + ").\n\n" + ComoJogar() + "\n\n" +
+                        "Da próxima vez, é só abrir o atalho CSMP na área de trabalho: ele confere se tem atualização e abre o launcher.");
                 abrirSozinho.Visible = podeJogar;
                 Mostrar(telaFim);
                 if (podeJogar)
@@ -862,24 +1022,29 @@ namespace Csmp
         private bool NeoForgeInstalado(string versao)
         {
             string nome = "neoforge-" + versao;
-            return File.Exists(Path.Combine(RaizDoLauncher(pastaJogo), "versions", nome, nome + ".json"));
+            return File.Exists(Path.Combine(RaizAtual(), "versions", nome, nome + ".json"));
         }
 
         private bool InstalarNeoForge(string versao)
         {
             string nome = "neoforge-" + versao;
+            if (tipo == "instancia")
+            {
+                Log("Instância: o NeoForge é escolhido no próprio launcher.");
+                return true;
+            }
             if (NeoForgeInstalado(versao))
             {
                 Log("NeoForge " + versao + " já instalado.");
                 return true;
             }
-            string propria = VersaoPropriaCompativel();
+            string propria = tipo == "alternativo" ? VersaoPropriaCompativel() : null;
             if (propria != null)
             {
                 Log("Usando a versão \"" + propria + "\", que já tem um NeoForge compatível.");
                 return true;
             }
-            string raiz = RaizDoLauncher(pastaJogo);
+            string raiz = RaizAtual();
             Detalhe("Procurando o Java…");
             string java = AcharJava();
             if (java == null)
@@ -949,7 +1114,7 @@ namespace Csmp
             string jh = Environment.GetEnvironmentVariable("JAVA_HOME");
             if (!string.IsNullOrEmpty(jh)) candidatos.Add(Path.Combine(jh, "bin", "java.exe"));
             string[] lugares = {
-                Path.Combine(RaizDoLauncher(pastaJogo), "runtime"),
+                Path.Combine(RaizAtual(), "runtime"),
                 Path.Combine(ad, ".minecraft", "runtime"),
                 Path.Combine(la, "Packages", "Microsoft.4297127D64EC6_8wekyb3d8bbwe", "LocalCache", "Local", "runtime"),
                 Path.Combine(ad, ".tlauncher"),
@@ -1248,9 +1413,20 @@ namespace Csmp
             if (!deuCerto) return;
             string exe = Cfg("launcher", null);
             if (exe == null || !File.Exists(exe)) exe = AcharLauncher();
+            if (exe == null && tipo == "oficial")
+            {
+                try
+                {
+                    // launcher oficial da Microsoft Store: nao tem um .exe comum para abrir
+                    Process.Start("explorer.exe", "shell:AppsFolder\\Microsoft.4297127D64EC6_8wekyb3d8bbwe!Minecraft");
+                    Close();
+                    return;
+                }
+                catch { }
+            }
             if (exe == null)
             {
-                MessageBox.Show(this, "Não encontrei o seu launcher. Na próxima janela, escolha o TLauncher.exe ou o Minecraft Launcher.",
+                MessageBox.Show(this, "Não encontrei o seu launcher. Na próxima janela, escolha o programa dele (.exe).",
                         "CSMP", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 using (OpenFileDialog f = new OpenFileDialog())
                 {
@@ -1280,14 +1456,39 @@ namespace Csmp
 
         private string AcharLauncher()
         {
+            if (tipo == "oficial") return AcharLauncherOficial();
+            if (tipo == "instancia") return AcharLauncherDeInstancias();
             string ad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string pf86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
             string[] lugares = {
-                Path.Combine(RaizDoLauncher(pastaJogo), "TLauncher.exe"),
+                Path.Combine(RaizAtual(), "TLauncher.exe"),
                 Path.Combine(ad, ".minecraft", "TLauncher.exe"),
-                Path.Combine(pf86, "Minecraft Launcher", "MinecraftLauncher.exe"),
-                @"C:\XboxGames\Minecraft Launcher\Content\Minecraft.exe",
             };
+            return Primeiro(lugares);
+        }
+
+        private static string AcharLauncherOficial()
+        {
+            string pf86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+            string pf = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+            return Primeiro(new string[] {
+                Path.Combine(pf86, "Minecraft Launcher", "MinecraftLauncher.exe"),
+                Path.Combine(pf, "Minecraft Launcher", "MinecraftLauncher.exe"),
+                @"C:\XboxGames\Minecraft Launcher\Content\Minecraft.exe",
+            });
+        }
+
+        private static string AcharLauncherDeInstancias()
+        {
+            string la = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            return Primeiro(new string[] {
+                Path.Combine(la, "Programs", "PrismLauncher", "prismlauncher.exe"),
+                Path.Combine(la, "Programs", "CurseForge Windows", "CurseForge.exe"),
+                Path.Combine(la, "Programs", "ATLauncher", "ATLauncher.exe"),
+            });
+        }
+
+        private static string Primeiro(string[] lugares)
+        {
             foreach (string l in lugares)
             {
                 if (File.Exists(l)) return l;

@@ -1,8 +1,8 @@
 {
-  "versao": "2026-11-27 13:28",
+  "versao": "2026-11-27 13:37",
   "minecraft": "1.21.1",
   "neoforge": "21.1.267",
-  "instalador": 3,
+  "instalador": 4,
   "arquivos": [
     {"c": "config/aaa_particles-client.toml", "t": 103, "h": "3605d25d764a002c3306f96fc8b32c7eeb92e03b"},
     {"c": "config/adamsarsplus-common.toml", "t": 34982, "h": "3625b47a5f4323d15eceab6a75f2fd488a890708"},
