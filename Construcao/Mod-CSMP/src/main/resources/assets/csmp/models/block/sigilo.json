@@ -2,7 +2,8 @@
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
     "top": "csmp:block/sigilo",
-    "side": "csmp:block/terra_negra",
-    "bottom": "csmp:block/terra_negra"
+    "side": "csmp:block/sigilo_lado",
+    "bottom": "csmp:block/sigilo_lado",
+    "particle": "csmp:block/sigilo_lado"
   }
 }

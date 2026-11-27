@@ -11,7 +11,7 @@ Ele pergunta qual launcher você usa e faz o jeito certo para cada um:
   (ou na pasta da versão, com a opção "Versões separadas").
 - **Prism, MultiMC, CurseForge, ATLauncher:** coloca os mods na pasta da instância e explica como escolher o NeoForge nela.
 
-Também cria o atalho **CSMP** na área de trabalho. Abra sempre por esse atalho: ele baixa as atualizações
+Também cria o atalho **CSMP** na área de trabalho, que aponta para o CSMP.exe: guarde o CSMP.exe numa pasta fixa (não na Downloads). Abra sempre por esse atalho: ele baixa as atualizações
 do pack antes de abrir o launcher. Configs que você mudar não são sobrescritas.
 
 O Windows pode avisar que o programa é de um "editor desconhecido" (ele não tem assinatura digital paga):

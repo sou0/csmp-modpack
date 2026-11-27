@@ -20,9 +20,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 /**
- * Chao do Vazio: terra preta com mato vermelho que se comporta como o auroracite do The Beyond (som de passo,
- * particula e brilho ao andar), mas sem exigir a bota especial. Os sons e a particula sao pegos do The Beyond
- * se ele estiver instalado; sem ele, cai para sons de grama e particulas de esporo.
+ * Chao do Vazio: se comporta como o auroracite do The Beyond (particula e brilho ao andar), sem exigir a bota
+ * especial. Som combinado com o lider: de terra, misturado com o som de passo do auroracite por cima. A particula e o
+ * som do auroracite vem do The Beyond se ele estiver instalado; sem ele, so terra e esporos.
  */
 public class ChaoVazioBlock extends Block {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -32,11 +32,9 @@ public class ChaoVazioBlock extends Block {
         this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, false));
     }
 
-    /** Sons de bloco copiados do auroracite (passo leve, quebra pesada). */
+    /** Sons de terra (como o bloco de terra do jogo); o passo do auroracite toca junto em stepOn. */
     public static SoundType tipoDeSom() {
-        SoundEvent passo = som("the_beyond:block.auroracite.step", SoundEvents.GRASS_STEP);
-        SoundEvent quebra = som("the_beyond:block.auroracite.break", SoundEvents.GRASS_BREAK);
-        return new SoundType(1.0F, 1.0F, quebra, passo, quebra, passo, quebra);
+        return SoundType.GRAVEL;
     }
 
     private static SoundEvent som(String id, SoundEvent padrao) {
@@ -59,6 +57,12 @@ public class ChaoVazioBlock extends Block {
             ParticleOptions particula = tipo instanceof ParticleOptions opcoes ? opcoes : ParticleTypes.CRIMSON_SPORE;
             servidor.sendParticles(particula, pos.getX() + 0.5D, pos.getY() + 1.01D, pos.getZ() + 0.5D,
                     1, 0.1D, 0.0D, 0.1D, 0.0D);
+            // o "piso" por cima da terra: passo do auroracite mais baixo, procurado agora (registro ja completo)
+            SoundEvent piso = som("the_beyond:block.auroracite.step", null);
+            if (piso != null && !entidade.isSteppingCarefully()) {
+                servidor.playSound(null, pos, piso, net.minecraft.sounds.SoundSource.BLOCKS, 0.45F,
+                        0.9F + servidor.random.nextFloat() * 0.2F);
+            }
         }
         super.stepOn(nivel, pos, estado, entidade);
     }

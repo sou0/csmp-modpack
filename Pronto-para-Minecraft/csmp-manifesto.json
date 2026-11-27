@@ -1,8 +1,8 @@
 {
-  "versao": "2026-11-27 13:48",
+  "versao": "2026-11-27 14:14",
   "minecraft": "1.21.1",
   "neoforge": "21.1.267",
-  "instalador": 5,
+  "instalador": 6,
   "arquivos": [
     {"c": "config/aaa_particles-client.toml", "t": 103, "h": "3605d25d764a002c3306f96fc8b32c7eeb92e03b"},
     {"c": "config/adamsarsplus-common.toml", "t": 34982, "h": "3625b47a5f4323d15eceab6a75f2fd488a890708"},
@@ -1539,7 +1539,7 @@
     {"c": "mods/createsky-0.1.2.jar", "t": 128209, "h": "f63505a620ea2ff05e9eddc1f57a9dd66ce8f7ce"},
     {"c": "mods/critical_strike-neoforge-1.0.4+1.21.1.jar", "t": 133273, "h": "e6bf40bd03826c5ce2d57153b8bd9f3463cf5111"},
     {"c": "mods/cruor-neoforge-1.21.1-0.1.5-beta.jar", "t": 797990, "h": "4d7280fe23cdf640d32045a5140fd5bbd20b5b9a"},
-    {"c": "mods/csmp-core-0.1.0.jar", "t": 1201680, "h": "7bca5b20802bdec71870d3cca8d81396cac56638"},
+    {"c": "mods/csmp-core-0.1.0.jar", "t": 1204196, "h": "7a50ce2cc271fc61dd23a776ecd57543cd1bef65"},
     {"c": "mods/csmp-mago-1.0.5-neoforge-1.21.1.jar", "t": 28641, "h": "0ea214c06248f6baa0550d8c37bf4ea83aa5f325"},
     {"c": "mods/curios-neoforge-9.6.1+1.21.1.jar", "t": 411934, "h": "0655348ff267e114dff016332ea7ed4527b43284"},
     {"c": "mods/deeperdarker-neoforge-1.21.1-1.4.1.jar", "t": 3906057, "h": "b6094adde68bd4b909bc75c64901e1f3fb99ad8f"},

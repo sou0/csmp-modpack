@@ -26,33 +26,21 @@ using System.Windows.Forms;
 [assembly: AssemblyCompany("CSMP")]
 [assembly: AssemblyProduct("CSMP")]
 [assembly: AssemblyCopyright("CSMP")]
-[assembly: AssemblyVersion("5.0.0.0")]
-[assembly: AssemblyFileVersion("5.0.0.0")]
+[assembly: AssemblyVersion("6.0.0.0")]
+[assembly: AssemblyFileVersion("6.0.0.0")]
 
 namespace Csmp
 {
     public static class Programa
     {
         /// <summary>Sobe junto com Construcao/Instalador/versao.txt quando este programa muda.</summary>
-        public const int VERSAO = 5;
+        public const int VERSAO = 6;
         public const string REPO = "https://raw.githubusercontent.com/sou0/csmp-modpack/main/";
         public const string PACK = "Pronto-para-Minecraft/";
         public const string EXE_NO_REPO = "Instalador/CSMP.exe";
 
         [DllImport("user32.dll")]
         private static extern bool SetProcessDPIAware();
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        private static extern bool DeleteFile(string caminho);
-
-        /// <summary>
-        /// Tira a marca "baixado da internet" (Zone.Identifier) de um arquivo que este programa instalou. O jogador ja
-        /// aceitou rodar o CSMP.exe que baixou; sem isso, a copia em %AppData% repetiria o aviso do Windows a cada abertura.
-        /// </summary>
-        public static void TirarMarcaDeDownload(string arquivo)
-        {
-            try { DeleteFile(arquivo + ":Zone.Identifier"); } catch { }
-        }
 
         [STAThread]
         public static void Main(string[] args)
@@ -561,10 +549,8 @@ namespace Csmp
                     arquivos.Add(e);
                 }
                 Log("Pack no GitHub: " + versaoPack + " (" + arquivos.Count + " arquivos)");
-                if (Convert.ToInt32(m["instalador"]) > Programa.VERSAO && pastaTeste == null && AtualizarEsteExe())
-                {
-                    return;
-                }
+                int versaoExe = Convert.ToInt32(m["instalador"]);
+                if (versaoExe > Programa.VERSAO && pastaTeste == null) AvisarVersaoNova(versaoExe);
             }
             catch (Exception e)
             {
@@ -982,31 +968,25 @@ namespace Csmp
             }
         }
 
-        /// <summary>Baixa o CSMP.exe novo, troca este pelo novo e reabre. True se reabriu.</summary>
-        private bool AtualizarEsteExe()
+        /// <summary>
+        /// Saiu uma versao nova deste programa: avisa e oferece abrir a pagina de download. O programa nao troca o proprio
+        /// .exe sozinho (antivirus tratam isso como comportamento de virus); o pack em si continua atualizando normalmente.
+        /// </summary>
+        private void AvisarVersaoNova(int versao)
         {
-            try
+            if (Cfg("avisou_versao", "") == versao.ToString()) return;
+            Ui(delegate
             {
-                Detalhe("Atualizando o próprio instalador…");
-                string atual = Application.ExecutablePath;
-                string novo = atual + ".novo";
-                using (WebClient w = Cliente())
+                DialogResult r = MessageBox.Show(this, "Saiu uma versão nova do instalador do CSMP (versão " + versao + ").\n\n" +
+                        "Quer abrir a página para baixar? O pack continua sendo atualizado agora mesmo assim.",
+                        "CSMP", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                cfg["avisou_versao"] = versao.ToString();
+                SalvarConfig();
+                if (r == DialogResult.Yes)
                 {
-                    w.DownloadFile(Programa.REPO + Programa.EXE_NO_REPO + "?t=" + DateTime.UtcNow.Ticks, novo);
+                    try { Process.Start("https://github.com/sou0/csmp-modpack#instalar-jogadores"); } catch { }
                 }
-                string velho = atual + ".velho";
-                if (File.Exists(velho)) File.Delete(velho);
-                File.Move(atual, velho);   // o Windows deixa renomear o exe que esta rodando
-                File.Move(novo, atual);
-                Process.Start(atual, "--reaberto");
-                Ui(delegate { Close(); });
-                return true;
-            }
-            catch (Exception e)
-            {
-                Log("Não consegui atualizar o instalador (" + e.Message + "), seguindo com este.");
-                return false;
-            }
+            });
         }
 
         private void LimparVersaoVelha()
@@ -1014,26 +994,20 @@ namespace Csmp
             try { File.Delete(Application.ExecutablePath + ".velho"); } catch { }
         }
 
-        /// <summary>Copia o exe para %AppData%\CSMP e cria o atalho "CSMP" na area de trabalho.</summary>
+        /// <summary>Cria o atalho "CSMP" na area de trabalho apontando para este CSMP.exe (onde ele estiver).</summary>
         private void InstalarNoComputador()
         {
-            string destino = Path.Combine(pastaApp, "CSMP.exe");
-            string atual = Application.ExecutablePath;
+            string exe = Application.ExecutablePath;
             try
             {
-                if (!string.Equals(Path.GetFullPath(atual), Path.GetFullPath(destino), StringComparison.OrdinalIgnoreCase))
-                {
-                    File.Copy(atual, destino, true);
-                }
-                Programa.TirarMarcaDeDownload(destino);
                 string atalho = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "CSMP.lnk");
                 object shell = Activator.CreateInstance(Type.GetTypeFromProgID("WScript.Shell"));
                 object lnk = shell.GetType().InvokeMember("CreateShortcut", BindingFlags.InvokeMethod, null, shell, new object[] { atalho });
-                lnk.GetType().InvokeMember("TargetPath", BindingFlags.SetProperty, null, lnk, new object[] { destino });
-                lnk.GetType().InvokeMember("WorkingDirectory", BindingFlags.SetProperty, null, lnk, new object[] { pastaApp });
+                lnk.GetType().InvokeMember("TargetPath", BindingFlags.SetProperty, null, lnk, new object[] { exe });
+                lnk.GetType().InvokeMember("WorkingDirectory", BindingFlags.SetProperty, null, lnk, new object[] { Path.GetDirectoryName(exe) });
                 lnk.GetType().InvokeMember("Description", BindingFlags.SetProperty, null, lnk, new object[] { "Atualiza e abre o CSMP" });
                 lnk.GetType().InvokeMember("Save", BindingFlags.InvokeMethod, null, lnk, null);
-                Log("Atalho CSMP criado na área de trabalho.");
+                Log("Atalho CSMP criado na área de trabalho (aponta para " + exe + ").");
             }
             catch (Exception e)
             {

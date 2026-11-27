@@ -1,6 +1,9 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "all": "csmp:block/base_estatua"
+    "top": "csmp:block/base_estatua_topo",
+    "side": "csmp:block/base_estatua",
+    "bottom": "csmp:block/base_estatua",
+    "particle": "csmp:block/base_estatua"
   }
 }

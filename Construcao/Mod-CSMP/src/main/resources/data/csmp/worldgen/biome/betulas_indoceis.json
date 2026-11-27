@@ -81,8 +81,7 @@
     ],
     [
       "minecraft:glow_lichen",
-      "minecraft:trees_birch",
-      "minecraft:birch_tall",
+      "csmp:betulas_altas",
       "minecraft:patch_grass_forest",
       "minecraft:brown_mushroom_normal",
       "csmp:bosque_betulas"
