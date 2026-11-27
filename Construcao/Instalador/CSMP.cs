@@ -67,15 +67,121 @@ namespace Csmp
         public long Data;
     }
 
+    /// <summary>Cabecalho com ceu, nuvens em pixel e a logo do CSMP desenhada pixel a pixel.</summary>
+    public class Ceu : Panel
+    {
+        public static readonly string[] LOGO = {
+            "..BBBBBBBBBBBB..",
+            ".BbbbbbbbbbbbbB.",
+            "BbbbkkkkkkkkbbbB",
+            "BbbkCCCCCCCckbbB",
+            "BbkCccccccccckbB",
+            "BbkCccssssssskbB",
+            "BlkCcskkkkkkkllB",
+            "BlkCcskllllllllB",
+            "BlkCcskllllllllB",
+            "BlkCcskkkkkkkllB",
+            "BwkCccCCCCCCckwB",
+            "BwkcccccccccskwB",
+            "BwwkcssssssskwwB",
+            "BwwwkkkkkkkkwwwB",
+            ".BwwwwwwwwwwwwB.",
+            "..BBBBBBBBBBBB..",
+        };
+
+        public static Color CorDaLogo(char c)
+        {
+            switch (c)
+            {
+                case 'B': return Color.FromArgb(70, 112, 214);
+                case 'b': return Color.FromArgb(121, 162, 253);
+                case 'l': return Color.FromArgb(142, 204, 255);
+                case 'w': return Color.FromArgb(236, 246, 255);
+                case 'k': return Color.FromArgb(22, 24, 30);
+                case 'c': return Color.FromArgb(174, 236, 255);
+                case 'C': return Color.FromArgb(214, 255, 255);
+                case 's': return Color.FromArgb(120, 186, 230);
+                default: return Color.Transparent;
+            }
+        }
+
+        public static void DesenharLogo(Graphics g, int x, int y, int px)
+        {
+            for (int l = 0; l < LOGO.Length; l++)
+            {
+                for (int c = 0; c < LOGO[l].Length; c++)
+                {
+                    if (LOGO[l][c] == '.') continue;
+                    using (SolidBrush b = new SolidBrush(CorDaLogo(LOGO[l][c]))) g.FillRectangle(b, x + c * px, y + l * px, px, px);
+                }
+            }
+        }
+
+        // nuvens em blocos: {x, y, largura, altura} em blocos de 6 px (a 100% de escala)
+        private static readonly int[][] NUVENS_FUNDO = {
+            new int[] { 0, 13, 107, 3 }, new int[] { 2, 12, 9, 1 }, new int[] { 4, 11, 5, 1 }, new int[] { 16, 12, 12, 1 },
+            new int[] { 19, 11, 6, 1 }, new int[] { 21, 10, 2, 1 }, new int[] { 36, 12, 8, 1 }, new int[] { 38, 11, 4, 1 },
+            new int[] { 52, 12, 14, 1 }, new int[] { 55, 11, 8, 1 }, new int[] { 58, 10, 3, 1 }, new int[] { 74, 12, 10, 1 },
+            new int[] { 76, 11, 5, 1 }, new int[] { 90, 12, 13, 1 }, new int[] { 93, 11, 7, 1 }, new int[] { 95, 10, 3, 1 },
+        };
+        private static readonly int[][] NUVENS_SOLTAS = {
+            new int[] { 62, 2, 8, 1 }, new int[] { 64, 1, 4, 1 }, new int[] { 84, 4, 10, 1 }, new int[] { 86, 3, 5, 1 },
+            new int[] { 97, 1, 6, 1 }, new int[] { 99, 0, 3, 1 }, new int[] { 46, 5, 5, 1 },
+        };
+
+        public Ceu()
+        {
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            float escala = g.DpiX / 96F;
+            int u = Math.Max(1, (int)Math.Round(6 * escala));
+            using (System.Drawing.Drawing2D.LinearGradientBrush ceu = new System.Drawing.Drawing2D.LinearGradientBrush(
+                    ClientRectangle, Color.FromArgb(108, 150, 246), Color.FromArgb(170, 218, 255), 90F))
+            {
+                g.FillRectangle(ceu, ClientRectangle);
+            }
+            using (SolidBrush branca = new SolidBrush(Color.FromArgb(150, 255, 255, 255)))
+            {
+                foreach (int[] n in NUVENS_SOLTAS) g.FillRectangle(branca, n[0] * u, n[1] * u + u / 2, n[2] * u, n[3] * u);
+            }
+            int baseY = Height - 16 * u;
+            using (SolidBrush sombra = new SolidBrush(Color.FromArgb(214, 232, 250)))
+            using (SolidBrush branca = new SolidBrush(Color.White))
+            {
+                foreach (int[] n in NUVENS_FUNDO) g.FillRectangle(sombra, n[0] * u, baseY + n[1] * u + u / 2, n[2] * u, n[3] * u);
+                foreach (int[] n in NUVENS_FUNDO) g.FillRectangle(branca, n[0] * u, baseY + n[1] * u + u, n[2] * u, n[3] * u);
+            }
+            int px = Math.Max(1, (int)Math.Round(3 * escala));
+            int lx = (int)(22 * escala);
+            int ly = (int)(12 * escala);
+            DesenharLogo(g, lx, ly, px);
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+            using (Font titulo = new Font("Segoe UI Black", 18F))
+            using (Font sub = new Font("Segoe UI Semibold", 9.5F))
+            using (SolidBrush sombraTexto = new SolidBrush(Color.FromArgb(90, 30, 60, 130)))
+            using (SolidBrush branco = new SolidBrush(Color.White))
+            {
+                float tx = lx + 16 * px + 14 * escala;
+                g.DrawString("CSMP", titulo, sombraTexto, tx + 2 * escala, ly - 2 * escala);
+                g.DrawString("CSMP", titulo, branco, tx, ly - 4 * escala);
+                g.DrawString("Instalador e atualizador do modpack", sub, branco, tx + 2 * escala, ly + 28 * escala);
+            }
+        }
+    }
+
     public class Janela : Form
     {
         // cores
-        private static readonly Color Escuro = Color.FromArgb(28, 24, 26);
-        private static readonly Color Destaque = Color.FromArgb(150, 28, 34);
-        private static readonly Color DestaqueClaro = Color.FromArgb(178, 44, 50);
-        private static readonly Color Texto = Color.FromArgb(32, 32, 32);
-        private static readonly Color TextoFraco = Color.FromArgb(105, 105, 105);
-        private static readonly Color Rodape = Color.FromArgb(243, 243, 243);
+        private static readonly Color Destaque = Color.FromArgb(70, 112, 214);
+        private static readonly Color DestaqueClaro = Color.FromArgb(101, 144, 240);
+        private static readonly Color Erro = Color.FromArgb(196, 55, 48);
+        private static readonly Color Texto = Color.FromArgb(28, 38, 54);
+        private static readonly Color TextoFraco = Color.FromArgb(96, 108, 126);
+        private static readonly Color Rodape = Color.FromArgb(242, 247, 253);
         private static readonly Color Ok = Color.FromArgb(34, 139, 70);
 
         private readonly Font fonteTitulo = new Font("Segoe UI Semibold", 14F);
@@ -161,28 +267,9 @@ namespace Csmp
 
         private void MontarCabecalho()
         {
-            Panel topo = new Panel();
-            topo.SetBounds(0, 0, 640, 76);
-            topo.BackColor = Escuro;
-            PictureBox logo = new PictureBox();
-            logo.SetBounds(22, 14, 48, 48);
-            logo.SizeMode = PictureBoxSizeMode.Zoom;
-            try { logo.Image = new Icon(Icon, 48, 48).ToBitmap(); } catch { }
-            Label nome = new Label();
-            nome.Text = "CSMP";
-            nome.Font = new Font("Segoe UI Semibold", 17F);
-            nome.ForeColor = Color.White;
-            nome.SetBounds(80, 10, 300, 34);
-            Label sub = new Label();
-            sub.Text = "Instalador e atualizador do modpack";
-            sub.ForeColor = Color.FromArgb(190, 182, 184);
-            sub.SetBounds(82, 44, 400, 20);
-            topo.Controls.AddRange(new Control[] { logo, nome, sub });
-            Panel linha = new Panel();
-            linha.SetBounds(0, 76, 640, 3);
-            linha.BackColor = Destaque;
+            Ceu topo = new Ceu();
+            topo.SetBounds(0, 0, 640, 92);
             Controls.Add(topo);
-            Controls.Add(linha);
         }
 
         private void MontarRodape()
@@ -192,7 +279,7 @@ namespace Csmp
             rodape.BackColor = Rodape;
             Panel borda = new Panel();
             borda.SetBounds(0, 0, 640, 1);
-            borda.BackColor = Color.FromArgb(222, 222, 222);
+            borda.BackColor = Color.FromArgb(220, 230, 242);
             versaoRodape.Text = "Versão " + Programa.VERSAO;
             versaoRodape.ForeColor = TextoFraco;
             versaoRodape.Font = fontePequena;
@@ -223,14 +310,14 @@ namespace Csmp
             {
                 b.BackColor = Color.White;
                 b.ForeColor = Texto;
-                b.FlatAppearance.BorderColor = Color.FromArgb(200, 200, 200);
-                b.FlatAppearance.MouseOverBackColor = Color.FromArgb(235, 235, 235);
+                b.FlatAppearance.BorderColor = Color.FromArgb(190, 206, 228);
+                b.FlatAppearance.MouseOverBackColor = Color.FromArgb(232, 241, 252);
             }
         }
 
         private Panel NovaTela(Panel p)
         {
-            p.SetBounds(0, 79, 640, 317);
+            p.SetBounds(0, 92, 640, 304);
             p.BackColor = Color.White;
             p.Visible = false;
             Controls.Add(p);
@@ -360,7 +447,7 @@ namespace Csmp
             Ui(delegate
             {
                 passoIcone[i].Text = situacao == 2 ? "✔" : situacao == 3 ? "✖" : situacao == 1 ? "●" : "○";
-                passoIcone[i].ForeColor = situacao == 2 ? Ok : situacao == 3 ? Destaque : situacao == 1 ? Destaque : TextoFraco;
+                passoIcone[i].ForeColor = situacao == 2 ? Ok : situacao == 3 ? Erro : situacao == 1 ? Destaque : TextoFraco;
                 passoTexto[i].ForeColor = situacao == 0 ? TextoFraco : Texto;
                 passoTexto[i].Font = situacao == 1 ? fonteNegrito : fonteNormal;
             });
@@ -549,7 +636,7 @@ namespace Csmp
                     return;
                 }
                 tituloFim.Text = titulo;
-                tituloFim.ForeColor = podeJogar ? Texto : Destaque;
+                tituloFim.ForeColor = podeJogar ? Texto : Erro;
                 textoFim.Text = texto ?? ("O CSMP está instalado e atualizado (pack de " + versaoPack + ").\n\n" +
                         "No launcher, escolha a versão \"neoforge-" + versaoNeoForge + "\" (no launcher oficial, o perfil NeoForge) " +
                         "e reserve pelo menos 6 GB de memória nas configurações dele.\n\n" +
