@@ -26,15 +26,15 @@ using System.Windows.Forms;
 [assembly: AssemblyCompany("CSMP")]
 [assembly: AssemblyProduct("CSMP")]
 [assembly: AssemblyCopyright("CSMP")]
-[assembly: AssemblyVersion("4.0.0.0")]
-[assembly: AssemblyFileVersion("4.0.0.0")]
+[assembly: AssemblyVersion("5.0.0.0")]
+[assembly: AssemblyFileVersion("5.0.0.0")]
 
 namespace Csmp
 {
     public static class Programa
     {
         /// <summary>Sobe junto com Construcao/Instalador/versao.txt quando este programa muda.</summary>
-        public const int VERSAO = 4;
+        public const int VERSAO = 5;
         public const string REPO = "https://raw.githubusercontent.com/sou0/csmp-modpack/main/";
         public const string PACK = "Pronto-para-Minecraft/";
         public const string EXE_NO_REPO = "Instalador/CSMP.exe";
@@ -62,7 +62,30 @@ namespace Csmp
             ServicePointManager.DefaultConnectionLimit = 8;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Janela(args));
+            bool teste = Array.IndexOf(args, "--teste") >= 0;
+            bool reabrindo = Array.IndexOf(args, "--reaberto") >= 0;
+            bool unico;
+            using (Mutex trava = new Mutex(true, "CSMP-Instalador-sou0", out unico))
+            {
+                // ao se atualizar ou ao "Tentar de novo", a janela anterior ainda esta fechando: espera ela soltar
+                if (!unico && !teste && reabrindo)
+                {
+                    try { unico = trava.WaitOne(15000); } catch (AbandonedMutexException) { unico = true; }
+                }
+                if (!unico && !teste)
+                {
+                    MessageBox.Show("O CSMP já está aberto.", "CSMP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                try
+                {
+                    Application.Run(new Janela(args));
+                }
+                finally
+                {
+                    if (unico) { try { trava.ReleaseMutex(); } catch { } }
+                }
+            }
         }
     }
 
@@ -509,7 +532,8 @@ namespace Csmp
             abrirSozinho.Checked = Cfg("abrir", "sim") == "sim";
             tipo = pastaTeste != null ? (tipoTeste ?? "alternativo") : Cfg("tipo", "alternativo");
             pastaJogo = pastaTeste ?? Cfg("pasta", null);
-            primeiraInstalacao = pastaTeste == null && (pastaJogo == null || !Directory.Exists(pastaJogo));
+            // config de versao antiga (sem a escolha do launcher) tambem volta para a tela de boas-vindas
+            primeiraInstalacao = pastaTeste == null && (pastaJogo == null || !Directory.Exists(pastaJogo) || Cfg("tipo", null) == null);
 
             tituloProgresso.Text = primeiraInstalacao ? "Preparando a instalação" : "Atualizando o CSMP";
             Mostrar(telaProgresso);
@@ -933,7 +957,7 @@ namespace Csmp
                 }
                 else
                 {
-                    Botoes("Tentar de novo", delegate { Process.Start(Application.ExecutablePath); Close(); }, "Detalhes", delegate
+                    Botoes("Tentar de novo", delegate { Process.Start(Application.ExecutablePath, "--reaberto"); Close(); }, "Detalhes", delegate
                     {
                         Mostrar(telaProgresso);
                         log.Visible = true;
@@ -974,7 +998,7 @@ namespace Csmp
                 if (File.Exists(velho)) File.Delete(velho);
                 File.Move(atual, velho);   // o Windows deixa renomear o exe que esta rodando
                 File.Move(novo, atual);
-                Process.Start(atual);
+                Process.Start(atual, "--reaberto");
                 Ui(delegate { Close(); });
                 return true;
             }
