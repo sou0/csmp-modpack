@@ -19,6 +19,9 @@ public final class Paranoia {
     public static final String CHAVE = "csmp_paranoia";
     public static final String BLOQUEIO = "csmp_venda_bloqueada_ate";
     private static final long BLOQUEIO_TICKS = 20L * 60L * 5L;
+    /** Momento do puxao na animacao (cerca de 2 s depois de comecar). */
+    private static final long TICKS_ATE_O_PUXAO = 40L;
+    private static final String ARRANCAR_EM = "csmp_arrancar_venda_em";
 
     private Paranoia() {}
 
@@ -26,7 +29,7 @@ public final class Paranoia {
         return jogador.getPersistentData().getFloat(CHAVE);
     }
 
-    private static void definir(ServerPlayer jogador, float valor) {
+    public static void definir(ServerPlayer jogador, float valor) {
         jogador.getPersistentData().putFloat(CHAVE, Math.max(0.0F, Math.min(100.0F, valor)));
     }
 
@@ -40,13 +43,11 @@ public final class Paranoia {
         p = usando ? p + 5.0F : p - 2.5F;
         definir(jogador, p);
         p = obter(jogador);
-        if (usando && p >= 100.0F) {
-            jogador.setItemSlot(EquipmentSlot.HEAD, net.minecraft.world.item.ItemStack.EMPTY);
-            jogador.hurt(jogador.damageSources().generic(), 4.0F);
-            jogador.getPersistentData().putLong(BLOQUEIO, tempo + BLOQUEIO_TICKS);
-            definir(jogador, 60.0F);
-            jogador.sendSystemMessage(Component.literal("Voce arranca a venda com as unhas.")
-                    .withStyle(ChatFormatting.DARK_RED, ChatFormatting.ITALIC));
+        if (usando && p >= 100.0F && !jogador.getPersistentData().contains(ARRANCAR_EM)) {
+            // comeca a animacao (todos que estao vendo) e marca o puxao para quando as maos chegam na venda
+            jogador.getPersistentData().putLong(ARRANCAR_EM, tempo + TICKS_ATE_O_PUXAO);
+            net.neoforged.neoforge.network.PacketDistributor.sendToPlayersTrackingEntityAndSelf(jogador,
+                    new VendaAnimPayload(jogador.getId()));
             return;
         }
         if (p >= 50.0F) {
@@ -55,6 +56,25 @@ public final class Paranoia {
                 somFalso(jogador, p >= 75.0F ? 5.0D : 9.0D);
             }
         }
+    }
+
+    /** Chamado todo tick: na hora do puxao, a venda sai da cabeca, machuca e fica bloqueada por 5 minutos. */
+    static void puxao(ServerPlayer jogador, long tempo) {
+        var dados = jogador.getPersistentData();
+        if (!dados.contains(ARRANCAR_EM) || tempo < dados.getLong(ARRANCAR_EM)) {
+            return;
+        }
+        dados.remove(ARRANCAR_EM);
+        if (ServerSanidade.temVenda(jogador)) {
+            jogador.setItemSlot(EquipmentSlot.HEAD, net.minecraft.world.item.ItemStack.EMPTY);
+            jogador.hurt(jogador.damageSources().generic(), 4.0F);
+            jogador.level().playSound(null, jogador.blockPosition(), net.minecraft.sounds.SoundEvents.WOOL_BREAK,
+                    SoundSource.PLAYERS, 1.0F, 0.7F);
+        }
+        dados.putLong(BLOQUEIO, tempo + BLOQUEIO_TICKS);
+        definir(jogador, 60.0F);
+        jogador.sendSystemMessage(Component.literal("Voce arranca a venda com as unhas.")
+                .withStyle(ChatFormatting.DARK_RED, ChatFormatting.ITALIC));
     }
 
     /** Toca um som que mais ninguem ouve, vindo de perto do jogador. */

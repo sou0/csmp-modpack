@@ -43,9 +43,12 @@ public final class ArsRestricao {
         return MODS.contains(BuiltInRegistries.BLOCK.getKey(estado.getBlock()).getNamespace());
     }
 
+    private static final boolean MAGOS = net.neoforged.fml.ModList.get().isLoaded("csmp_mago");
+
     /** True se o jogador (do servidor) esta bloqueado; avisa no maximo a cada 3 segundos. */
     private static boolean bloquear(Player jogador) {
-        if (!(jogador instanceof ServerPlayer sp) || liberado(sp) || sp.isCreative()) {
+        // com o mod "Magos do CSMP" (do pessoal do lider) quem decide e ele (/mago); a nossa trava fica desligada
+        if (MAGOS || !(jogador instanceof ServerPlayer sp) || liberado(sp) || sp.isCreative()) {
             return false;
         }
         long agora = sp.level().getGameTime();

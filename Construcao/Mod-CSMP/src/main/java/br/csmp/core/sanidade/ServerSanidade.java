@@ -119,6 +119,7 @@ public final class ServerSanidade {
                 Sanidade.somar(jogador, -1.0F);
             }
         }
+        Paranoia.puxao(jogador, tempo);
         if (tempo % 100L == 0L) {
             Paranoia.tick(jogador, tempo);
         }

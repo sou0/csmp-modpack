@@ -15,6 +15,8 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
  *  /csmp bosque                      mostra o centro da Floresta das Betulas Indoceis mais proxima.
  *  /csmp insanidade ver <jogador>    mostra a insanidade e a paranoia de um jogador.
  *  /csmp insanidade definir <jogador> <valor>   define a insanidade (0 a 100).
+ *  /csmp paranoia definir <jogador> <valor>     define a paranoia (100 com a venda = arranca).
+ *  /csmp venda animar <jogador>      toca so a animacao de arrancar a venda.
  */
 public final class MundoComandos {
     private MundoComandos() {}
@@ -39,6 +41,14 @@ public final class MundoComandos {
                                 .executes(ctx -> marcarPreso(ctx.getSource(), EntityArgument.getPlayer(ctx, "jogador"), true))))
                         .then(Commands.literal("soltar").then(Commands.argument("jogador", EntityArgument.player())
                                 .executes(ctx -> marcarPreso(ctx.getSource(), EntityArgument.getPlayer(ctx, "jogador"), false)))))
+                .then(Commands.literal("paranoia")
+                        .then(Commands.literal("definir").then(Commands.argument("jogador", EntityArgument.player())
+                                .then(Commands.argument("valor", FloatArgumentType.floatArg(0.0F, 100.0F))
+                                        .executes(ctx -> paranoia(ctx.getSource(), EntityArgument.getPlayer(ctx, "jogador"),
+                                                FloatArgumentType.getFloat(ctx, "valor")))))))
+                .then(Commands.literal("venda")
+                        .then(Commands.literal("animar").then(Commands.argument("jogador", EntityArgument.player())
+                                .executes(ctx -> animarVenda(ctx.getSource(), EntityArgument.getPlayer(ctx, "jogador"))))))
                 .then(Commands.literal("insanidade")
                         .then(Commands.literal("ver")
                                 .then(Commands.argument("jogador", EntityArgument.player())
@@ -110,6 +120,21 @@ public final class MundoComandos {
         jogador.sendSystemMessage(Component.literal("Uma forca de fora te puxa de volta.").withStyle(net.minecraft.ChatFormatting.GRAY,
                 net.minecraft.ChatFormatting.ITALIC));
         fonte.sendSuccess(() -> Component.literal(jogador.getName().getString() + " foi tirado do Vazio."), true);
+        return 1;
+    }
+
+    private static int paranoia(CommandSourceStack fonte, ServerPlayer jogador, float valor) {
+        Paranoia.definir(jogador, valor);
+        fonte.sendSuccess(() -> Component.literal("Paranoia de " + jogador.getName().getString() + " = " + valor
+                + (valor >= 100.0F ? " (com a venda na cabeca, ela e arrancada em ate 5 s)" : "")), true);
+        return 1;
+    }
+
+    /** So a animacao de arrancar a venda (sem dano nem bloqueio), para conferir como fica. */
+    private static int animarVenda(CommandSourceStack fonte, ServerPlayer jogador) {
+        net.neoforged.neoforge.network.PacketDistributor.sendToPlayersTrackingEntityAndSelf(jogador,
+                new br.csmp.core.sanidade.VendaAnimPayload(jogador.getId()));
+        fonte.sendSuccess(() -> Component.literal("Animacao da venda tocada em " + jogador.getName().getString()), false);
         return 1;
     }
 

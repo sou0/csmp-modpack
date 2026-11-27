@@ -65,9 +65,19 @@ public class BosqueFeature extends Feature<NoneFeatureConfiguration> {
         return Bosques.distanciaDaBorda(centro, x, z) <= 0.0D;
     }
 
-    /** Troca alguns troncos de betula (de 1 a 4 blocos acima do chao) por troncos com olho. */
+    private static final ResourceLocation VIGIA = ResourceLocation.fromNamespaceAndPath("olho_betula", "vigia_da_betula");
+    private static final ResourceLocation OLHO_SIMPLES = ResourceLocation.fromNamespaceAndPath("olho_betula", "olho_de_betula");
+    /** Quantos desenhos de olhos o Vigia da Betula tem (EyePose.LAYOUTS do mod olho_betula). */
+    private static final int DESENHOS_DO_VIGIA = 17;
+
+    /**
+     * Poe olhos em alguns troncos de betula (de 1 a 4 blocos acima do chao). Com o mod Olho de Betula (do pessoal do
+     * lider) usa os olhos dele, grudados do lado do tronco e olhando para fora; sem ele, troca o tronco pelo nosso.
+     */
     private static void colocarOlhos(WorldGenLevel nivel, ChunkPos chunk, int[] centro, RandomSource r) {
-        BlockState olho = CsmpRegistro.BETULA_OLHO.get().defaultBlockState();
+        Block vigia = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getOptional(VIGIA).orElse(null);
+        Block simples = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getOptional(OLHO_SIMPLES).orElse(null);
+        BlockState nosso = CsmpRegistro.BETULA_OLHO.get().defaultBlockState();
         for (int dx = 0; dx < 16; dx++) {
             for (int dz = 0; dz < 16; dz++) {
                 int x = chunk.getMinBlockX() + dx;
@@ -81,9 +91,35 @@ public class BosqueFeature extends Feature<NoneFeatureConfiguration> {
                     continue;
                 }
                 BlockPos pos = new BlockPos(x, base + 1 + r.nextInt(4), z);
-                if (nivel.getBlockState(pos).is(Blocks.BIRCH_LOG)) {
-                    nivel.setBlock(pos, olho, 2);
+                if (!nivel.getBlockState(pos).is(Blocks.BIRCH_LOG)) {
+                    continue;
+                }
+                if (vigia == null) {
+                    nivel.setBlock(pos, nosso, 2);
                     nivel.scheduleTick(pos, CsmpRegistro.BETULA_OLHO.get(), 20 + r.nextInt(40));
+                    continue;
+                }
+                net.minecraft.core.Direction lado = net.minecraft.core.Direction.Plane.HORIZONTAL.getRandomDirection(r);
+                BlockPos fora = pos.relative(lado);
+                if (!nivel.getBlockState(fora).isAir()) {
+                    continue;
+                }
+                boolean ehVigia = simples == null || r.nextInt(10) < 7;
+                Block bloco = ehVigia ? vigia : simples;
+                BlockState estado = bloco.defaultBlockState();
+                if (estado.hasProperty(net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING)) {
+                    estado = estado.setValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING, lado);
+                }
+                nivel.setBlock(fora, estado, 2);
+                if (ehVigia) {
+                    // o desenho do vigia normalmente e sorteado quando o jogador coloca; aqui sorteamos na geracao
+                    var be = nivel.getBlockEntity(fora);
+                    if (be != null) {
+                        CompoundTag dados = be.saveWithFullMetadata(nivel.registryAccess());
+                        dados.putInt("Variant", r.nextInt(DESENHOS_DO_VIGIA));
+                        be.loadWithComponents(dados, nivel.registryAccess());
+                        be.setChanged();
+                    }
                 }
             }
         }

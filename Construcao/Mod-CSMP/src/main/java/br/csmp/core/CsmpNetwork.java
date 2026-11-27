@@ -25,6 +25,8 @@ public final class CsmpNetwork {
                         br.csmp.core.santuario.ServerSantuario.escolher(jogador, payload.base(), payload.preso(), payload.amuleto());
                     }
                 }));
+        registrar.playToClient(br.csmp.core.sanidade.VendaAnimPayload.TYPE, br.csmp.core.sanidade.VendaAnimPayload.CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> br.csmp.core.sanidade.ClientVendaAnimacao.tocar(payload.entidade())));
         registrar.playToClient(br.csmp.core.npc.AbrirProfetaPayload.TYPE, br.csmp.core.npc.AbrirProfetaPayload.CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> br.csmp.core.npc.ProfetaCliente.abrir(payload.eruditos(), payload.entidade())));
     }

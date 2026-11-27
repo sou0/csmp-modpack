@@ -3,7 +3,7 @@ Pasta pronta para usar no Minecraft.
 
 REQUISITOS
 - Minecraft Java 1.21.1
-- NeoForge 21.1.266 ou mais novo (21.1.x)
+- NeoForge 21.1.267 ou mais novo (21.1.x)
 - RAM: 4 GB no minimo recomendado (o pack e pesado, quanto mais melhor)
 - Funciona com conta original e sem conta original (o servidor e online-mode=false)
 
@@ -17,7 +17,7 @@ COMO INSTALAR
 4. Abra o jogo com o perfil do NeoForge e clique em "Entrar no CSMP".
 
 CONTEUDO
-- mods/           158 mods (.jar), incluindo o csmp-core (mod proprio: Medidor de Caos, clima, mobs)
+- mods/           161 mods (.jar), incluindo o csmp-core (mod proprio: Medidor de Caos, clima, mobs)
 - config/         configuracoes do pack (inclui o menu inicial personalizado)
 - resourcepacks/  resourcepacks incluidos neste pack
 

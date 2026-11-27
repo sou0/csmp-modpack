@@ -3,9 +3,11 @@ package br.csmp.core.sanidade;
 import br.csmp.core.CsmpMod;
 import br.csmp.core.CsmpRegistro;
 import br.csmp.core.npc.VazioNpcEntity;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -17,7 +19,8 @@ import net.neoforged.neoforge.client.event.ViewportEvent;
 
 /**
  * Efeitos na tela da insanidade (sem barra, o jogador nao ve o numero):
- *  25+ vinheta escura e sussurros; 50+ tela ondulando e cores pulsando; 75+ tremor, vinheta vermelha e uma
+ *  25+ overlay escuro/vermelho com TV antiga (cresce com a insanidade) e sussurros; 50+ tela ondulando; 75+ tremor,
+ *  piscadas de TV e uma
  *  "sombra fantasma" que so o proprio jogador ve; 100 tudo junto e mais forte.
  */
 @EventBusSubscriber(modid = CsmpMod.ID, value = Dist.CLIENT)
@@ -37,51 +40,79 @@ public final class ClientSanidade {
         return ServerSanidade.faixa(insanidade);
     }
 
+    private static final ResourceLocation SOMBRA = textura("insanidade_sombra");
+    private static final ResourceLocation VERMELHO = textura("insanidade_vermelho");
+    private static final ResourceLocation CHIADO = textura("tv_chiado");
+    private static final ResourceLocation LINHAS = textura("tv_linhas");
+    private static final java.util.Random SORTE = new java.util.Random();
+    private static int chiadoU = 0;
+    private static int chiadoV = 0;
+    private static long trocaChiado = 0L;
+    private static long piscaAte = 0L;
+
+    private static ResourceLocation textura(String nome) {
+        return ResourceLocation.fromNamespaceAndPath(CsmpMod.ID, "textures/gui/" + nome + ".png");
+    }
+
+    /**
+     * Overlay da insanidade pedido pelo lider: bordas escuras com fumaca e um veu vermelho manchado que vai ficando
+     * mais visivel e mais vermelho conforme a insanidade sobe, com efeito de TV antiga por cima (linhas, chiado,
+     * faixa rolando e piscadas nas faixas altas). As texturas ficam em textures/gui e podem ser trocadas.
+     */
     @SubscribeEvent
     public static void desenhar(RenderGuiEvent.Pre evento) {
-        int faixa = faixa();
-        if (faixa == 0 || Minecraft.getInstance().options.hideGui) {
+        if (faixa() == 0 || Minecraft.getInstance().options.hideGui) {
             return;
         }
         var g = evento.getGuiGraphics();
         int w = g.guiWidth();
         int h = g.guiHeight();
-        double t = (System.currentTimeMillis() % 100000L) / 1000.0D;
-        // a intensidade acompanha a insanidade dentro da faixa e "respira" devagar
-        float base = Math.min(1.0F, insanidade / 100.0F);
-        float respiro = (float) (0.85D + 0.15D * Math.sin(t * 0.9D));
-        int cor = faixa >= 3 ? 0x5A0810 : 0x08040E;
-        float alfaMax = Math.min(0.82F, (0.30F + 0.55F * base) * respiro);
-        vinheta(g, w, h, cor, alfaMax, 0.34F + 0.10F * faixa);
-        if (faixa >= 2) {
-            // cores pulsando: um veu roxo que respira, mais rapido nas faixas altas
-            int pulso = (int) (10 + 9 * Math.sin(t * (faixa >= 4 ? 2.6D : 1.3D)));
-            g.fill(0, 0, w, h, (pulso << 24) | (faixa >= 3 ? 0x4A0E58 : 0x1A0C38));
+        long agora = System.currentTimeMillis();
+        double t = (agora % 100000L) / 1000.0D;
+        // 0 em 25 de insanidade, 1 em 100
+        float s = Math.max(0.0F, Math.min(1.0F, (insanidade - 25.0F) / 75.0F));
+        float respiro = (float) (0.90D + 0.10D * Math.sin(t * 0.9D));
+
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        cobrir(g, SOMBRA, w, h, (0.45F + 0.50F * s) * respiro);
+        cobrir(g, VERMELHO, w, h, (0.12F + 0.68F * s * s) * respiro);
+
+        // TV antiga: linhas sempre, chiado que muda ~20 vezes por segundo
+        cobrir(g, LINHAS, w, h, 0.06F + 0.16F * s);
+        if (agora >= trocaChiado) {
+            chiadoU = SORTE.nextInt(256);
+            chiadoV = SORTE.nextInt(256);
+            trocaChiado = agora + 50L;
         }
+        g.setColor(1.0F, 1.0F, 1.0F, 0.05F + 0.13F * s);
+        g.blit(CHIADO, 0, 0, w, h, chiadoU, chiadoV, 256, 256, 512, 512);
+        // faixa clara que desce devagar, como imagem fora de sintonia
+        int altura = Math.max(8, h / 9);
+        int y = (int) ((t * 0.12D % 1.0D) * (h + altura)) - altura;
+        int a = (int) (255 * (0.03F + 0.06F * s));
+        g.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+        g.fillGradient(0, y, w, y + altura / 2, 0x00FFFFFF, (a << 24) | 0xFFE0E0);
+        g.fillGradient(0, y + altura / 2, w, y + altura, (a << 24) | 0xFFE0E0, 0x00FFFFFF);
+        // nas faixas altas a imagem "cai" por um instante de vez em quando
+        if (faixa() >= 3 && agora >= piscaAte + 400L && SORTE.nextInt(faixa() >= 4 ? 90 : 220) == 0) {
+            piscaAte = agora + 60L + SORTE.nextInt(90);
+        }
+        if (agora < piscaAte) {
+            g.fill(0, 0, w, h, 0x9A050000);
+            g.setColor(1.0F, 1.0F, 1.0F, 0.35F);
+            g.blit(CHIADO, 0, 0, w, h, chiadoV, chiadoU, 256, 256, 512, 512);
+        }
+        g.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.disableBlend();
     }
 
-    /**
-     * Vinheta suave: molduras concentricas cada vez mais transparentes (queda quadratica), sem degraus visiveis.
-     * {@code alcance} e a fracao da menor dimensao da tela que a vinheta ocupa a partir das bordas.
-     */
-    private static void vinheta(net.minecraft.client.gui.GuiGraphics g, int w, int h, int cor, float alfaMax, float alcance) {
-        int passos = 40;
-        int tamanho = (int) (Math.min(w, h) * alcance);
-        float largura = Math.max(1.0F, tamanho / (float) passos);
-        for (int i = 0; i < passos; i++) {
-            float queda = 1.0F - i / (float) passos;
-            int a = (int) (255 * alfaMax * queda * queda);
-            if (a <= 0) {
-                continue;
-            }
-            int c = (a << 24) | cor;
-            int dentro = (int) (i * largura);
-            int fora = (int) ((i + 1) * largura);
-            g.fill(dentro, dentro, w - dentro, fora, c);
-            g.fill(dentro, h - fora, w - dentro, h - dentro, c);
-            g.fill(dentro, fora, fora, h - fora, c);
-            g.fill(w - fora, fora, w - dentro, h - fora, c);
+    private static void cobrir(net.minecraft.client.gui.GuiGraphics g, ResourceLocation tex, int w, int h, float alfa) {
+        if (alfa <= 0.0F) {
+            return;
         }
+        g.setColor(1.0F, 1.0F, 1.0F, Math.min(1.0F, alfa));
+        g.blit(tex, 0, 0, w, h, 0.0F, 0.0F, 512, 512, 512, 512);
     }
 
     @SubscribeEvent

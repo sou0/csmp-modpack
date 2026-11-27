@@ -3,7 +3,7 @@ Pasta pronta para usar no Minecraft.
 
 REQUISITOS
 - Minecraft Java 1.21.1
-- NeoForge 21.1.266 ou mais novo (21.1.x)
+- NeoForge 21.1.267 ou mais novo (21.1.x)
 - RAM: 4 GB no minimo recomendado (o pack e pesado, quanto mais melhor)
 - Funciona com conta original e sem conta original (o servidor e online-mode=false)
 

@@ -1,4 +1,4 @@
-param([int]$TimeoutSeg = 900, [switch]$SemSync)
+﻿param([int]$TimeoutSeg = 900, [switch]$SemSync)
 # Teste de fumaca: sobe um servidor com mundo novo, confere se carrega, testa o datapack
 # do Medidor de Caos por comandos, desliga e gera um relatorio.
 $ErrorActionPreference = 'Stop'
@@ -261,8 +261,11 @@ NivelClima 0  0 'Clima 0% -> normal'
         foreach ($ox in ($bx - 48), ($bx - 16), ($bx + 16)) {
             foreach ($oz in ($bz - 48), ($bz - 16), ($bz + 16)) {
                 foreach ($oy in 40, 72) {
-                    $r = Cmd "execute in minecraft:overworld run fill $ox $oy $oz $($ox + 31) $($oy + 31) $($oz + 31) minecraft:glass replace csmp:betula_olho"
-                    if ($r -match 'Successfully filled') { $olhos++ }
+                    # com o mod Olho de Betula os olhos sao os dele (grudados no tronco); sem ele, o nosso tronco com olho
+                    foreach ($bloco in 'olho_betula:vigia_da_betula', 'olho_betula:olho_de_betula', 'csmp:betula_olho') {
+                        $r = Cmd "execute in minecraft:overworld run fill $ox $oy $oz $($ox + 31) $($oy + 31) $($oz + 31) minecraft:air replace $bloco"
+                        if ($r -match 'Successfully filled') { $olhos++ }
+                    }
                 }
             }
         }

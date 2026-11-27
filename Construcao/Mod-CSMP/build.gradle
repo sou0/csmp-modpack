@@ -30,6 +30,8 @@ dependencies {
     compileOnly files('../Pack-Direto/mods/voicechat-neoforge-1.21.1-2.6.27.jar')
     // Create: Atmospherics (MIT): so para avisar o cache da costa quando um bloco muda
     compileOnly files('../Pack-Direto/mods/create_atmospherics-2.1.0.jar')
+    // Player Animator: so para tocar a animacao de arrancar a venda (feita no Blockbench, exportada pelo GeckoLib)
+    compileOnly files('../Pack-Direto/mods/player-animation-lib-forge-2.0.4+1.21.1.jar')
 }
 
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
