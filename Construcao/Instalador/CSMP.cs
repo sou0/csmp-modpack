@@ -25,21 +25,33 @@ using System.Windows.Forms;
 [assembly: AssemblyCompany("CSMP")]
 [assembly: AssemblyProduct("CSMP")]
 [assembly: AssemblyCopyright("CSMP")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]
 
 namespace Csmp
 {
     public static class Programa
     {
         /// <summary>Sobe junto com Construcao/Instalador/versao.txt quando este programa muda.</summary>
-        public const int VERSAO = 1;
+        public const int VERSAO = 2;
         public const string REPO = "https://raw.githubusercontent.com/sou0/csmp-modpack/main/";
         public const string PACK = "Pronto-para-Minecraft/";
         public const string EXE_NO_REPO = "Instalador/CSMP.exe";
 
         [DllImport("user32.dll")]
         private static extern bool SetProcessDPIAware();
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern bool DeleteFile(string caminho);
+
+        /// <summary>
+        /// Tira a marca "baixado da internet" (Zone.Identifier) de um arquivo que este programa instalou. O jogador ja
+        /// aceitou rodar o CSMP.exe que baixou; sem isso, a copia em %AppData% repetiria o aviso do Windows a cada abertura.
+        /// </summary>
+        public static void TirarMarcaDeDownload(string arquivo)
+        {
+            try { DeleteFile(arquivo + ":Zone.Identifier"); } catch { }
+        }
 
         [STAThread]
         public static void Main(string[] args)
@@ -717,6 +729,7 @@ namespace Csmp
                 {
                     File.Copy(atual, destino, true);
                 }
+                Programa.TirarMarcaDeDownload(destino);
                 string atalho = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "CSMP.lnk");
                 object shell = Activator.CreateInstance(Type.GetTypeFromProgID("WScript.Shell"));
                 object lnk = shell.GetType().InvokeMember("CreateShortcut", BindingFlags.InvokeMethod, null, shell, new object[] { atalho });
