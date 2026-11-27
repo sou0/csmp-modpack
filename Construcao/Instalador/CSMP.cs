@@ -21,23 +21,23 @@ using System.Threading;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
 
-[assembly: AssemblyTitle("CSMP")]
-[assembly: AssemblyDescription("Instalador e atualizador do modpack CSMP")]
+[assembly: AssemblyTitle("CSMP Atualizador")]
+[assembly: AssemblyDescription("Mantém o modpack CSMP instalado e atualizado")]
 [assembly: AssemblyCompany("CSMP")]
 [assembly: AssemblyProduct("CSMP")]
 [assembly: AssemblyCopyright("CSMP")]
-[assembly: AssemblyVersion("6.0.0.0")]
-[assembly: AssemblyFileVersion("6.0.0.0")]
+[assembly: AssemblyVersion("7.0.0.0")]
+[assembly: AssemblyFileVersion("7.0.0.0")]
 
 namespace Csmp
 {
     public static class Programa
     {
         /// <summary>Sobe junto com Construcao/Instalador/versao.txt quando este programa muda.</summary>
-        public const int VERSAO = 6;
+        public const int VERSAO = 7;
         public const string REPO = "https://raw.githubusercontent.com/sou0/csmp-modpack/main/";
         public const string PACK = "Pronto-para-Minecraft/";
-        public const string EXE_NO_REPO = "Instalador/CSMP.exe";
+        public const string SETUP = "https://github.com/sou0/csmp-modpack/raw/main/Instalador/CSMP-Setup.exe";
 
         [DllImport("user32.dll")]
         private static extern bool SetProcessDPIAware();
@@ -50,6 +50,11 @@ namespace Csmp
             ServicePointManager.DefaultConnectionLimit = 8;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            if (Array.IndexOf(args, "--desinstalar") >= 0)
+            {
+                Desinstalar.Rodar();
+                return;
+            }
             bool teste = Array.IndexOf(args, "--teste") >= 0;
             bool reabrindo = Array.IndexOf(args, "--reaberto") >= 0;
             bool unico;
@@ -73,6 +78,86 @@ namespace Csmp
                 {
                     if (unico) { try { trava.ReleaseMutex(); } catch { } }
                 }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Chamado pelo desinstalador: pergunta se tira tambem os arquivos do pack da pasta do jogo (so os que o CSMP
+    /// colocou, pela lista csmp-estado.txt), tira a instalacao "CSMP" do launcher oficial e apaga a config do programa.
+    /// O NeoForge e as bibliotecas ficam (sao compartilhados com outros packs).
+    /// </summary>
+    public static class Desinstalar
+    {
+        public static void Rodar()
+        {
+            string ad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string pastaApp = Path.Combine(ad, "CSMP");
+            Dictionary<string, string> cfg = new Dictionary<string, string>();
+            string arqCfg = Path.Combine(pastaApp, "config.txt");
+            if (File.Exists(arqCfg))
+            {
+                foreach (string l in File.ReadAllLines(arqCfg, Encoding.UTF8))
+                {
+                    int i = l.IndexOf('=');
+                    if (i > 0) cfg[l.Substring(0, i)] = l.Substring(i + 1);
+                }
+            }
+            string pasta;
+            cfg.TryGetValue("pasta", out pasta);
+            string estado = pasta == null ? null : Path.Combine(pasta, "csmp-estado.txt");
+            if (estado != null && File.Exists(estado))
+            {
+                DialogResult r = MessageBox.Show("Remover também os mods, configurações e resourcepacks do CSMP da pasta do jogo?\n\n" + pasta +
+                        "\n\nSó saem os arquivos que o CSMP colocou. Seus mundos e outros arquivos não são mexidos.",
+                        "Desinstalar o CSMP", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (r == DialogResult.Yes) TirarArquivos(pasta, estado);
+            }
+            string tipo;
+            if (cfg.TryGetValue("tipo", out tipo) && tipo == "oficial") TirarPerfilOficial(Path.Combine(ad, ".minecraft"));
+            try { if (Directory.Exists(pastaApp)) Directory.Delete(pastaApp, true); } catch { }
+        }
+
+        private static void TirarArquivos(string pasta, string estado)
+        {
+            HashSet<string> pastas = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (string l in File.ReadAllLines(estado, Encoding.UTF8))
+            {
+                if (l.StartsWith("#")) continue;
+                string[] p = l.Split('|');
+                if (p.Length < 2 || p[0].Contains("..")) continue;
+                string rel = p[0].Replace('/', Path.DirectorySeparatorChar);
+                try { File.Delete(Path.Combine(pasta, rel)); } catch { }
+                string d = Path.GetDirectoryName(rel);
+                while (!string.IsNullOrEmpty(d)) { pastas.Add(d); d = Path.GetDirectoryName(d); }
+            }
+            List<string> ordem = new List<string>(pastas);
+            ordem.Sort(delegate(string a, string b) { return b.Length.CompareTo(a.Length); });
+            foreach (string d in ordem)
+            {
+                if (d == "mods" || d == "config" || d == "resourcepacks") continue;
+                string cheio = Path.Combine(pasta, d);
+                try { if (Directory.Exists(cheio) && Directory.GetFileSystemEntries(cheio).Length == 0) Directory.Delete(cheio); } catch { }
+            }
+            try { File.Delete(estado); } catch { }
+        }
+
+        private static void TirarPerfilOficial(string minecraft)
+        {
+            foreach (string nome in new string[] { "launcher_profiles.json", "launcher_profiles_microsoft_store.json" })
+            {
+                string arq = Path.Combine(minecraft, nome);
+                if (!File.Exists(arq)) continue;
+                try
+                {
+                    JavaScriptSerializer js = new JavaScriptSerializer();
+                    js.MaxJsonLength = int.MaxValue;
+                    Dictionary<string, object> raiz = js.Deserialize<Dictionary<string, object>>(File.ReadAllText(arq, Encoding.UTF8));
+                    object o;
+                    Dictionary<string, object> perfis = raiz != null && raiz.TryGetValue("profiles", out o) ? o as Dictionary<string, object> : null;
+                    if (perfis != null && perfis.Remove("csmp")) File.WriteAllText(arq, js.Serialize(raiz), new UTF8Encoding(false));
+                }
+                catch { }
             }
         }
     }
@@ -786,7 +871,6 @@ namespace Csmp
             cfg["tipo"] = tipo;
             cfg["pasta"] = pastaJogo;
             SalvarConfig();
-            InstalarNoComputador();
             tituloProgresso.Text = "Instalando o CSMP";
             Mostrar(telaProgresso);
             Botoes(null, null, "Cancelar", delegate { Close(); });
@@ -978,13 +1062,13 @@ namespace Csmp
             Ui(delegate
             {
                 DialogResult r = MessageBox.Show(this, "Saiu uma versão nova do instalador do CSMP (versão " + versao + ").\n\n" +
-                        "Quer abrir a página para baixar? O pack continua sendo atualizado agora mesmo assim.",
+                        "Quer baixar o instalador novo? O pack continua sendo atualizado agora mesmo assim.",
                         "CSMP", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                 cfg["avisou_versao"] = versao.ToString();
                 SalvarConfig();
                 if (r == DialogResult.Yes)
                 {
-                    try { Process.Start("https://github.com/sou0/csmp-modpack#instalar-jogadores"); } catch { }
+                    try { Process.Start(Programa.SETUP); } catch { }
                 }
             });
         }
@@ -992,27 +1076,6 @@ namespace Csmp
         private void LimparVersaoVelha()
         {
             try { File.Delete(Application.ExecutablePath + ".velho"); } catch { }
-        }
-
-        /// <summary>Cria o atalho "CSMP" na area de trabalho apontando para este CSMP.exe (onde ele estiver).</summary>
-        private void InstalarNoComputador()
-        {
-            string exe = Application.ExecutablePath;
-            try
-            {
-                string atalho = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "CSMP.lnk");
-                object shell = Activator.CreateInstance(Type.GetTypeFromProgID("WScript.Shell"));
-                object lnk = shell.GetType().InvokeMember("CreateShortcut", BindingFlags.InvokeMethod, null, shell, new object[] { atalho });
-                lnk.GetType().InvokeMember("TargetPath", BindingFlags.SetProperty, null, lnk, new object[] { exe });
-                lnk.GetType().InvokeMember("WorkingDirectory", BindingFlags.SetProperty, null, lnk, new object[] { Path.GetDirectoryName(exe) });
-                lnk.GetType().InvokeMember("Description", BindingFlags.SetProperty, null, lnk, new object[] { "Atualiza e abre o CSMP" });
-                lnk.GetType().InvokeMember("Save", BindingFlags.InvokeMethod, null, lnk, null);
-                Log("Atalho CSMP criado na área de trabalho (aponta para " + exe + ").");
-            }
-            catch (Exception e)
-            {
-                Log("Aviso: não consegui criar o atalho (" + e.Message + ").");
-            }
         }
 
         // ------------------------------------------------------------------ NeoForge
